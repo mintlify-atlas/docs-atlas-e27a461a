@@ -10,19 +10,19 @@ The **DatePicker** component provides an interactive calendar picker with suppor
 
 ```html
 <!-- Basic date picker -->
-<p-datepicker [(ngModel)]="date" />
+<p-datePicker [(ngModel)]="date" />
 
 <!-- Date range -->
-<p-datepicker [(ngModel)]="dateRange" selectionMode="range" />
+<p-datePicker [(ngModel)]="dateRange" selectionMode="range" />
 
 <!-- With time -->
-<p-datepicker [(ngModel)]="datetime" [showTime]="true" hourFormat="12" />
+<p-datePicker [(ngModel)]="datetime" [showTime]="true" hourFormat="12" />
 
 <!-- Inline calendar -->
-<p-datepicker [(ngModel)]="date" [inline]="true" />
+<p-datePicker [(ngModel)]="date" [inline]="true" />
 
 <!-- Month/year selector -->
-<p-datepicker [(ngModel)]="date" view="month" dateFormat="mm/yy" />
+<p-datePicker [(ngModel)]="date" view="month" dateFormat="mm/yy" />
 ```
 
 ```typescript
@@ -78,6 +78,12 @@ export class ExampleComponent {
 | `title.gap` | `0.5rem` | Gap between month and year selectors |
 | `title.fontWeight` | `500` | Font weight for the month/year title |
 
+### Input icon
+
+| Token | Value | Description |
+|---|---|---|
+| `inputIcon.color` | `{form.field.icon.color}` | Color of the calendar icon in the trigger input |
+
 ### Dropdown (prev/next navigation buttons)
 
 | Token | Value | Description |
@@ -85,9 +91,15 @@ export class ExampleComponent {
 | `dropdown.width` | `2.5rem` | Button width (default) |
 | `dropdown.sm.width` | `2rem` | Button width in `sm` variant |
 | `dropdown.lg.width` | `3rem` | Button width in `lg` variant |
-| `dropdown.borderColor` | `{form.field.border.color}` | Button border |
+| `dropdown.borderColor` | `{form.field.border.color}` | Button border (default) |
+| `dropdown.hoverBorderColor` | `{form.field.border.color}` | Button border on hover |
+| `dropdown.activeBorderColor` | `{form.field.border.color}` | Button border when pressed |
 | `dropdown.borderRadius` | `{form.field.border.radius}` | Button corner radius |
-| `dropdown.focusRing.*` | (inherits global focus ring) | Focus ring tokens |
+| `dropdown.focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `dropdown.focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `dropdown.focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `dropdown.focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `dropdown.focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
 
 ### Navigation buttons — Light
 
@@ -158,10 +170,12 @@ export class ExampleComponent {
 |---|---|---|
 | `selectMonth.hoverBackground` | `{content.hover.background}` | Hover background for month select |
 | `selectMonth.color` | `{content.color}` | Month select text color |
+| `selectMonth.hoverColor` | `{content.hover.color}` | Month select text color on hover |
 | `selectMonth.padding` | `0.25rem 0.5rem` | Month select padding |
 | `selectMonth.borderRadius` | `{content.border.radius}` | Month select corner radius |
 | `selectYear.hoverBackground` | `{content.hover.background}` | Hover background for year select |
 | `selectYear.color` | `{content.color}` | Year select text color |
+| `selectYear.hoverColor` | `{content.hover.color}` | Year select text color on hover |
 | `selectYear.padding` | `0.25rem 0.5rem` | Year select padding |
 | `selectYear.borderRadius` | `{content.border.radius}` | Year select corner radius |
 

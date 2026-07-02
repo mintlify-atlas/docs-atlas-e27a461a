@@ -11,19 +11,19 @@ The **RadioButton** component provides a circular single-selection control used 
 ```html
 <!-- Radio group -->
 <div class="flex flex-col gap-2">
-  <p-radiobutton
+  <p-radioButton
     [(ngModel)]="selectedCity"
     name="city"
     value="NYC"
     label="New York"
   />
-  <p-radiobutton
+  <p-radioButton
     [(ngModel)]="selectedCity"
     name="city"
     value="LA"
     label="Los Angeles"
   />
-  <p-radiobutton
+  <p-radioButton
     [(ngModel)]="selectedCity"
     name="city"
     value="CHI"
@@ -32,8 +32,8 @@ The **RadioButton** component provides a circular single-selection control used 
 </div>
 
 <!-- Size variants -->
-<p-radiobutton [(ngModel)]="val" value="a" size="small" label="Small" />
-<p-radiobutton [(ngModel)]="val" value="b" size="large" label="Large" />
+<p-radioButton [(ngModel)]="val" value="a" size="small" label="Small" />
+<p-radioButton [(ngModel)]="val" value="b" size="large" label="Large" />
 ```
 
 ```typescript

@@ -1,21 +1,25 @@
 ---
-title: "Inline Message for Form Field Validation Hints"
+title: "InlineMessage Design Tokens for Form Validation Hints"
 sidebarTitle: "Inline Message"
 description: "Compact single-line status indicator for form validation and contextual hints, using Nettalco semantic severity tokens without a close button."
 ---
 
 ## Overview
 
-`p-inlinemessage` is a compact, non-dismissible status chip intended for placement adjacent to form controls or inside layout cells. It is lighter than `p-message` — there is no close button and the padding derives from the shared form-field spacing tokens — making it ideal for inline validation feedback such as "Email is required" beneath an input.
+The Nettalco theme includes `inlinemessage` design tokens that style compact, non-dismissible status chips intended for placement adjacent to form controls or inside layout cells. These tokens are lighter than the standard `p-message` tokens — there is no close button and the padding derives from the shared form-field spacing tokens — making them ideal for inline validation feedback such as "Email is required" beneath an input.
+
+> **PrimeNG v21 note:** The standalone `InlineMessage` component (`p-inlinemessage`) was removed in PrimeNG v20. In v21, use `<p-message>` with `variant="simple"` and `size="small"` to achieve the same compact inline appearance. The Nettalco `inlinemessage` token section is consumed internally by PrimeNG's message styling pipeline.
 
 ## Usage
 
+Use `<p-message>` with `variant="simple"` and `size="small"` for compact inline validation hints:
+
 ```html
-<!-- Standalone inline messages -->
-<p-inlineMessage severity="success" text="Username is available." />
-<p-inlineMessage severity="info"    text="Password must be 8+ characters." />
-<p-inlineMessage severity="warn"    text="Caps Lock is on." />
-<p-inlineMessage severity="error"   text="Email address is invalid." />
+<!-- Standalone inline messages using p-message simple variant -->
+<p-message severity="success" variant="simple" size="small">Username is available.</p-message>
+<p-message severity="info"    variant="simple" size="small">Password must be 8+ characters.</p-message>
+<p-message severity="warn"    variant="simple" size="small">Caps Lock is on.</p-message>
+<p-message severity="error"   variant="simple" size="small">Email address is invalid.</p-message>
 ```
 
 ### Paired with a Form Field
@@ -27,25 +31,27 @@ description: "Compact single-line status indicator for form validation and conte
     pInputText
     id="email"
     [(ngModel)]="email"
-    [ngClass]="{ 'ng-invalid ng-dirty': emailInvalid }"
+    [invalid]="emailInvalid"
   />
-  <p-inlineMessage
-    *ngIf="emailInvalid"
-    severity="error"
-    text="Enter a valid email address."
-  />
+  @if (emailInvalid) {
+    <p-message
+      severity="error"
+      variant="simple"
+      size="small"
+    >Enter a valid email address.</p-message>
+  }
 </div>
 ```
 
 ### With Custom Icon
 
 ```html
-<p-inlineMessage severity="info">
-  <ng-template pTemplate="icon">
+<p-message severity="info" variant="simple" size="small">
+  <ng-template #icon>
     <i class="pi pi-info-circle"></i>
   </ng-template>
   Sync runs every 15 minutes.
-</p-inlineMessage>
+</p-message>
 ```
 
 ## Design Tokens
@@ -77,19 +83,19 @@ Padding inherits from the global form-field padding token so inline messages vis
 | `success` | `color-mix(in srgb, {success.50}, transparent 5%)` | `{success.200}` | `{success.600}` | `0px 4px 8px color-mix(in srgb, {success.500}, transparent 96%)` |
 | `warn` | `color-mix(in srgb, {warn.50}, transparent 5%)` | `{warn.200}` | `{warn.600}` | `0px 4px 8px color-mix(in srgb, {warn.500}, transparent 96%)` |
 | `error` | `color-mix(in srgb, {error.50}, transparent 5%)` | `{error.200}` | `{error.600}` | `0px 4px 8px color-mix(in srgb, {error.500}, transparent 96%)` |
-| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | — |
-| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | — |
+| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | `0px 4px 8px color-mix(in srgb, {surface.500}, transparent 96%)` |
+| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | `0px 4px 8px color-mix(in srgb, {surface.950}, transparent 96%)` |
 
 ### Color Scheme — Dark Mode
 
 | Severity | Background | Border | Color | Shadow |
 |---|---|---|---|---|
-| `info` | `color-mix(in srgb, {info.500}, transparent 84%)` | `color-mix(in srgb, {info.700}, transparent 64%)` | `{info.500}` | `0px 4px 8px …` |
-| `success` | `color-mix(in srgb, {success.500}, transparent 84%)` | `color-mix(in srgb, {success.700}, transparent 64%)` | `{success.500}` | `0px 4px 8px …` |
-| `warn` | `color-mix(in srgb, {warn.500}, transparent 84%)` | `color-mix(in srgb, {warn.700}, transparent 64%)` | `{warn.500}` | `0px 4px 8px …` |
-| `error` | `color-mix(in srgb, {error.500}, transparent 84%)` | `color-mix(in srgb, {error.700}, transparent 64%)` | `{error.500}` | `0px 4px 8px …` |
-| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.300}` | — |
-| `contrast` | `{surface.0}` | `{surface.100}` | `{surface.950}` | — |
+| `info` | `color-mix(in srgb, {info.500}, transparent 84%)` | `color-mix(in srgb, {info.700}, transparent 64%)` | `{info.500}` | `0px 4px 8px color-mix(in srgb, {info.500}, transparent 96%)` |
+| `success` | `color-mix(in srgb, {success.500}, transparent 84%)` | `color-mix(in srgb, {success.700}, transparent 64%)` | `{success.500}` | `0px 4px 8px color-mix(in srgb, {success.500}, transparent 96%)` |
+| `warn` | `color-mix(in srgb, {warn.500}, transparent 84%)` | `color-mix(in srgb, {warn.700}, transparent 64%)` | `{warn.500}` | `0px 4px 8px color-mix(in srgb, {warn.500}, transparent 96%)` |
+| `error` | `color-mix(in srgb, {error.500}, transparent 84%)` | `color-mix(in srgb, {error.700}, transparent 64%)` | `{error.500}` | `0px 4px 8px color-mix(in srgb, {error.500}, transparent 96%)` |
+| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.300}` | `0px 4px 8px color-mix(in srgb, {surface.500}, transparent 96%)` |
+| `contrast` | `{surface.0}` | `{surface.100}` | `{surface.950}` | `0px 4px 8px color-mix(in srgb, {surface.950}, transparent 96%)` |
 
 ## Nettalco Semantic Color Mappings
 
@@ -100,6 +106,6 @@ Padding inherits from the global form-field padding token so inline messages vis
 | `warn` | `{warn.*}` | `nettalcoWarn` | `#D57952` (Orange) |
 | `error` | `{error.*}` | `red` (standard) | `#ef4444` (Red) |
 
-Because `p-inlinemessage` shares the same semantic palette as `p-message` and `p-toast`, a `warn` inline message will always match the Nettalco Orange hue (`#D57952`) of a warn toast shown simultaneously, keeping the visual language consistent across all feedback surfaces.
+Because the inline message tokens share the same semantic palette as `p-message` and `p-toast`, a `warn` inline hint will always match the Nettalco Orange hue (`#D57952`) of a warn toast shown simultaneously, keeping the visual language consistent across all feedback surfaces.
 
-> **Accessibility note:** Inline messages render as `role="alert"` or `role="status"` depending on severity. Pair with `aria-live` regions when used inside reactive forms to announce validation changes to screen readers.
+> **Accessibility note:** The `p-message` component uses `role="alert"`, which implicitly defines `aria-live="assertive"`. Use `severity="status"` semantics carefully inside reactive forms so that validation changes are announced to screen readers without being overly disruptive.

@@ -10,14 +10,14 @@ The **InputOTP** component renders a one-time password input as a row of individ
 
 ```html
 <!-- Default 6-digit OTP -->
-<p-inputotp [(ngModel)]="otp" [length]="6" />
+<p-inputOtp [(ngModel)]="otp" [length]="6" />
 
 <!-- Integer mask -->
-<p-inputotp [(ngModel)]="otp" [length]="4" integerOnly />
+<p-inputOtp [(ngModel)]="otp" [length]="4" integerOnly />
 
 <!-- Size variants -->
-<p-inputotp [(ngModel)]="otp" [length]="6" size="small" />
-<p-inputotp [(ngModel)]="otp" [length]="6" size="large" />
+<p-inputOtp [(ngModel)]="otp" [length]="6" size="small" />
+<p-inputOtp [(ngModel)]="otp" [length]="6" size="large" />
 ```
 
 ```typescript

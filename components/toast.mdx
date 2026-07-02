@@ -1,12 +1,12 @@
 ---
-title: "Toast Notifications with Nettalco Severity Colors"
+title: "Toast Notifications with Nettalco Brand Severity Colors"
 sidebarTitle: "Toast"
-description: "Transient overlay messages for success, info, warn, and error states, styled with Nettalco's custom semantic color palette and glassmorphism blur."
+description: "Transient overlay messages for success, info, warn, and error states, styled with Nettalco's semantic color palette and glassmorphism blur effect."
 ---
 
 ## Overview
 
-`p-toast` renders brief, auto-dismissing notification banners anchored to a viewport edge. The Nettalco preset maps each severity to a dedicated Nettalco semantic color palette so that toasts are visually consistent with the rest of the brand system. In light mode the component uses a near-opaque tinted background with a 1.5 px backdrop blur; in dark mode the blur increases to 10 px for a deeper glassmorphism effect.
+`<p-toast>` renders brief, auto-dismissing notification banners anchored to a viewport edge. The Nettalco preset maps each severity to a dedicated Nettalco semantic color palette so that toasts are visually consistent with the rest of the brand system. In light mode the component uses a near-opaque tinted background with a 1.5 px backdrop blur; in dark mode the blur increases to 10 px for a deeper glassmorphism effect.
 
 ## Usage
 
@@ -110,12 +110,12 @@ The following tokens are defined in `src/lib/theme/toast/index.ts`:
 
 | Severity | Background | Border | Text Color | Detail Color | Shadow |
 |---|---|---|---|---|---|
-| `info` | `color-mix(in srgb, {info.50}, transparent 5%)` | `{info.200}` | `{info.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {info.500}, transparent 96%)` |
-| `success` | `color-mix(in srgb, {success.50}, transparent 5%)` | `{success.200}` | `{success.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {success.500}, transparent 96%)` |
-| `warn` | `color-mix(in srgb, {warn.50}, transparent 5%)` | `{warn.200}` | `{warn.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {warn.500}, transparent 96%)` |
-| `error` | `color-mix(in srgb, {error.50}, transparent 5%)` | `{error.200}` | `{error.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {error.500}, transparent 96%)` |
-| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | `{surface.700}` | — |
-| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | `{surface.0}` | — |
+| `info` | `color-mix(in srgb, {info.50}, transparent 5%)` | `{info.200}` | `{info.600}` | `{surface.700}` | `0px 4px 8px 0px color-mix(in srgb, {info.500}, transparent 96%)` |
+| `success` | `color-mix(in srgb, {success.50}, transparent 5%)` | `{success.200}` | `{success.600}` | `{surface.700}` | `0px 4px 8px 0px color-mix(in srgb, {success.500}, transparent 96%)` |
+| `warn` | `color-mix(in srgb, {warn.50}, transparent 5%)` | `{warn.200}` | `{warn.600}` | `{surface.700}` | `0px 4px 8px 0px color-mix(in srgb, {warn.500}, transparent 96%)` |
+| `error` | `color-mix(in srgb, {error.50}, transparent 5%)` | `{error.200}` | `{error.600}` | `{surface.700}` | `0px 4px 8px 0px color-mix(in srgb, {error.500}, transparent 96%)` |
+| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | `{surface.700}` | `0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)` |
+| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | `{surface.0}` | `0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)` |
 
 Blur: `1.5px` in light mode.
 

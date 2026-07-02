@@ -10,16 +10,16 @@ The **ToggleSwitch** component is a binary on/off control styled as a sliding sw
 
 ```html
 <!-- Basic toggle -->
-<p-toggleswitch [(ngModel)]="enabled" />
+<p-toggleSwitch [(ngModel)]="enabled" />
 
 <!-- With label -->
 <div class="flex items-center gap-2">
-  <p-toggleswitch [(ngModel)]="darkMode" inputId="darkmode" />
+  <p-toggleSwitch [(ngModel)]="darkMode" inputId="darkmode" />
   <label for="darkmode">Dark Mode</label>
 </div>
 
 <!-- Invalid state -->
-<p-toggleswitch [(ngModel)]="enabled" [invalid]="true" />
+<p-toggleSwitch [(ngModel)]="enabled" [invalid]="true" />
 ```
 
 ```typescript

@@ -1,10 +1,10 @@
 ---
 title: "Accordion Component — Nettalco PrimeNG Theme Preset"
 sidebarTitle: "Accordion"
-description: "Stacked disclosure panels with muted-to-active header color, semantic border tokens, and a CSS transition override for instant panel open/close."
+description: "Stacked collapsible panels with muted-to-active header color, semantic border tokens, configurable padding, and first/last panel corner radius rounding."
 ---
 
-The **Accordion** component renders a vertically stacked set of collapsible panels. The Nettalco preset styles headers with a muted default color that shifts to `{text.color}` on hover or when active. A deliberate `transition: none` CSS override is applied to `.p-accordion-header-content` and `.p-accordion-content` to keep expansion and collapse instantaneous — matching application environments where animation-free UIs are preferred.
+The **Accordion** component renders a vertically stacked set of collapsible panels. The Nettalco preset styles headers with a muted default color that shifts to `{text.color}` on hover or when active. Panel expansion and collapse are governed by `root.transitionDuration`, which resolves through the global `{transition.duration}` token — shared with all other animated components in the preset.
 
 ## Usage
 
@@ -61,7 +61,7 @@ All tokens are defined in `src/lib/theme/accordion/index.ts`.
 
 | Token | Value | Description |
 |---|---|---|
-| `root.transitionDuration` | `{transition.duration}` | Duration used for internal CSS transitions (where not overridden — see Theme Notes) |
+| `root.transitionDuration` | `{transition.duration}` | Duration for panel expand and collapse animations |
 
 ### Panel
 
@@ -106,6 +106,6 @@ All tokens are defined in `src/lib/theme/accordion/index.ts`.
 
 ## Theme Notes
 
-- **`transition: none` override** — The Nettalco preset sets `transition: none` directly on `.p-accordion-header-content` and `.p-accordion-content` via component-level CSS. This means panel expansion/collapse is instantaneous even though `root.transitionDuration` is defined. The token is kept for consistency with the PrimeNG type contract but has no visual effect in this preset.
+- **No `transition: none` override** — Unlike the menu-family components (Menu, Menubar, MegaMenu, TieredMenu, ContextMenu, PanelMenu), the Accordion is **not** targeted by the global `transition: none` CSS block in Nettalco Theme. Panel expansion and collapse animate according to `root.transitionDuration` → `{transition.duration}`. To remove the animation, override `root.transitionDuration` to `'0s'` in your theme configuration.
 - **Header background** — All four background states (`background`, `hoverBackground`, `activeBackground`, `activeHoverBackground`) are set to `{content.background}`. There is no fill change on hover or activation; visual feedback is provided exclusively through text and icon color changes.
 - **First/last rounding** — Only the top of the first panel header and the bottom of the last panel header get `{content.border.radius}`. This produces a clean card-like outline for the whole accordion group without rounding intermediate items.

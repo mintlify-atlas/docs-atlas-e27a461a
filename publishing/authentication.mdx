@@ -1,5 +1,5 @@
 ---
-title: "Authenticate with GitHub Packages for @nettalco"
+title: "Authenticate with GitHub Packages for @nettalco Scope"
 sidebarTitle: "Authentication"
 description: "Configure .npmrc with a GitHub Personal Access Token to install or publish @nettalco/nettalco-theme from GitHub Packages in any environment."
 ---
@@ -238,7 +238,7 @@ For non-GitHub CI systems, store your PAT (`write:packages` scope) as a secret i
 
 <Accordion title="npm ERR! 404 Not Found">
   The package scope routing may be missing. Ensure this line appears in your `.npmrc`:
-  ```
+  ```ini
   @nettalco:registry=https://npm.pkg.github.com
   ```
   Without it, npm looks for `@nettalco/nettalco-theme` on `registry.npmjs.org` where it doesn't exist.

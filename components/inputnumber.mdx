@@ -10,10 +10,10 @@ The **InputNumber** component extends a text input with numeric formatting and o
 
 ```html
 <!-- Basic numeric input -->
-<p-inputnumber [(ngModel)]="quantity" />
+<p-inputNumber [(ngModel)]="quantity" />
 
 <!-- Currency formatting with buttons -->
-<p-inputnumber
+<p-inputNumber
   [(ngModel)]="price"
   mode="currency"
   currency="USD"
@@ -22,7 +22,7 @@ The **InputNumber** component extends a text input with numeric formatting and o
 />
 
 <!-- Min/max with step -->
-<p-inputnumber
+<p-inputNumber
   [(ngModel)]="value"
   [min]="0"
   [max]="100"
