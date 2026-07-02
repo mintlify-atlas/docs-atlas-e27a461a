@@ -1,0 +1,90 @@
+---
+title: "TabMenu Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "TabMenu"
+description: "Design tokens for the PrimeNG TabMenu in Nettalco Theme — tablist border, item colours, active bar, icon states, and focus ring configuration."
+---
+
+The **TabMenu** component renders a horizontal tab strip that drives page-level or section-level navigation, typically used at the top of a content area. Nettalco Theme styles it with transparent tab backgrounds, a bottom-border active indicator coloured by `{primary.color}`, and muted text for inactive tabs that brightens on hover.
+
+## Usage
+
+```html
+<p-tabMenu [model]="tabs" [activeItem]="activeTab" />
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+activeTab: MenuItem;
+
+tabs: MenuItem[] = [
+  { label: 'Dashboard', icon: 'pi pi-home' },
+  { label: 'Transactions', icon: 'pi pi-credit-card' },
+  { label: 'Reports', icon: 'pi pi-chart-bar' },
+  { label: 'Settings', icon: 'pi pi-cog' }
+];
+
+ngOnInit() {
+  this.activeTab = this.tabs[0];
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Tablist
+
+| Token | Value |
+|---|---|
+| `tablist.borderWidth` | `0 0 1px 0` |
+| `tablist.background` | `{content.background}` |
+| `tablist.borderColor` | `{content.border.color}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.background` | `transparent` |
+| `item.hoverBackground` | `transparent` |
+| `item.activeBackground` | `transparent` |
+| `item.borderWidth` | `0 0 1px 0` |
+| `item.borderColor` | `{content.border.color}` |
+| `item.hoverBorderColor` | `{content.border.color}` |
+| `item.activeBorderColor` | `{primary.color}` |
+| `item.color` | `{text.muted.color}` |
+| `item.hoverColor` | `{text.color}` |
+| `item.activeColor` | `{primary.color}` |
+| `item.padding` | `1rem 1.125rem` |
+| `item.fontWeight` | `600` |
+| `item.margin` | `0 0 -1px 0` |
+| `item.gap` | `0.5rem` |
+| `item.focusRing.width` | `{focus.ring.width}` |
+| `item.focusRing.style` | `{focus.ring.style}` |
+| `item.focusRing.color` | `{focus.ring.color}` |
+| `item.focusRing.offset` | `{focus.ring.offset}` |
+| `item.focusRing.shadow` | `{focus.ring.shadow}` |
+
+### Item Icon
+
+| Token | Value |
+|---|---|
+| `itemIcon.color` | `{text.muted.color}` |
+| `itemIcon.hoverColor` | `{text.color}` |
+| `itemIcon.activeColor` | `{primary.color}` |
+
+### Active Bar
+
+| Token | Value |
+|---|---|
+| `activeBar.height` | `1px` |
+| `activeBar.bottom` | `-1px` |
+| `activeBar.background` | `{primary.color}` |
+
+## Theme Notes
+
+TabMenu tabs use transparent backgrounds at all states — default, hover, and active. Visual selection is communicated entirely through the bottom border and text colour changing to `{primary.color}`, keeping the tab strip lightweight and uncluttered. The `item.margin` of `0 0 -1px 0` allows the active tab's bottom border to overlap and mask the tablist's baseline border, producing a seamless underline effect.

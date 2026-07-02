@@ -1,0 +1,94 @@
+---
+title: "ColorPicker: Nettalco Theme Design Tokens"
+sidebarTitle: "ColorPicker"
+description: "Design tokens for the PrimeNG ColorPicker component in Nettalco Theme — preview swatch size, panel overlay, and handle colors in light and dark modes."
+---
+
+The **ColorPicker** component provides a visual color selection palette with a hue slider, saturation/lightness canvas, and an optional hex input. Nettalco Theme tokens control the preview swatch dimensions and border radius, the floating panel's shadow and corner radius, and the panel background and handle colors per color scheme.
+
+## Usage
+
+```html
+<!-- Basic inline color picker -->
+<p-colorpicker [(ngModel)]="color" />
+
+<!-- Overlay (popup) mode -->
+<p-colorpicker [(ngModel)]="color" [inline]="false" />
+
+<!-- Specific format -->
+<p-colorpicker [(ngModel)]="color" format="rgb" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [ColorPickerModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  color = '#10b981';
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `transitionDuration` | `{transition.duration}` | Panel open/close animation duration |
+
+### Preview swatch
+
+| Token | Value | Description |
+|---|---|---|
+| `preview.width` | `1.5rem` | Swatch width |
+| `preview.height` | `1.5rem` | Swatch height |
+| `preview.borderRadius` | `{form.field.border.radius}` | Swatch corner radius |
+| `preview.focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `preview.focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `preview.focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `preview.focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `preview.focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
+
+### Panel
+
+| Token | Value | Description |
+|---|---|---|
+| `panel.shadow` | `{overlay.popover.shadow}` | Drop shadow of the color panel |
+| `panel.borderRadius` | `{overlay.popover.borderRadius}` | Panel corner radius |
+
+### Panel & handle colors — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `panel.background` | `{surface.800}` | Panel background (dark canvas) |
+| `panel.borderColor` | `{surface.900}` | Panel border color |
+| `handle.color` | `{surface.0}` → `#ffffff` | Picker handle/crosshair color |
+
+### Panel & handle colors — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `panel.background` | `{surface.900}` | Panel background (darker canvas) |
+| `panel.borderColor` | `{surface.700}` | Panel border color |
+| `handle.color` | `{surface.0}` → `#ffffff` | Picker handle/crosshair color |
+
+## Theme Notes
+
+<Note>
+The color picker panel uses a **dark background** (`{surface.800}` / `{surface.900}`) in **both** light and dark modes. This is intentional — the color selection canvas needs a dark surround to accurately represent all color hues and saturation levels, regardless of the application's overall theme.
+</Note>
+
+<Tip>
+The preview swatch uses `{form.field.border.radius}` (6 px) to harmonize with adjacent form inputs. The swatch is square at 1.5 rem × 1.5 rem, making it easy to align with standard icon sizes and input addons.
+</Tip>
+
+<Info>
+The handle color is `{surface.0}` (white) in both themes. Since the panel background is always dark, a white crosshair/handle provides maximum contrast across the full spectrum of selectable colors.
+</Info>

@@ -1,0 +1,87 @@
+---
+title: "Menu Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "Menu"
+description: "Nettalco Theme design tokens and styling notes for the PrimeNG Menu component, including item, submenu label, separator, and transition overrides."
+---
+
+The **Menu** component renders a static, vertical list of navigation links or action items. In Nettalco Theme it is styled through the `content` and `navigation` token namespaces, giving it a consistent surface colour, border, and shadow that matches the rest of the overlay family.
+
+## Usage
+
+```html
+<p-menu [model]="items" />
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+items: MenuItem[] = [
+  { label: 'Profile', icon: 'pi pi-user' },
+  { label: 'Settings', icon: 'pi pi-cog' },
+  { separator: true },
+  { label: 'Sign Out', icon: 'pi pi-sign-out' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.background` | `{content.background}` |
+| `root.borderColor` | `{content.border.color}` |
+| `root.color` | `{content.color}` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.shadow` | `{overlay.navigation.shadow}` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### List
+
+| Token | Value |
+|---|---|
+| `list.padding` | `{navigation.list.padding}` |
+| `list.gap` | `{navigation.list.gap}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.focusBackground` | `{navigation.item.focus.background}` |
+| `item.color` | `{navigation.item.color}` |
+| `item.focusColor` | `{navigation.item.focus.color}` |
+| `item.padding` | `{navigation.item.padding}` |
+| `item.borderRadius` | `{navigation.item.border.radius}` |
+| `item.gap` | `{navigation.item.gap}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.focusColor` | `{navigation.item.icon.focus.color}` |
+
+### Submenu Label
+
+| Token | Value |
+|---|---|
+| `submenuLabel.padding` | `{navigation.submenu.label.padding}` |
+| `submenuLabel.fontWeight` | `{navigation.submenu.label.font.weight}` |
+| `submenuLabel.background` | `{navigation.submenu.label.background}` |
+| `submenuLabel.color` | `{navigation.submenu.label.color}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.borderColor` | `{content.border.color}` |
+
+## Theme Notes
+
+### Transition Override
+
+Nettalco Theme applies a global `transition: none` rule to `div.p-menu-item-content` via the theme's extended CSS layer. This removes the default hover transition delay on menu item rows, producing instant visual feedback when a user moves the pointer across items — a deliberate design choice for snappier, more responsive navigation.
+
+```css
+/* Applied globally by Nettalco Theme */
+div.p-menu-item-content {
+  transition: none;
+}
+```
+
+All visual states (focus, hover) remain fully functional; only the animated transition between states is disabled.

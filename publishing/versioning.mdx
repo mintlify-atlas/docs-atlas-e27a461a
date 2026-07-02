@@ -1,0 +1,198 @@
+---
+title: "Version and Publish Nettalco Theme to GitHub Packages"
+sidebarTitle: "Versioning"
+description: "Use the publish.ps1 PowerShell script or manual steps to bump the version, build, and publish @nettalco/nettalco-theme to GitHub Packages."
+---
+
+`@nettalco/nettalco-theme` follows [Semantic Versioning](https://semver.org/) and is published to the **GitHub Packages npm registry** (`https://npm.pkg.github.com`) under the `@nettalco` scope. The repository includes a `publish.ps1` PowerShell script that automates the full release cycle — version bump, build, publish, git commit, and tag — in a single command. This page documents the script, explains each step, and provides a manual alternative for CI environments.
+
+## Package Details
+
+| Property | Value |
+|---|---|
+| Package name | `@nettalco/nettalco-theme` |
+| Current version | `1.1.1` |
+| Registry | `https://npm.pkg.github.com` |
+| Build command | `ng-packagr -p ng-package.json` (aliased as `npm run build`) |
+
+---
+
+## publish.ps1 — The Automated Release Script
+
+The `publish.ps1` script lives at the root of the library project. Run it from within the library directory with one optional argument: the version bump type.
+
+### Usage
+
+```powershell
+.\publish.ps1 [patch|minor|major]
+```
+
+| Argument | Effect | Example: `1.1.1` → |
+|---|---|---|
+| `patch` (default) | Increments the patch version | `1.1.2` |
+| `minor` | Increments the minor version, resets patch | `1.2.0` |
+| `major` | Increments the major version, resets minor and patch | `2.0.0` |
+
+### Full Script
+
+```powershell publish.ps1
+# Script para publicar la librería nettalco-theme
+# Uso: .\publish.ps1 [patch|minor|major]
+
+param(
+    [Parameter(Mandatory=$false)]
+    [ValidateSet('patch','minor','major')]
+    [string]$VersionType = 'patch'
+)
+
+# Verificar si hay cambios sin commitear
+$gitStatus = git status --porcelain
+if ($gitStatus) {
+    Write-Host "WARNING: Hay cambios sin commitear:" -ForegroundColor Yellow
+    Write-Host $gitStatus
+    $confirm = Read-Host "`n¿Continuar de todos modos? (s/n)"
+    if ($confirm -ne 's') {
+        Write-Host "ERROR: Publicación cancelada" -ForegroundColor Red
+        exit 1
+    }
+}
+
+Write-Host "`nLimpiando directorio dist..." -ForegroundColor Cyan
+if (Test-Path dist) {
+    Remove-Item -Recurse -Force dist
+}
+
+Write-Host "`nIncrementando versión ($VersionType)..." -ForegroundColor Cyan
+npm version $VersionType --no-git-tag-version
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "`nERROR: Error al incrementar versión" -ForegroundColor Red
+    exit 1
+}
+
+$newVersion = (Get-Content package.json | ConvertFrom-Json).version
+Write-Host "OK: Nueva versión: $newVersion" -ForegroundColor Green
+
+Write-Host "`nCompilando librería..." -ForegroundColor Cyan
+npm run build
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "`nERROR: Error al compilar" -ForegroundColor Red
+    exit 1
+}
+
+Write-Host "OK: Compilación exitosa" -ForegroundColor Green
+
+# Verificar que existe .npmrc
+if (-Not (Test-Path .npmrc)) {
+    Write-Host "`nERROR: No se encontró .npmrc. Configura tu token primero." -ForegroundColor Red
+    exit 1
+}
+
+# Copiar .npmrc al directorio dist para autenticación
+Write-Host "`nCopiando configuración de autenticación..." -ForegroundColor Cyan
+Copy-Item .npmrc dist/nettalco-theme/.npmrc -Force
+
+# Publicar desde dist
+Write-Host "`nPublicando a npm..." -ForegroundColor Cyan
+Push-Location dist/nettalco-theme
+npm publish --verbose
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "`nERROR: Error al publicar. Verifica tu token en .npmrc" -ForegroundColor Red
+    Pop-Location
+    exit 1
+}
+
+Write-Host "OK: Publicación exitosa en GitHub Packages" -ForegroundColor Green
+Pop-Location
+
+# Hacer commit y tag de la versión
+Write-Host "`nCreando commit y tag de versión..." -ForegroundColor Cyan
+git add package.json
+git commit -m "chore: bump version to $newVersion"
+git tag "v$newVersion"
+
+Write-Host "`nPublicación completada: v$newVersion" -ForegroundColor Green
+Write-Host "`nNo olvides hacer: git push; git push --tags" -ForegroundColor Yellow
+```
+
+### What the Script Does Step by Step
+
+<Steps>
+
+### Check for Uncommitted Changes
+
+Runs `git status --porcelain`. If there are unstaged or uncommitted files, it prints a warning and prompts for confirmation. You can choose to continue or abort. This prevents accidentally publishing with dirty working-tree state.
+
+### Clean the dist/ Directory
+
+Deletes the entire `dist/` folder with `Remove-Item -Recurse -Force dist`. This ensures no stale build artefacts from previous builds are included in the published package.
+
+### Bump the Version
+
+Runs `npm version patch|minor|major --no-git-tag-version`. The `--no-git-tag-version` flag tells npm to update `package.json` only, without creating a git commit or tag (the script handles those steps manually later). The new version string is then read back from `package.json`.
+
+### Build the Library
+
+Runs `npm run build`, which internally executes `ng-packagr -p ng-package.json`. The compiled output lands in `dist/nettalco-theme/` in Angular Package Format (APF), including ESM2022 and FESM2022 bundles, type declarations, and a `package.json` ready for publication.
+
+### Copy .npmrc for Authentication
+
+Copies the project-root `.npmrc` file into `dist/nettalco-theme/`. This ensures the `npm publish` command — run from inside `dist/` — has access to the GitHub Packages registry URL and auth token.
+
+### Publish to GitHub Packages
+
+Changes directory into `dist/nettalco-theme/` and runs `npm publish --verbose`. The `publishConfig.registry` in the library's `package.json` points to `https://npm.pkg.github.com`, so the package lands in the `@nettalco` scope on GitHub Packages.
+
+### Create Git Commit and Tag
+
+Stages `package.json`, creates a commit with the message `chore: bump version to X.Y.Z`, and creates an annotated tag `vX.Y.Z`. **Note:** the script does not push automatically — you must run the following manually:
+
+```bash
+git push && git push --tags
+```
+
+</Steps>
+
+<Warning>
+  Always ensure your `.npmrc` contains a valid `GITHUB_TOKEN` before running the script. Without a token with `write:packages` scope, the `npm publish` step will fail with a 401 Unauthorized error. See [Authentication](/publishing/authentication) for how to set this up.
+</Warning>
+
+---
+
+## Manual Publish Steps
+
+For CI environments (GitHub Actions, Azure Pipelines, etc.) where PowerShell scripts are not ideal, you can replicate the same process with these shell commands:
+
+```bash
+# 1. Clean dist
+rm -rf dist/
+
+# 2. Bump version (update package.json)
+npm version patch --no-git-tag-version
+
+# 3. Build the library
+npm run build
+
+# 4. Copy .npmrc for auth
+cp .npmrc dist/nettalco-theme/.npmrc
+
+# 5. Publish
+cd dist/nettalco-theme
+npm publish --verbose
+cd ../..
+
+# 6. Commit and tag
+NEW_VERSION=$(node -p "require('./package.json').version")
+git add package.json
+git commit -m "chore: bump version to $NEW_VERSION"
+git tag "v$NEW_VERSION"
+
+# 7. Push
+git push && git push --tags
+```
+
+<Note>
+  In GitHub Actions, `GITHUB_TOKEN` is automatically provided as a repository secret. You do not need a personal access token for publishing from a workflow — configure your `.npmrc` to use `${GITHUB_TOKEN}` and set `env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}` on the publish step. See [Authentication](/publishing/authentication) for a complete workflow example.
+</Note>

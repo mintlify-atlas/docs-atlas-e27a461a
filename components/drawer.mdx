@@ -1,0 +1,95 @@
+---
+title: "Drawer Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Drawer"
+description: "Slide-in overlay panel (formerly Sidebar) using the modal namespace, with a 1.5 rem title font and full-height layout for navigation or detail panes."
+---
+
+The **Drawer** component (known as **Sidebar** in PrimeNG versions prior to v17) slides in from the edge of the viewport as a modal overlay. It shares the `{overlay.modal.*}` semantic token namespace with the Dialog component, ensuring consistent background, border, and shadow treatment across all modal surfaces in the Nettalco preset. The drawer title uses a larger `1.5rem` font size compared to the dialog's `1.25rem` — appropriate for navigation drawers that serve as a primary wayfinding surface.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-button icon="pi pi-bars" (onClick)="visible = true" />
+
+<p-drawer [(visible)]="visible" header="Navigation" position="left">
+  <nav class="flex flex-col gap-2">
+    <a href="/dashboard" class="p-2 rounded hover:bg-surface-100">Dashboard</a>
+    <a href="/projects" class="p-2 rounded hover:bg-surface-100">Projects</a>
+    <a href="/settings" class="p-2 rounded hover:bg-surface-100">Settings</a>
+  </nav>
+
+  <ng-template #footer>
+    <p-button
+      label="Close"
+      severity="secondary"
+      class="w-full"
+      (onClick)="visible = false"
+    />
+  </ng-template>
+</p-drawer>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { DrawerModule } from 'primeng/drawer';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [DrawerModule, ButtonModule],
+})
+export class AppComponent {
+  visible = false;
+}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/drawer/index.ts`. Like Dialog, all structural root tokens defer to the `{overlay.modal.*}` namespace.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{overlay.modal.background}` | Drawer panel background |
+| `root.borderColor` | `{overlay.modal.border.color}` | Drawer panel border color |
+| `root.color` | `{overlay.modal.color}` | Default text color inside the drawer |
+| `root.shadow` | `{overlay.modal.shadow}` | Elevation shadow cast toward the page center |
+
+> **Note:** Unlike Dialog, the Drawer root does **not** define a `borderRadius` token. The drawer panel fills the full height (or width) of the viewport edge and does not have rounded corners.
+
+### Header
+
+| Token | Value | Description |
+|---|---|---|
+| `header.padding` | `{overlay.modal.padding}` → **1.25 rem** | Uniform header padding |
+
+### Title
+
+| Token | Value | Description |
+|---|---|---|
+| `title.fontSize` | `1.5rem` | Larger than Dialog (1.25 rem) — suits navigation-level headings |
+| `title.fontWeight` | `600` | Semi-bold for clear panel identification |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.padding` | `0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}` | No top padding; sides and bottom at 1.25 rem |
+
+### Footer
+
+| Token | Value | Description |
+|---|---|---|
+| `footer.padding` | `{overlay.modal.padding}` → **1.25 rem** | Uniform footer padding on all sides |
+
+## Theme Notes
+
+- **Formerly Sidebar** — If you are migrating from PrimeNG v16 or earlier, `p-sidebar` has been renamed to `p-drawer`. The Nettalco preset uses the current `DrawerDesignTokens` type from `@primeuix/themes/types/drawer`. Update your templates from `<p-sidebar>` to `<p-drawer>` accordingly.
+- **No border radius** — The Drawer intentionally omits `borderRadius` on the root. Because the panel attaches flush to a viewport edge, rounded corners would create visible gaps between the panel and the screen boundary. Only the shadow provides depth separation.
+- **Shared `overlay.modal` namespace** — Dialog and Drawer share the same semantic token group. Updating `overlay.modal.background` or `overlay.modal.shadow` in your global theme configuration changes both components at once.
+- **Footer padding difference** — Dialog footer uses `0 padding padding padding` (no top padding), while Drawer footer uses uniform `padding` on all four sides. This gives the drawer footer a consistent inset regardless of content height.
+- Use the `position` input (`'left'`, `'right'`, `'top'`, `'bottom'`) to control which edge the drawer slides from. The default is `'left'`.

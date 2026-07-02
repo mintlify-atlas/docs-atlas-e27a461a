@@ -1,0 +1,102 @@
+---
+title: "ConfirmDialog Component — Nettalco PrimeNG Preset"
+sidebarTitle: "ConfirmDialog"
+description: "Service-driven confirmation modal with a 2 rem icon and 1 rem content gap — minimal additions over the overlay modal namespace inherited from Dialog."
+---
+
+The **ConfirmDialog** component is a service-driven modal that prompts users to confirm or reject a potentially destructive action. It is opened programmatically via the `ConfirmationService` rather than through template visibility binding. In the Nettalco preset, ConfirmDialog extends the base Dialog token set with two additional sections — an `icon` for the confirmation symbol and a `content` gap — while all structural tokens (background, border radius, shadow, padding) are inherited from the `{overlay.modal.*}` namespace through Dialog's token definitions.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-confirm-dialog />
+
+<p-button
+  label="Delete Record"
+  severity="danger"
+  icon="pi pi-trash"
+  (onClick)="confirmDelete()"
+/>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [ConfirmDialogModule, ButtonModule, ToastModule],
+  providers: [ConfirmationService, MessageService],
+})
+export class AppComponent {
+  constructor(
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+  ) {}
+
+  confirmDelete(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this record? This action cannot be undone.',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: 'Record has been removed.',
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Cancelled',
+          detail: 'No changes were made.',
+        });
+      },
+    });
+  }
+}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/confirmdialog/index.ts`. ConfirmDialog defines only two additional sections on top of Dialog's full token set.
+
+### Icon
+
+| Token | Value | Description |
+|---|---|---|
+| `icon.size` | `2rem` | Width and height of the confirmation icon (e.g. warning triangle) |
+| `icon.color` | `{overlay.modal.color}` | Icon color — matches the modal's default text color |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.gap` | `1rem` | Gap between the icon and the message text within the content area |
+
+### Inherited Dialog Tokens
+
+ConfirmDialog inherits all structural tokens from the Dialog preset:
+
+| Category | Key tokens |
+|---|---|
+| Root | `background`, `borderColor`, `color`, `borderRadius` (`{border.radius.xl}` → 12 px), `shadow` |
+| Header | `padding` (`{overlay.modal.padding}` → 1.25 rem), `gap` |
+| Title | `fontSize` (1.25 rem), `fontWeight` (600) |
+| Content | `padding` (`0 modal.padding modal.padding modal.padding`) |
+| Footer | `padding`, `gap` (0.5 rem) |
+
+## Theme Notes
+
+- **Minimal own tokens** — The ConfirmDialog preset is intentionally lean. Only `icon.size`, `icon.color`, and `content.gap` are defined. Everything else comes from the Dialog token hierarchy via the `{overlay.modal.*}` namespace.
+- **Service-based API** — Always register `ConfirmationService` in the `providers` array of the component or its parent module. The `<p-confirm-dialog />` element must be present in the template that will display the dialog; a common pattern is placing it in `AppComponent`.
+- **`icon.color: '{overlay.modal.color}'`** — The icon inherits the modal's text color rather than a semantic warning/danger color. To show a warning-colored icon, pass a CSS class via `iconStyleClass` in the `ConfirmationService.confirm()` call, e.g. `iconStyleClass: 'text-orange-500'`.
+- **Accept/reject button styling** — Button styles are not controlled by ConfirmDialog tokens. Use `acceptButtonStyleClass` and `rejectButtonStyleClass` in the service call to apply PrimeNG button severity classes.

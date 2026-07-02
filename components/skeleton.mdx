@@ -1,0 +1,110 @@
+---
+title: "Skeleton Placeholder with Shimmer Animation Tokens"
+sidebarTitle: "Skeleton"
+description: "Content placeholder that renders animated shimmer shapes while data loads, with surface-based background and translucent animation highlight tokens."
+---
+
+## Overview
+
+`p-skeleton` renders a shimmering placeholder that mirrors the size and shape of real content while it loads. The Nettalco preset keeps the skeleton visually subtle using a light surface neutral (`{surface.200}`) as the base background in light mode and a low-opacity white layer in dark mode. The shimmer highlight that sweeps across the shape is a semi-transparent white, ensuring the animation is visible on both light and dark backgrounds without being jarring.
+
+## Usage
+
+### Text Placeholders
+
+```html
+<!-- Single line, full width -->
+<p-skeleton />
+
+<!-- Multiple lines mimicking paragraph text -->
+<p-skeleton class="mb-2" />
+<p-skeleton width="80%" class="mb-2" />
+<p-skeleton width="60%" />
+```
+
+### Shapes
+
+```html
+<!-- Circle avatar placeholder -->
+<p-skeleton shape="circle" size="3rem" />
+
+<!-- Rectangle image placeholder -->
+<p-skeleton width="100%" height="12rem" borderRadius="8px" />
+
+<!-- Square -->
+<p-skeleton size="4rem" />
+```
+
+### Card Skeleton
+
+```html
+<p-card>
+  <ng-template pTemplate="header">
+    <p-skeleton width="100%" height="8rem" borderRadius="0" />
+  </ng-template>
+  <div class="flex items-center gap-3 mb-4">
+    <p-skeleton shape="circle" size="2.5rem" />
+    <div class="flex-1">
+      <p-skeleton class="mb-2" />
+      <p-skeleton width="60%" />
+    </div>
+  </div>
+  <p-skeleton class="mb-2" />
+  <p-skeleton width="80%" />
+</p-card>
+```
+
+### Table Skeleton
+
+```html
+<p-table [value]="loadingRows">
+  <ng-template pTemplate="body">
+    <tr *ngFor="let row of loadingRows">
+      <td><p-skeleton /></td>
+      <td><p-skeleton /></td>
+      <td><p-skeleton width="60%" /></td>
+    </tr>
+  </ng-template>
+</p-table>
+```
+
+```ts
+export class TableComponent {
+  loadingRows = Array(5).fill({});
+}
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/skeleton/index.ts`:
+
+### Root
+
+| Token | Value | Notes |
+|---|---|---|
+| `root.borderRadius` | `{content.border.radius}` | Matches card/content corner rounding |
+
+### Color Scheme — Light Mode
+
+| Token | Value | Notes |
+|---|---|---|
+| `colorScheme.light.root.background` | `{surface.200}` | `#e2e8f0` — neutral grey base |
+| `colorScheme.light.root.animationBackground` | `rgba(255,255,255,0.4)` | 40% white shimmer highlight |
+
+### Color Scheme — Dark Mode
+
+| Token | Value | Notes |
+|---|---|---|
+| `colorScheme.dark.root.background` | `rgba(255, 255, 255, 0.06)` | 6% white on dark surface |
+| `colorScheme.dark.root.animationBackground` | `rgba(255, 255, 255, 0.04)` | 4% white shimmer — very subtle |
+
+## Nettalco Theme Notes
+
+The skeleton deliberately avoids the Nettalco brand palettes. Because skeletons represent the _absence_ of content, using brand colors would draw unwanted attention. Instead:
+
+- **Light mode:** `{surface.200}` maps to `#e2e8f0` from the Nettalco light surface scale — a cool grey that sits quietly between the white page background and card borders.
+- **Dark mode:** The `rgba(255,255,255,0.06)` background blends seamlessly with the Nettalco dark surface (`#0f1e35`–`#152540` range), producing a barely-there placeholder shape.
+
+The shimmer animation sweep is achieved via a CSS gradient using `animationBackground` as the highlight color, sliding across the `background` base. The dark-mode values are intentionally lower opacity (`0.06` base, `0.04` highlight) to avoid the shimmer competing with actual content in dark interfaces.
+
+> **Best practice:** Match skeleton dimensions exactly to the real content's dimensions using `width`, `height`, and `borderRadius` props. Use `shape="circle"` for avatar placeholders and the default rectangle for text or image areas.

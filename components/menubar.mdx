@@ -1,0 +1,125 @@
+---
+title: "Menubar Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "Menubar"
+description: "Nettalco Theme tokens for the PrimeNG Menubar, covering root, item, submenu, separator, mobile button, and instant hover via transition:none."
+---
+
+The **Menubar** component is a horizontal navigation bar with optional drop-down submenus. Nettalco Theme exposes a rich set of tokens across six sections — `root`, `baseItem`, `item`, `submenu`, `separator`, and `mobileButton` — all derived from the shared `content` and `navigation` token namespaces for visual consistency.
+
+## Usage
+
+```html
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+    <img src="logo.svg" alt="Logo" height="40" />
+  </ng-template>
+  <ng-template pTemplate="end">
+    <p-button label="Sign In" />
+  </ng-template>
+</p-menubar>
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+items: MenuItem[] = [
+  {
+    label: 'Products',
+    icon: 'pi pi-box',
+    items: [
+      { label: 'Overview', icon: 'pi pi-list' },
+      { label: 'Pricing', icon: 'pi pi-tag' }
+    ]
+  },
+  { label: 'Docs', icon: 'pi pi-book' },
+  { label: 'Contact', icon: 'pi pi-envelope' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.background` | `{content.background}` |
+| `root.borderColor` | `{content.border.color}` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.color` | `{content.color}` |
+| `root.gap` | `0.5rem` |
+| `root.padding` | `0.5rem 0.75rem` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Base Item
+
+| Token | Value |
+|---|---|
+| `baseItem.borderRadius` | `{content.border.radius}` |
+| `baseItem.padding` | `{navigation.item.padding}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.focusBackground` | `{navigation.item.focus.background}` |
+| `item.activeBackground` | `{navigation.item.active.background}` |
+| `item.color` | `{navigation.item.color}` |
+| `item.focusColor` | `{navigation.item.focus.color}` |
+| `item.activeColor` | `{navigation.item.active.color}` |
+| `item.padding` | `{navigation.item.padding}` |
+| `item.borderRadius` | `{navigation.item.border.radius}` |
+| `item.gap` | `{navigation.item.gap}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.focusColor` | `{navigation.item.icon.focus.color}` |
+| `item.icon.activeColor` | `{navigation.item.icon.active.color}` |
+
+### Submenu
+
+| Token | Value |
+|---|---|
+| `submenu.padding` | `{navigation.list.padding}` |
+| `submenu.gap` | `{navigation.list.gap}` |
+| `submenu.background` | `{content.background}` |
+| `submenu.borderColor` | `{content.border.color}` |
+| `submenu.borderRadius` | `{content.border.radius}` |
+| `submenu.shadow` | `{overlay.navigation.shadow}` |
+| `submenu.mobileIndent` | `1rem` |
+| `submenu.icon.size` | `{navigation.submenu.icon.size}` |
+| `submenu.icon.color` | `{navigation.submenu.icon.color}` |
+| `submenu.icon.focusColor` | `{navigation.submenu.icon.focus.color}` |
+| `submenu.icon.activeColor` | `{navigation.submenu.icon.active.color}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.borderColor` | `{content.border.color}` |
+
+### Mobile Button
+
+| Token | Value |
+|---|---|
+| `mobileButton.borderRadius` | `50%` |
+| `mobileButton.size` | `1.75rem` |
+| `mobileButton.color` | `{text.muted.color}` |
+| `mobileButton.hoverColor` | `{text.hover.muted.color}` |
+| `mobileButton.hoverBackground` | `{content.hover.background}` |
+| `mobileButton.focusRing.width` | `{focus.ring.width}` |
+| `mobileButton.focusRing.style` | `{focus.ring.style}` |
+| `mobileButton.focusRing.color` | `{focus.ring.color}` |
+| `mobileButton.focusRing.offset` | `{focus.ring.offset}` |
+| `mobileButton.focusRing.shadow` | `{focus.ring.shadow}` |
+
+## Theme Notes
+
+### Transition Override
+
+Nettalco Theme globally removes the hover transition on Menubar item content cells:
+
+```css
+div.p-menubar-item-content {
+  transition: none;
+}
+```
+
+This is part of a wider set of `transition: none` overrides applied across all menu-family components, ensuring instant state changes when the pointer enters or leaves a menu item.

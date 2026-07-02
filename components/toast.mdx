@@ -1,0 +1,148 @@
+---
+title: "Toast Notifications with Nettalco Severity Colors"
+sidebarTitle: "Toast"
+description: "Transient overlay messages for success, info, warn, and error states, styled with Nettalco's custom semantic color palette and glassmorphism blur."
+---
+
+## Overview
+
+`p-toast` renders brief, auto-dismissing notification banners anchored to a viewport edge. The Nettalco preset maps each severity to a dedicated Nettalco semantic color palette so that toasts are visually consistent with the rest of the brand system. In light mode the component uses a near-opaque tinted background with a 1.5 px backdrop blur; in dark mode the blur increases to 10 px for a deeper glassmorphism effect.
+
+## Usage
+
+Register `ToastModule` and `MessageService` in your module or standalone component, inject `MessageService`, then call `messageService.add(...)` to trigger a notification.
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ToastModule, ButtonModule],
+  providers: [MessageService],
+  template: `
+    <p-toast />
+
+    <div class="flex gap-2 p-4">
+      <button pButton label="Success" severity="success"
+        (click)="show('success', 'Operation Complete', 'Record saved successfully.')">
+      </button>
+      <button pButton label="Info" severity="info"
+        (click)="show('info', 'Did you know?', 'Your session expires in 30 minutes.')">
+      </button>
+      <button pButton label="Warn" severity="warn"
+        (click)="show('warn', 'Heads Up', 'Storage is at 85% capacity.')">
+      </button>
+      <button pButton label="Error" severity="error"
+        (click)="show('error', 'Request Failed', 'Server returned a 500 error.')">
+      </button>
+    </div>
+  `
+})
+export class AppComponent {
+  constructor(private messageService: MessageService) {}
+
+  show(severity: string, summary: string, detail: string) {
+    this.messageService.add({ severity, summary, detail, life: 4000 });
+  }
+}
+```
+
+### Positioning
+
+Use the `position` input to control where the toast stack appears:
+
+```html
+<!-- Bottom-right (default) -->
+<p-toast position="bottom-right" />
+
+<!-- Top-center -->
+<p-toast position="top-center" />
+```
+
+### Multiple Messages
+
+```ts
+this.messageService.addAll([
+  { severity: 'success', summary: 'File uploaded', detail: 'report.pdf' },
+  { severity: 'warn',    summary: 'Quota low',     detail: '15 MB remaining' }
+]);
+```
+
+## Design Tokens
+
+The following tokens are defined in `src/lib/theme/toast/index.ts`:
+
+### Root & Layout
+
+| Token | Value |
+|---|---|
+| `root.width` | `25rem` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.borderWidth` | `1px` |
+| `root.transitionDuration` | `{transition.duration}` |
+| `icon.size` | `1.125rem` |
+| `content.padding` | `{overlay.popover.padding}` |
+| `content.gap` | `0.5rem` |
+| `text.gap` | `0.5rem` |
+| `summary.fontWeight` | `500` |
+| `summary.fontSize` | `1rem` |
+| `detail.fontWeight` | `500` |
+| `detail.fontSize` | `0.875rem` |
+
+### Close Button
+
+| Token | Value |
+|---|---|
+| `closeButton.width` | `1.75rem` |
+| `closeButton.height` | `1.75rem` |
+| `closeButton.borderRadius` | `50%` |
+| `closeButton.focusRing.width` | `{focus.ring.width}` |
+| `closeButton.focusRing.style` | `{focus.ring.style}` |
+| `closeButton.focusRing.offset` | `{focus.ring.offset}` |
+| `closeIcon.size` | `1rem` |
+
+### Color Scheme — Light Mode
+
+| Severity | Background | Border | Text Color | Detail Color | Shadow |
+|---|---|---|---|---|---|
+| `info` | `color-mix(in srgb, {info.50}, transparent 5%)` | `{info.200}` | `{info.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {info.500}, transparent 96%)` |
+| `success` | `color-mix(in srgb, {success.50}, transparent 5%)` | `{success.200}` | `{success.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {success.500}, transparent 96%)` |
+| `warn` | `color-mix(in srgb, {warn.50}, transparent 5%)` | `{warn.200}` | `{warn.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {warn.500}, transparent 96%)` |
+| `error` | `color-mix(in srgb, {error.50}, transparent 5%)` | `{error.200}` | `{error.600}` | `{surface.700}` | `0px 4px 8px color-mix(in srgb, {error.500}, transparent 96%)` |
+| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | `{surface.700}` | — |
+| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | `{surface.0}` | — |
+
+Blur: `1.5px` in light mode.
+
+### Color Scheme — Dark Mode
+
+| Severity | Background | Border | Text Color | Detail Color |
+|---|---|---|---|---|
+| `info` | `color-mix(in srgb, {info.500}, transparent 84%)` | `color-mix(in srgb, {info.700}, transparent 64%)` | `{info.500}` | `{surface.0}` |
+| `success` | `color-mix(in srgb, {success.500}, transparent 84%)` | `color-mix(in srgb, {success.700}, transparent 64%)` | `{success.500}` | `{surface.0}` |
+| `warn` | `color-mix(in srgb, {warn.500}, transparent 84%)` | `color-mix(in srgb, {warn.700}, transparent 64%)` | `{warn.500}` | `{surface.0}` |
+| `error` | `color-mix(in srgb, {error.500}, transparent 84%)` | `color-mix(in srgb, {error.700}, transparent 64%)` | `{error.500}` | `{surface.0}` |
+| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.300}` | `{surface.0}` |
+| `contrast` | `{surface.0}` | `{surface.100}` | `{surface.950}` | `{surface.950}` |
+
+Blur: `10px` in dark mode.
+
+## Nettalco Semantic Color Mappings
+
+Each toast severity resolves through the Nettalco semantic token layer defined in `mypreset.ts`:
+
+| Severity | Semantic Token | Primitive Palette | Brand Hex (500) |
+|---|---|---|---|
+| `success` | `{success.*}` | `nettalcoSuccess` | `#2BA5CD` (Cyan) |
+| `info` | `{info.*}` | `nettalcoInfo` | `#66A6FB` (Sky Blue) |
+| `warn` | `{warn.*}` | `nettalcoWarn` | `#D57952` (Orange) |
+| `error` | `{error.*}` | `red` (standard) | `#ef4444` (Red) |
+
+The `success` state uses the Nettalco **Cyan** brand color (`#2BA5CD`), departing from the conventional green used by many design systems. The `warn` state uses Nettalco **Orange** (`#D57952`). Both are intentional brand decisions.
+
+> **Tip:** The close button's `hoverBackground` and `focusRing.color` always mirror the same severity palette, so interactive states stay within the same hue family.

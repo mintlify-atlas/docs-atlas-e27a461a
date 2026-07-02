@@ -1,0 +1,82 @@
+---
+title: "Steps Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "Steps"
+description: "Nettalco Theme design tokens for the PrimeNG Steps wizard indicator — separator line, item link, label typography, and numbered circle appearance."
+---
+
+The **Steps** component renders a horizontal wizard progress indicator, with numbered circles connected by a separator line. Nettalco Theme tokens cover the connector line colour, item link focus ring, label typography, and the styled number bubble — with active states driven by `{primary.color}` to highlight the current step.
+
+## Usage
+
+```html
+<p-steps [model]="steps" [activeIndex]="activeIndex" />
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+activeIndex = 1;
+
+steps: MenuItem[] = [
+  { label: 'Account' },
+  { label: 'Details' },
+  { label: 'Review' },
+  { label: 'Confirm' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.background` | `{content.border.color}` |
+
+### Item Link
+
+| Token | Value |
+|---|---|
+| `itemLink.borderRadius` | `{content.border.radius}` |
+| `itemLink.gap` | `0.5rem` |
+| `itemLink.focusRing.width` | `{focus.ring.width}` |
+| `itemLink.focusRing.style` | `{focus.ring.style}` |
+| `itemLink.focusRing.color` | `{focus.ring.color}` |
+| `itemLink.focusRing.offset` | `{focus.ring.offset}` |
+| `itemLink.focusRing.shadow` | `{focus.ring.shadow}` |
+
+### Item Label
+
+| Token | Value |
+|---|---|
+| `itemLabel.color` | `{text.muted.color}` |
+| `itemLabel.activeColor` | `{primary.color}` |
+| `itemLabel.fontWeight` | `500` |
+
+### Item Number
+
+| Token | Value |
+|---|---|
+| `itemNumber.background` | `{content.background}` |
+| `itemNumber.activeBackground` | `{content.background}` |
+| `itemNumber.borderColor` | `{content.border.color}` |
+| `itemNumber.activeBorderColor` | `{content.border.color}` |
+| `itemNumber.color` | `{text.muted.color}` |
+| `itemNumber.activeColor` | `{primary.color}` |
+| `itemNumber.size` | `2rem` |
+| `itemNumber.fontSize` | `1.143rem` |
+| `itemNumber.fontWeight` | `500` |
+| `itemNumber.borderRadius` | `50%` |
+| `itemNumber.shadow` | `0px 0.5px 0px 0px rgba(0,0,0,0.06), 0px 1px 1px 0px rgba(0,0,0,0.12)` |
+
+## Theme Notes
+
+Active step labels and numbers are coloured with `{primary.color}`, making the current wizard position immediately identifiable. Inactive steps use `{text.muted.color}` throughout, keeping the surrounding context visible but subdued.
+
+The Steps component is not part of the `transition: none` override block in Nettalco Theme; transitions on the wizard indicator are left at their default values.

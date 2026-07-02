@@ -1,0 +1,130 @@
+---
+title: "ToggleSwitch: Nettalco Theme Design Tokens"
+sidebarTitle: "ToggleSwitch"
+description: "Design tokens for the PrimeNG ToggleSwitch in Nettalco Theme — track dimensions, handle shape, slide animation, and full light/dark color scheme."
+---
+
+The **ToggleSwitch** component is a binary on/off control styled as a sliding switch track with a circular handle. Nettalco Theme defines a comprehensive set of tokens covering the track's dimensions and border radius, the handle's shape and size, the slide animation duration, and a full color scheme for both light and dark modes covering background and handle colors across default, hover, checked, disabled, and checked-hover states.
+
+## Usage
+
+```html
+<!-- Basic toggle -->
+<p-toggleswitch [(ngModel)]="enabled" />
+
+<!-- With label -->
+<div class="flex items-center gap-2">
+  <p-toggleswitch [(ngModel)]="darkMode" inputId="darkmode" />
+  <label for="darkmode">Dark Mode</label>
+</div>
+
+<!-- Invalid state -->
+<p-toggleswitch [(ngModel)]="enabled" [invalid]="true" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [ToggleSwitchModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  enabled = false;
+  darkMode = false;
+}
+```
+
+## Design Tokens
+
+### Root (track)
+
+| Token | Value | Description |
+|---|---|---|
+| `width` | `2.5rem` | Track width |
+| `height` | `1.5rem` | Track height |
+| `borderRadius` | `30px` | Pill-shaped track corner radius |
+| `gap` | `0.25rem` | Inset gap between track edge and handle |
+| `shadow` | `{form.field.shadow}` | Track box shadow |
+| `borderWidth` | `1px` | Track border width |
+| `borderColor` | `transparent` | Default border (transparent) |
+| `hoverBorderColor` | `transparent` | Hover border (transparent) |
+| `checkedBorderColor` | `transparent` | Checked border (transparent) |
+| `checkedHoverBorderColor` | `transparent` | Checked + hover border (transparent) |
+| `invalidBorderColor` | `{form.field.invalid.border.color}` | Border in invalid state |
+| `transitionDuration` | `{form.field.transition.duration}` | General transition duration |
+| `slideDuration` | `0.2s` | Duration of the handle sliding animation |
+| `focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
+
+### Handle
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.borderRadius` | `50%` | Circular handle |
+| `handle.size` | `1rem` | Handle diameter |
+
+### Track colors — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{surface.300}` | Track background (off state) |
+| `root.disabledBackground` | `{form.field.disabled.background}` | Track when disabled |
+| `root.hoverBackground` | `{surface.400}` | Track on hover (off state) |
+| `root.checkedBackground` | `{primary.color}` | Track background when on |
+| `root.checkedHoverBackground` | `{primary.hover.color}` | Track background when on + hovered |
+
+### Handle colors — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.background` | `{surface.0}` → `#ffffff` | Handle default background |
+| `handle.disabledBackground` | `{form.field.disabled.color}` | Handle background when disabled |
+| `handle.hoverBackground` | `{surface.0}` | Handle background on hover |
+| `handle.checkedBackground` | `{surface.0}` | Handle background when on |
+| `handle.checkedHoverBackground` | `{surface.0}` | Handle background when on + hovered |
+| `handle.color` | `{text.muted.color}` | Handle icon color (off state) |
+| `handle.hoverColor` | `{text.color}` | Handle icon color on hover |
+| `handle.checkedColor` | `{primary.color}` | Handle icon color when on |
+| `handle.checkedHoverColor` | `{primary.hover.color}` | Handle icon color when on + hovered |
+
+### Track colors — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{surface.700}` | Track background (off state) |
+| `root.disabledBackground` | `{surface.600}` | Track when disabled |
+| `root.hoverBackground` | `{surface.600}` | Track on hover |
+| `root.checkedBackground` | `{primary.color}` | Track background when on |
+| `root.checkedHoverBackground` | `{primary.hover.color}` | Track background when on + hovered |
+
+### Handle colors — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.background` | `{surface.400}` | Handle default background |
+| `handle.disabledBackground` | `{surface.900}` | Handle background when disabled |
+| `handle.hoverBackground` | `{surface.300}` | Handle background on hover |
+| `handle.checkedBackground` | `{surface.900}` | Handle background when on |
+| `handle.checkedHoverBackground` | `{surface.900}` | Handle background when on + hovered |
+| `handle.color` | `{surface.900}` | Handle icon color (off state) |
+| `handle.hoverColor` | `{surface.800}` | Handle icon color on hover |
+| `handle.checkedColor` | `{primary.color}` | Handle icon color when on |
+| `handle.checkedHoverColor` | `{primary.hover.color}` | Handle icon color when on + hovered |
+
+## Theme Notes
+
+<Note>
+All border colors on the track are set to `transparent` — including hover and checked states. The visual on/off distinction is expressed entirely through the track background color change, keeping the switch look clean without a visible border in normal operation.
+</Note>
+
+<Tip>
+The `slideDuration` (`0.2s`) is separate from the general `transitionDuration`. This lets you fine-tune the physical feel of the handle sliding independently from the color fade.
+</Tip>

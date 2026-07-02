@@ -1,0 +1,227 @@
+---
+title: "Enable and Configure Dark Mode in Nettalco Theme"
+sidebarTitle: "Dark Mode"
+description: "Learn how to enable class-based dark mode in Nettalco Theme, toggle it programmatically, and explore the custom dark-blue surface palette."
+---
+
+Nettalco Theme ships with a complete dark color scheme built into the preset. Unlike many PrimeNG presets that simply invert to a zinc-gray palette, Nettalco Theme's dark mode uses a **custom dark-blue surface scale** — keeping the brand's nautical, navy character visible even when the UI goes dark. This page explains the two dark mode configurations, how to toggle the theme programmatically, and what tokens change between light and dark.
+
+## Dark Mode Options
+
+PrimeNG's theming system supports two dark mode strategies controlled by the `darkModeSelector` option:
+
+| Value | Behavior |
+|---|---|
+| `false` | Dark mode is fully disabled. Only light tokens are generated. (**Default**) |
+| `'.p-dark'` | Dark mode activates when the `p-dark` class is present on a parent element (typically `<html>`). |
+| `'[data-theme="dark"]'` | Any valid CSS selector can be used as the dark mode trigger. |
+
+---
+
+## Default Configuration (Light Only)
+
+The recommended starting configuration for most Nettalco applications disables dark mode entirely, keeping the token surface minimal:
+
+```typescript app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { providePrimeNG } from 'primeng/config';
+import MyPreset from '@nettalco/nettalco-theme';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providePrimeNG({
+      theme: {
+        preset: MyPreset,
+        options: {
+          darkModeSelector: false, // Light mode only
+        },
+      },
+    }),
+  ],
+};
+```
+
+---
+
+## Enabling Dark Mode
+
+To enable dark mode, set `darkModeSelector` to the CSS class or attribute selector that will trigger the dark theme:
+
+```typescript app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { providePrimeNG } from 'primeng/config';
+import MyPreset from '@nettalco/nettalco-theme';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providePrimeNG({
+      theme: {
+        preset: MyPreset,
+        options: {
+          darkModeSelector: '.p-dark',
+          cssLayer: false,
+        },
+      },
+    }),
+  ],
+};
+```
+
+When this selector is matched, PrimeNG swaps all tokens defined inside `semantic.colorScheme.dark` into the active token set.
+
+---
+
+## Toggling Dark Mode Programmatically
+
+With `darkModeSelector: '.p-dark'`, dark mode is activated by adding the `p-dark` class to the `<html>` element. Toggle it from any Angular service, component, or directive:
+
+```typescript theme-toggle.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({ providedIn: 'root' })
+export class ThemeToggleService {
+  private readonly darkClass = 'p-dark';
+
+  get isDark(): boolean {
+    return document.documentElement.classList.contains(this.darkClass);
+  }
+
+  toggle(): void {
+    document.documentElement.classList.toggle(this.darkClass);
+  }
+
+  setDark(): void {
+    document.documentElement.classList.add(this.darkClass);
+  }
+
+  setLight(): void {
+    document.documentElement.classList.remove(this.darkClass);
+  }
+}
+```
+
+<Tip>
+  To automatically respect the user's OS preference on first load, read `prefers-color-scheme` and apply the class before bootstrapping:
+
+  ```typescript main.ts
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (prefersDark) {
+    document.documentElement.classList.add('p-dark');
+  }
+  ```
+
+  You can also listen to changes at runtime:
+
+  ```typescript
+  window.matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', (e) => {
+      document.documentElement.classList.toggle('p-dark', e.matches);
+    });
+  ```
+</Tip>
+
+---
+
+## Dark Surface Palette
+
+<Note>
+  Nettalco Theme replaces Aura's default zinc-gray dark surface scale with a **custom dark-blue palette**. Every background, card, overlay, and input surface in dark mode carries a hint of the brand's navy blue identity.
+</Note>
+
+```typescript
+dark: {
+  surface: {
+    0:   '#f0f5fb', // Near-white (used for text/icons on dark bg)
+    50:  '#c8d8ea', // Light steel blue
+    100: '#8fa8c4', // Muted blue-grey
+    200: '#5a7a9e', // Medium slate-blue
+    300: '#3d5a7e', // Dark steel blue
+    400: '#2e476d', // Deep blue
+    500: '#253a5e', // Main content background
+    600: '#1c2f50', // Elevated surface (cards, sidebars)
+    700: '#152540', // Modal/dialog background
+    800: '#0f1e35', // Page/app background
+    900: '#0a1628', // Deep background layer
+    950: '#060d1a', // Absolute darkest (shadows, outlines)
+  },
+}
+```
+
+### Visual Hierarchy in Dark Mode
+
+| Surface Level | Token | Typical Use |
+|---|---|---|
+| Text / Icons | `surface.0` `#f0f5fb` | White-tinted labels, icon fills |
+| Highlights | `surface.50` `#c8d8ea` | Hover states, selection indicators |
+| Overlays | `surface.700` `#152540` | Dialogs, drawers, popovers |
+| Cards | `surface.600` `#1c2f50` | Panel and card backgrounds |
+| Page | `surface.800` `#0f1e35` | Main app background |
+
+---
+
+## Dark Mode Color Tokens
+
+### Primary (Inverted for Dark)
+
+In dark mode, primary colors invert so that the **very light** end of the `nettalcoPrimary` scale becomes the foreground color — rendering legibly against the dark blue backgrounds:
+
+```typescript
+dark: {
+  primary: {
+    color:         '{primary.50}',  // #EDF4FF — light blue-white becomes foreground
+    contrastColor: '{primary.500}', // #112A46 — navy becomes the contrast (e.g., button text)
+    hoverColor:    '{primary.100}', // #D7E3FB
+    activeColor:   '{primary.400}', // #336DD9
+  },
+}
+```
+
+### Success, Info, Warn, Error in Dark Mode
+
+| Role | Dark Color | Dark Hex | Note |
+|---|---|---|---|
+| Success | `{success.200}` | `#6ECBCD` | Lighter cyan for dark bg contrast |
+| Info | `{info.400}` | `#69A7ED` | Periwinkle blue |
+| Warn | `{warn.200}` | `#F4B33C` | Warm amber |
+| Error | `{error.400}` | `#f87171` | Light red |
+
+---
+
+## cssLayer Option
+
+The `cssLayer` option controls whether PrimeNG's generated styles are wrapped in a `@layer` declaration. This is useful when integrating with Tailwind CSS or other utility frameworks that use cascade layers:
+
+<CodeGroup>
+
+```typescript Default (no layer)
+providePrimeNG({
+  theme: {
+    preset: MyPreset,
+    options: {
+      darkModeSelector: '.p-dark',
+      cssLayer: false, // PrimeNG styles have normal cascade specificity
+    },
+  },
+})
+```
+
+```typescript With Tailwind Integration
+providePrimeNG({
+  theme: {
+    preset: MyPreset,
+    options: {
+      darkModeSelector: '.p-dark',
+      cssLayer: {
+        name: 'primeng',
+        order: 'tailwind-base, primeng, tailwind-utilities',
+      },
+    },
+  },
+})
+```
+
+</CodeGroup>
+
+<Warning>
+  If you enable `cssLayer` without configuring your Tailwind CSS setup to declare the `primeng` layer, PrimeNG styles may appear with incorrect specificity or not render at all.
+</Warning>

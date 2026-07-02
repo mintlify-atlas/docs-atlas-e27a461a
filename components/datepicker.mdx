@@ -1,0 +1,189 @@
+---
+title: "DatePicker: Nettalco Theme Design Tokens"
+sidebarTitle: "DatePicker"
+description: "Design tokens for the PrimeNG DatePicker component in Nettalco Theme — panel, header, date cells, time picker, navigation buttons, and color schemes."
+---
+
+The **DatePicker** component provides an interactive calendar picker with support for single dates, date ranges, time selection, and multiple-month panels. Nettalco Theme defines a rich set of tokens across every sub-region: the floating panel, header, month/year navigation controls, day/month/year views, date cell sizes and selection colors, the time picker bar, and button bar — all with explicit light and dark color schemes.
+
+## Usage
+
+```html
+<!-- Basic date picker -->
+<p-datepicker [(ngModel)]="date" />
+
+<!-- Date range -->
+<p-datepicker [(ngModel)]="dateRange" selectionMode="range" />
+
+<!-- With time -->
+<p-datepicker [(ngModel)]="datetime" [showTime]="true" hourFormat="12" />
+
+<!-- Inline calendar -->
+<p-datepicker [(ngModel)]="date" [inline]="true" />
+
+<!-- Month/year selector -->
+<p-datepicker [(ngModel)]="date" view="month" dateFormat="mm/yy" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { DatePickerModule } from 'primeng/datepicker';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [DatePickerModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  date: Date | null = null;
+  dateRange: Date[] | null = null;
+  datetime: Date | null = null;
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `transitionDuration` | `{transition.duration}` | Panel open/close animation duration |
+
+### Panel
+
+| Token | Value | Description |
+|---|---|---|
+| `panel.background` | `{content.background}` | Panel background |
+| `panel.borderColor` | `{content.border.color}` | Panel border color |
+| `panel.color` | `{content.color}` | Panel text color |
+| `panel.borderRadius` | `{content.border.radius}` | Panel corner radius |
+| `panel.shadow` | `{overlay.popover.shadow}` | Panel drop shadow |
+| `panel.padding` | `{overlay.popover.padding}` | Panel internal padding |
+
+### Header
+
+| Token | Value | Description |
+|---|---|---|
+| `header.background` | `{content.background}` | Header section background |
+| `header.borderColor` | `{content.border.color}` | Header bottom border |
+| `header.color` | `{content.color}` | Header text color |
+| `header.padding` | `0 0 0.5rem 0` | Header padding (bottom only) |
+
+### Title
+
+| Token | Value | Description |
+|---|---|---|
+| `title.gap` | `0.5rem` | Gap between month and year selectors |
+| `title.fontWeight` | `500` | Font weight for the month/year title |
+
+### Dropdown (prev/next navigation buttons)
+
+| Token | Value | Description |
+|---|---|---|
+| `dropdown.width` | `2.5rem` | Button width (default) |
+| `dropdown.sm.width` | `2rem` | Button width in `sm` variant |
+| `dropdown.lg.width` | `3rem` | Button width in `lg` variant |
+| `dropdown.borderColor` | `{form.field.border.color}` | Button border |
+| `dropdown.borderRadius` | `{form.field.border.radius}` | Button corner radius |
+| `dropdown.focusRing.*` | (inherits global focus ring) | Focus ring tokens |
+
+### Navigation buttons — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `dropdown.background` | `{surface.100}` | Button background |
+| `dropdown.hoverBackground` | `{surface.200}` | Background on hover |
+| `dropdown.activeBackground` | `{surface.300}` | Background when pressed |
+| `dropdown.color` | `{surface.600}` | Icon color |
+| `dropdown.hoverColor` | `{surface.700}` | Icon color on hover |
+| `dropdown.activeColor` | `{surface.800}` | Icon color when pressed |
+
+### Navigation buttons — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `dropdown.background` | `{surface.800}` | Button background |
+| `dropdown.hoverBackground` | `{surface.700}` | Background on hover |
+| `dropdown.activeBackground` | `{surface.600}` | Background when pressed |
+| `dropdown.color` | `{surface.300}` | Icon color |
+| `dropdown.hoverColor` | `{surface.200}` | Icon color on hover |
+| `dropdown.activeColor` | `{surface.100}` | Icon color when pressed |
+
+### Date cell
+
+| Token | Value | Description |
+|---|---|---|
+| `date.hoverBackground` | `{content.hover.background}` | Cell background on hover |
+| `date.selectedBackground` | `{primary.color}` | Selected date background |
+| `date.rangeSelectedBackground` | `{highlight.background}` | Background for in-range dates |
+| `date.color` | `{content.color}` | Date number color |
+| `date.hoverColor` | `{content.hover.color}` | Date color on hover |
+| `date.selectedColor` | `{primary.contrast.color}` | Text on selected date |
+| `date.rangeSelectedColor` | `{highlight.color}` | Text on in-range dates |
+| `date.width` | `2rem` | Cell width |
+| `date.height` | `2rem` | Cell height |
+| `date.borderRadius` | `50%` | Circular date cells |
+| `date.padding` | `0.25rem` | Cell inner padding |
+| `date.focusRing.*` | (inherits global focus ring) | Focus ring tokens |
+
+### Today indicator (color scheme)
+
+| Color scheme | Token | Value |
+|---|---|---|
+| Light | `today.background` | `{surface.200}` |
+| Light | `today.color` | `{surface.900}` |
+| Dark | `today.background` | `{surface.700}` |
+| Dark | `today.color` | `{surface.0}` |
+
+### Week days & views
+
+| Token | Value | Description |
+|---|---|---|
+| `weekDay.padding` | `0.25rem` | Day-name cell padding |
+| `weekDay.fontWeight` | `500` | Day-name font weight |
+| `weekDay.color` | `{content.color}` | Day-name text color |
+| `dayView.margin` | `0.5rem 0 0 0` | Top margin for day grid |
+| `month.padding` | `0.375rem` | Month cell padding |
+| `month.borderRadius` | `{content.border.radius}` | Month cell radius |
+| `monthView.margin` | `0.5rem 0 0 0` | Top margin for month grid |
+| `year.padding` | `0.375rem` | Year cell padding |
+| `year.borderRadius` | `{content.border.radius}` | Year cell radius |
+| `yearView.margin` | `0.5rem 0 0 0` | Top margin for year grid |
+
+### Select month / year buttons
+
+| Token | Value | Description |
+|---|---|---|
+| `selectMonth.hoverBackground` | `{content.hover.background}` | Hover background for month select |
+| `selectMonth.color` | `{content.color}` | Month select text color |
+| `selectMonth.padding` | `0.25rem 0.5rem` | Month select padding |
+| `selectMonth.borderRadius` | `{content.border.radius}` | Month select corner radius |
+| `selectYear.hoverBackground` | `{content.hover.background}` | Hover background for year select |
+| `selectYear.color` | `{content.color}` | Year select text color |
+| `selectYear.padding` | `0.25rem 0.5rem` | Year select padding |
+| `selectYear.borderRadius` | `{content.border.radius}` | Year select corner radius |
+
+### Button bar & time picker
+
+| Token | Value | Description |
+|---|---|---|
+| `buttonbar.padding` | `0.5rem 0 0 0` | Today/Clear button bar padding |
+| `buttonbar.borderColor` | `{content.border.color}` | Divider above button bar |
+| `timePicker.padding` | `0.5rem 0 0 0` | Time picker section padding |
+| `timePicker.borderColor` | `{content.border.color}` | Divider above time picker |
+| `timePicker.gap` | `0.5rem` | Gap between time picker elements |
+| `timePicker.buttonGap` | `0.25rem` | Gap between up/down time buttons |
+| `group.borderColor` | `{content.border.color}` | Divider between multiple month groups |
+| `group.gap` | `{overlay.popover.padding}` | Gap between multiple month panels |
+
+## Theme Notes
+
+<Note>
+Date cells are circular (`borderRadius: 50%`) and 2 rem × 2 rem. The selected date uses `{primary.color}` (emerald in Nettalco) as background with `{primary.contrast.color}` (white) text. Range dates use the softer `{highlight.background}` — the emerald-50 tint in light mode.
+</Note>
+
+<Tip>
+Today's date gets a subtle surface tint (`{surface.200}` / `{surface.700}`) rather than the primary color, so it is visually distinguishable from a selected date without competing with the primary highlight.
+</Tip>

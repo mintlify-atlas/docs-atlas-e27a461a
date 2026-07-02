@@ -1,0 +1,83 @@
+---
+title: "Tooltip Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Tooltip"
+description: "Contextual hint overlay with surface-700 background in both color schemes, popover border radius, 12.5 rem max-width, and compact 0.5 rem vertical padding."
+---
+
+The **Tooltip** component displays a small floating hint when users hover or focus a target element. Unlike most Nettalco components that adapt between light and dark modes, the Tooltip uses `{surface.700}` as its background in **both** color schemes — providing a consistently dark, high-contrast pill regardless of the page theme. Text is always `{surface.0}` (white), ensuring readability in all environments.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+
+<!-- Basic tooltip via pTooltip directive -->
+<p-button
+  icon="pi pi-trash"
+  severity="danger"
+  pTooltip="Delete item"
+  tooltipPosition="top"
+/>
+
+<!-- Tooltip on a non-button element -->
+<span
+  pTooltip="This field is required"
+  tooltipPosition="right"
+  class="pi pi-info-circle text-muted"
+></span>
+
+<!-- Tooltip with HTML content -->
+<p-button
+  label="Info"
+  [pTooltip]="tooltipContent"
+  [escape]="false"
+  tooltipPosition="bottom"
+/>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [TooltipModule, ButtonModule],
+})
+export class AppComponent {
+  tooltipContent = '<strong>Important:</strong> Read the docs before proceeding.';
+}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/tooltip/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.maxWidth` | `12.5rem` | Maximum width before the tooltip wraps text (200 px) |
+| `root.gutter` | `0.25rem` | Gap between the target element and the tooltip |
+| `root.shadow` | `{overlay.popover.shadow}` | Elevation shadow (shared with Popover namespace) |
+| `root.padding` | `0.5rem 0.75rem` | Inner padding: compact vertical, slightly wider horizontal |
+| `root.borderRadius` | `{overlay.popover.border.radius}` | Corner radius (shared with Popover) |
+
+### Color Scheme
+
+| Scheme | Token | Value | Description |
+|---|---|---|---|
+| Light | `colorScheme.light.root.background` | `{surface.700}` | Dark grey background in light mode |
+| Light | `colorScheme.light.root.color` | `{surface.0}` | White text in light mode |
+| Dark | `colorScheme.dark.root.background` | `{surface.700}` | Same dark grey background in dark mode |
+| Dark | `colorScheme.dark.root.color` | `{surface.0}` | White text in dark mode |
+
+## Theme Notes
+
+- **Invariant dark appearance** — Using `{surface.700}` for both color schemes is a deliberate choice. Tooltip content is most legible against a dark background regardless of whether the application is in light or dark mode. This avoids the tooltip "inverting" awkwardly in dark mode.
+- **Shadow from `{overlay.popover.shadow}`** — The tooltip borrows its shadow token from the popover namespace rather than defining its own. Updating `overlay.popover.shadow` globally will change both the Popover and Tooltip shadow appearance.
+- **`root.gutter: '0.25rem'`** — This is considerably smaller than the Popover's `10px` gutter, keeping the tooltip tight against its target to minimise mouse travel distance.
+- The `pTooltip` directive is applied directly to any HTML element or PrimeNG component. No wrapper element is required.
+- Use `tooltipPosition` (`'top'`, `'bottom'`, `'left'`, `'right'`) and `tooltipEvent` (`'hover'`, `'focus'`, `'both'`) to control placement and trigger behaviour.

@@ -1,0 +1,84 @@
+---
+title: "Knob: Nettalco Theme Design Tokens"
+sidebarTitle: "Knob"
+description: "Design tokens for the PrimeNG Knob component in Nettalco Theme — SVG arc colors for value and range, center label color, and focus ring tokens."
+---
+
+The **Knob** component renders a circular dial that lets users select a numeric value by dragging, displaying the current value as an SVG arc overlaid on a background track. Nettalco Theme provides tokens for the filled value arc's color, the background range arc, the center text label color, the transition animation, and the keyboard focus ring.
+
+## Usage
+
+```html
+<!-- Basic knob -->
+<p-knob [(ngModel)]="value" />
+
+<!-- Custom size and step -->
+<p-knob [(ngModel)]="value" [size]="120" [step]="5" />
+
+<!-- Min, max, and range -->
+<p-knob [(ngModel)]="value" [min]="-50" [max]="50" />
+
+<!-- Read-only with label -->
+<p-knob [(ngModel)]="value" [readonly]="true" valueTemplate="{value}%" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { KnobModule } from 'primeng/knob';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [KnobModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  value = 60;
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `transitionDuration` | `{transition.duration}` | Arc animation transition duration |
+| `focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
+
+### Value (filled arc)
+
+| Token | Value | Description |
+|---|---|---|
+| `value.background` | `{primary.color}` | Color of the filled progress arc |
+
+### Range (background arc)
+
+| Token | Value | Description |
+|---|---|---|
+| `range.background` | `{content.border.color}` | Color of the unfilled track arc |
+
+### Text
+
+| Token | Value | Description |
+|---|---|---|
+| `text.color` | `{text.muted.color}` | Color of the center value label |
+
+## Theme Notes
+
+<Note>
+Knob uses only four token sections (root, value, range, text) with no color scheme overrides. All colors resolve to semantic tokens that adapt automatically to light and dark mode through the global `content` and `primary` token system.
+</Note>
+
+<Tip>
+The value arc's `{primary.color}` (emerald) contrasts against the range arc's `{content.border.color}` (a light surface border in light mode, a dark surface border in dark mode). This pairing ensures the filled portion of the knob is always clearly distinguishable from the unfilled portion in both themes.
+</Tip>
+
+<Info>
+The center text color is `{text.muted.color}` rather than the full `{text.color}`. This softens the numeric readout so the arc itself remains the primary visual element, with the number serving as a secondary reference.
+</Info>

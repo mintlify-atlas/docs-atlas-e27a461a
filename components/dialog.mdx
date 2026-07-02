@@ -1,0 +1,108 @@
+---
+title: "Dialog Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Dialog"
+description: "Modal overlay with XL border radius, semantic overlay modal tokens for background and shadow, and distinct padding tokens for header, content, and footer."
+---
+
+The **Dialog** component renders a modal overlay panel centred on screen. In the Nettalco preset every visual property resolves through the `{overlay.modal.*}` semantic token namespace — background, border color, shadow, and the `{overlay.modal.border.radius}` which maps to `{border.radius.xl}` (12 px) for a rounded appearance. Header, content, and footer each have their own padding tokens derived from `{overlay.modal.padding}` (1.25 rem).
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-button label="Open Dialog" (onClick)="visible = true" />
+
+<p-dialog
+  header="Confirm Action"
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '32rem' }"
+>
+  <p>Are you sure you want to proceed? This action cannot be undone.</p>
+
+  <ng-template #footer>
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (onClick)="visible = false"
+    />
+    <p-button
+      label="Confirm"
+      severity="danger"
+      (onClick)="onConfirm()"
+    />
+  </ng-template>
+</p-dialog>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [DialogModule, ButtonModule],
+})
+export class AppComponent {
+  visible = false;
+
+  onConfirm(): void {
+    // handle confirmation logic
+    this.visible = false;
+  }
+}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/dialog/index.ts`. Dialog tokens inherit from the `{overlay.modal.*}` semantic namespace defined in the global preset.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{overlay.modal.background}` | Dialog panel background |
+| `root.borderColor` | `{overlay.modal.border.color}` | Dialog panel border color |
+| `root.color` | `{overlay.modal.color}` | Default text color inside the dialog |
+| `root.borderRadius` | `{overlay.modal.border.radius}` → **`{border.radius.xl}`** → **12 px** | Rounded XL corners on the dialog panel |
+| `root.shadow` | `{overlay.modal.shadow}` | Elevation shadow for the modal panel |
+
+### Header
+
+| Token | Value | Description |
+|---|---|---|
+| `header.padding` | `{overlay.modal.padding}` → **1.25 rem** | Padding on all four sides of the header row |
+| `header.gap` | `0.5rem` | Gap between the title text and the close button |
+
+### Title
+
+| Token | Value | Description |
+|---|---|---|
+| `title.fontSize` | `1.25rem` | Dialog title font size |
+| `title.fontWeight` | `600` | Semi-bold title weight |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.padding` | `0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}` | No top padding (header bottom provides the gap); equal sides and bottom at 1.25 rem |
+
+### Footer
+
+| Token | Value | Description |
+|---|---|---|
+| `footer.padding` | `0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}` | Mirrors content padding for a balanced layout |
+| `footer.gap` | `0.5rem` | Gap between action buttons in the footer |
+
+## Theme Notes
+
+- **Modal overlay namespace** — All structural tokens reference `{overlay.modal.*}`. Changing values in the global `overlay.modal` token group updates the Dialog (and Drawer) simultaneously.
+- **Border radius** — `{overlay.modal.border.radius}` resolves to `{border.radius.xl}` (12 px). This is the same value used by the Card component, giving modals and cards a visually consistent rounded language.
+- **Padding alignment** — Header, content, and footer all use `{overlay.modal.padding}` (1.25 rem) as their horizontal and bottom padding. The `0` top padding on content and footer means the header-to-content gap is entirely controlled by the header's bottom padding, not duplicated.
+- **No footer border** — Unlike some presets, the Nettalco Dialog does not define a separator border above the footer. If you need one, add a custom `border-top` rule on `.p-dialog-footer` via component CSS.
+- Use `[modal]="true"` to render the backdrop overlay. Without it the dialog floats without dimming the rest of the page.

@@ -1,0 +1,221 @@
+---
+title: "Galleria Component — Nettalco Theme Tokens"
+sidebarTitle: "Galleria"
+description: "Full design token reference and Angular usage for the Galleria image gallery component in the Nettalco PrimeNG v21 preset."
+---
+
+The **Galleria** component provides a full-featured image gallery with a main viewer, thumbnail strip, navigation arrows, captions, and dot indicators. It can also operate in fullscreen mode (as a lightbox). The Nettalco preset uses semi-transparent overlays (`rgba`) for navigation buttons, the caption bar, and the close button, keeping the image as the visual focus regardless of the active colour scheme.
+
+## Angular Usage Example
+
+```html
+<p-galleria
+  [value]="images"
+  [numVisible]="5"
+  [showItemNavigators]="true"
+  [showThumbnails]="true"
+  [showIndicators]="false"
+  [(activeIndex)]="activeIndex"
+>
+  <ng-template pTemplate="item" let-item>
+    <img
+      [src]="item.itemImageSrc"
+      [alt]="item.alt"
+      class="w-full max-h-[600px] object-contain"
+    />
+  </ng-template>
+
+  <ng-template pTemplate="thumbnail" let-item>
+    <img
+      [src]="item.thumbnailImageSrc"
+      [alt]="item.alt"
+      class="w-16 h-12 object-cover"
+    />
+  </ng-template>
+
+  <ng-template pTemplate="caption" let-item>
+    <h4 class="text-white font-semibold">{{ item.title }}</h4>
+    <p class="text-sm">{{ item.description }}</p>
+  </ng-template>
+</p-galleria>
+```
+
+For a **fullscreen lightbox**, bind `[(visible)]` and set `[fullScreen]="true"`.
+
+---
+
+## Design Tokens
+
+### `root`
+
+| Token                | Value                     |
+|----------------------|---------------------------|
+| `borderWidth`        | `1px`                     |
+| `borderColor`        | `{content.border.color}`  |
+| `borderRadius`       | `{content.border.radius}` |
+| `transitionDuration` | `{transition.duration}`   |
+
+---
+
+### `navButton`
+
+The left/right navigation arrows overlaid on the main image.
+
+| Token              | Value                         |
+|--------------------|-------------------------------|
+| `background`       | `rgba(255, 255, 255, 0.1)`    |
+| `hoverBackground`  | `rgba(255, 255, 255, 0.2)`    |
+| `color`            | `{surface.100}`               |
+| `hoverColor`       | `{surface.0}`                 |
+| `size`             | `3rem`                        |
+| `gutter`           | `0.5rem`                      |
+| `prev.borderRadius`| `50%`                         |
+| `next.borderRadius`| `50%`                         |
+| `focusRing.width`  | `{focus.ring.width}`          |
+| `focusRing.style`  | `{focus.ring.style}`          |
+| `focusRing.color`  | `{focus.ring.color}`          |
+| `focusRing.offset` | `{focus.ring.offset}`         |
+| `focusRing.shadow` | `{focus.ring.shadow}`         |
+
+### `navIcon`
+
+| Token  | Value    |
+|--------|----------|
+| `size` | `1.5rem` |
+
+---
+
+### `thumbnailsContent`
+
+The strip below the main image that holds thumbnail buttons.
+
+| Token        | Value                  |
+|--------------|------------------------|
+| `background` | `{content.background}` |
+| `padding`    | `1rem 0.25rem`         |
+
+---
+
+### `thumbnailNavButton`
+
+The scroll-left / scroll-right buttons within the thumbnail strip.
+
+| Token              | Value                     |
+|--------------------|---------------------------|
+| `size`             | `2rem`                    |
+| `borderRadius`     | `{content.border.radius}` |
+| `gutter`           | `0.5rem`                  |
+| `focusRing.width`  | `{focus.ring.width}`      |
+| `focusRing.style`  | `{focus.ring.style}`      |
+| `focusRing.color`  | `{focus.ring.color}`      |
+| `focusRing.offset` | `{focus.ring.offset}`     |
+| `focusRing.shadow` | `{focus.ring.shadow}`     |
+
+#### Thumbnail Nav Button Color Scheme
+
+| Token              | Light             | Dark              |
+|--------------------|-------------------|-------------------|
+| `hoverBackground`  | `{surface.100}`   | `{surface.700}`   |
+| `color`            | `{surface.600}`   | `{surface.400}`   |
+| `hoverColor`       | `{surface.700}`   | `{surface.0}`     |
+
+### `thumbnailNavButtonIcon`
+
+| Token  | Value  |
+|--------|--------|
+| `size` | `1rem` |
+
+---
+
+### `caption`
+
+The text overlay bar at the bottom of the main image.
+
+| Token        | Value                  |
+|--------------|------------------------|
+| `background` | `rgba(0, 0, 0, 0.5)`  |
+| `color`      | `{surface.100}`        |
+| `padding`    | `1rem`                 |
+
+---
+
+### `indicatorList`
+
+The container for dot indicators (when `[showIndicators]="true"`).
+
+| Token     | Value    |
+|-----------|----------|
+| `gap`     | `0.5rem` |
+| `padding` | `1rem`   |
+
+### `indicatorButton`
+
+| Token              | Value                     |
+|--------------------|---------------------------|
+| `width`            | `1rem`                    |
+| `height`           | `1rem`                    |
+| `activeBackground` | `{primary.color}`         |
+| `borderRadius`     | `50%`                     |
+| `focusRing.width`  | `{focus.ring.width}`      |
+| `focusRing.style`  | `{focus.ring.style}`      |
+| `focusRing.color`  | `{focus.ring.color}`      |
+| `focusRing.offset` | `{focus.ring.offset}`     |
+| `focusRing.shadow` | `{focus.ring.shadow}`     |
+
+#### Indicator Button Color Scheme
+
+| Token              | Light           | Dark            |
+|--------------------|-----------------|-----------------|
+| `background`       | `{surface.200}` | `{surface.700}` |
+| `hoverBackground`  | `{surface.300}` | `{surface.600}` |
+
+---
+
+### `insetIndicatorList`
+
+Used when indicators are shown overlaid on the image.
+
+| Token        | Value                  |
+|--------------|------------------------|
+| `background` | `rgba(0, 0, 0, 0.5)` |
+
+### `insetIndicatorButton`
+
+| Token              | Value                      |
+|--------------------|----------------------------|
+| `background`       | `rgba(255, 255, 255, 0.4)` |
+| `hoverBackground`  | `rgba(255, 255, 255, 0.6)` |
+| `activeBackground` | `rgba(255, 255, 255, 0.9)` |
+
+---
+
+### `closeButton`
+
+The × button in fullscreen / lightbox mode.
+
+| Token              | Value                      |
+|--------------------|----------------------------|
+| `size`             | `3rem`                     |
+| `gutter`           | `0.5rem`                   |
+| `background`       | `rgba(255, 255, 255, 0.1)` |
+| `hoverBackground`  | `rgba(255, 255, 255, 0.2)` |
+| `color`            | `{surface.50}`             |
+| `hoverColor`       | `{surface.0}`              |
+| `borderRadius`     | `50%`                      |
+| `focusRing.width`  | `{focus.ring.width}`       |
+| `focusRing.style`  | `{focus.ring.style}`       |
+| `focusRing.color`  | `{focus.ring.color}`       |
+| `focusRing.offset` | `{focus.ring.offset}`      |
+| `focusRing.shadow` | `{focus.ring.shadow}`      |
+
+### `closeButtonIcon`
+
+| Token  | Value    |
+|--------|----------|
+| `size` | `1.5rem` |
+
+---
+
+## Theme Notes
+
+All overlay controls (nav buttons, close button) use white semi-transparent backgrounds (`rgba(255, 255, 255, 0.1 / 0.2)`) so they remain visible over any image without inverting in dark mode — the image itself provides the contrast surface. The `insetIndicatorButton` tokens follow the same pattern with higher opacity values to maintain readability.

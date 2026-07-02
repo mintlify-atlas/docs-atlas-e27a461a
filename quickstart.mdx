@@ -1,47 +1,177 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Nettalco Theme in 5 Minutes"
+sidebarTitle: "Quickstart"
+description: "Configure providePrimeNG with MyPreset and have every PrimeNG component styled with Nettalco brand colors in just five steps."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+Nettalco Theme is designed to slot into any Angular 21+ project with minimal configuration. Once the package is installed, a single `providePrimeNG` call in your `app.config.ts` activates the entire preset — all 75+ PrimeNG components will immediately reflect Nettalco's brand colors, typography spacing, and component token overrides, with no additional CSS to write.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
 
-    ```bash
-    npm install your-package
-    ```
-  </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+### Authenticate and Install
 
-    ```bash
-    your-cli init
-    ```
-  </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+If you haven't installed the package yet, follow the [Installation guide](/installation) to configure your `.npmrc` and run:
 
-    ```bash
-    your-cli start
-    ```
-  </Step>
+```bash
+npm install @nettalco/nettalco-theme
+```
+
+Make sure you also have the peer dependencies installed:
+
+```bash
+npm install primeng primeicons @primeuix/themes
+```
+
+### Import MyPreset
+
+`MyPreset` is the default export from `@nettalco/nettalco-theme`. It is a fully constructed PrimeNG preset object ready to be passed directly to `providePrimeNG`.
+
+```typescript
+import MyPreset from '@nettalco/nettalco-theme';
+```
+
+You can also use the named export if preferred:
+
+```typescript
+import { MyPreset } from '@nettalco/nettalco-theme';
+```
+
+### Configure providePrimeNG in app.config.ts
+
+Open (or create) your `app.config.ts` and wire up `providePrimeNG` with `MyPreset`. The configuration below enables light-only mode, which is the recommended default for most Nettalco projects:
+
+```typescript app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { providePrimeNG } from 'primeng/config';
+import MyPreset from '@nettalco/nettalco-theme';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providePrimeNG({
+      theme: {
+        preset: MyPreset,
+        options: {
+          darkModeSelector: false, // Light mode only
+        },
+      },
+    }),
+  ],
+};
+```
+
+<Note>
+  `darkModeSelector: false` completely disables dark mode token generation, keeping bundle size slightly smaller. To enable dark mode, see [Dark Mode](/theming/dark-mode).
+</Note>
+
+### Import PrimeNG CSS Styles
+
+Add the PrimeNG base stylesheet and PrimeIcons to your project's entry point or global stylesheet. This is required for PrimeNG components to render correctly:
+
+<CodeGroup>
+
+```typescript main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
+import 'primeng/resources/primeng.css';
+import 'primeicons/primeicons.css';
+
+bootstrapApplication(AppComponent, appConfig).catch(console.error);
+```
+
+```scss styles.scss
+@import 'primeng/resources/primeng.css';
+@import 'primeicons/primeicons.css';
+```
+
+</CodeGroup>
+
+### Use PrimeNG Components
+
+That's it — your components now carry full Nettalco branding automatically. Here's a minimal Angular component to verify everything is working:
+
+```typescript app.component.ts
+import { Component } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ButtonModule, CardModule],
+  template: `
+    <p-card header="Nettalco Theme">
+      <p>Your PrimeNG components are now styled with Nettalco branding.</p>
+      <ng-template pTemplate="footer">
+        <p-button label="Primary Action" />
+        <p-button label="Secondary" severity="secondary" [outlined]="true" />
+        <p-button label="Success" severity="success" />
+        <p-button label="Warning" severity="warn" />
+      </ng-template>
+    </p-card>
+  `,
+})
+export class AppComponent {}
+```
+
+The buttons will render using `nettalcoPrimary` (`#112A46` navy) for the primary variant, `nettalcoSuccess` (`#2BA5CD` cyan) for success, and `nettalcoWarn` (`#D57952` orange) for warnings.
+
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Dark Mode
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+<Tip>
+  To enable dark mode support, change `darkModeSelector: false` to `darkModeSelector: '.p-dark'` in your `app.config.ts`. Then toggle the class programmatically:
+
+  ```typescript
+  // Toggle dark mode
+  document.documentElement.classList.toggle('p-dark');
+
+  // Force dark mode
+  document.documentElement.classList.add('p-dark');
+
+  // Force light mode
+  document.documentElement.classList.remove('p-dark');
+  ```
+
+  Nettalco Theme's dark mode uses a custom dark-blue surface palette (rather than zinc gray) so the brand feel is preserved in dark mode. See [Dark Mode](/theming/dark-mode) for the full reference.
 </Tip>
+
+## Complete app.config.ts Example (with Dark Mode)
+
+```typescript app.config.ts (with dark mode)
+import { ApplicationConfig } from '@angular/core';
+import { providePrimeNG } from 'primeng/config';
+import MyPreset from '@nettalco/nettalco-theme';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providePrimeNG({
+      theme: {
+        preset: MyPreset,
+        options: {
+          darkModeSelector: '.p-dark',
+          cssLayer: false,
+        },
+      },
+    }),
+  ],
+};
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Design Tokens" icon="code" href="/theming/design-tokens">
+    Understand the two-level token system and learn how to extend or override it.
+  </Card>
+  <Card title="Color Palette" icon="swatchbook" href="/theming/color-palette">
+    Browse the full 50–950 swatches for all five Nettalco brand palettes.
+  </Card>
+  <Card title="Dark Mode" icon="moon" href="/theming/dark-mode">
+    Enable dark mode and explore the custom dark-blue surface scale.
+  </Card>
+  <Card title="Versioning & Publishing" icon="tag" href="/publishing/versioning">
+    Publish a new version of the library to GitHub Packages.
+  </Card>
+</CardGroup>

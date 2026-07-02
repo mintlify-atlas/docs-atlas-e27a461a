@@ -1,0 +1,65 @@
+---
+title: "Toolbar Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Toolbar"
+description: "Compact horizontal action bar with semantic background, border, and gap tokens for start, center, and end slots with flexible button and control layouts."
+---
+
+The **Toolbar** component provides a horizontal strip for grouping action buttons, dropdowns, and other controls. It exposes three named template slots — `start`, `center`, and `end` — for arranging items on the left, middle, and right. The Nettalco preset keeps the toolbar visually consistent with other content surfaces by using the same `{content.*}` semantic tokens.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-toolbar>
+  <ng-template #start>
+    <p-button icon="pi pi-arrow-left" severity="secondary" text />
+    <p-button label="New" icon="pi pi-plus" />
+    <p-button label="Upload" icon="pi pi-upload" severity="secondary" />
+  </ng-template>
+
+  <ng-template #center>
+    <span class="font-semibold text-sm">Document Editor</span>
+  </ng-template>
+
+  <ng-template #end>
+    <p-button icon="pi pi-search" severity="secondary" text />
+    <p-button icon="pi pi-cog" severity="secondary" text />
+  </ng-template>
+</p-toolbar>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [ToolbarModule, ButtonModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/toolbar/index.ts`. The Toolbar preset exposes only a `root` section — no separate token sections for individual slots.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{content.background}` | Toolbar surface background |
+| `root.borderColor` | `{content.border.color}` | Outer border color |
+| `root.borderRadius` | `{content.border.radius}` | Corner radius |
+| `root.color` | `{content.color}` | Default text and icon color |
+| `root.gap` | `0.5rem` | Gap between items within each slot group |
+| `root.padding` | `0.75rem` | Uniform inner padding on all sides |
+
+## Theme Notes
+
+- The Toolbar token set is intentionally minimal — one flat `root` section covers the entire component. There are no separate tokens for the `start`, `center`, and `end` slot wrappers.
+- `root.padding: '0.75rem'` is slightly smaller than the Panel/Fieldset `1.125rem` padding to keep the toolbar compact. Buttons and controls within the toolbar provide their own internal padding.
+- `root.gap: '0.5rem'` applies between sibling items inside each slot. To space the groups themselves (start/center/end), the outer flex container uses `justify-between` by default — no token controls this.
+- All four visual tokens (`background`, `borderColor`, `color`, `borderRadius`) resolve from the `content.*` namespace, making the Toolbar blend seamlessly when placed inside cards, panels, or at the top of a page.

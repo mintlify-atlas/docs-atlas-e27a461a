@@ -1,0 +1,94 @@
+---
+title: "Splitter Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Splitter"
+description: "Resizable split-pane layout with a gutter styled by the border color token, transparent drag handle, focus ring support, and smooth resize transitions."
+---
+
+The **Splitter** component divides a container into resizable panels separated by a draggable gutter. Panels can be oriented horizontally or vertically and can be given minimum and maximum size constraints. The Nettalco preset styles the gutter using `{content.border.color}` so it blends with other structural borders, while the drag handle itself remains transparent — providing a clean look with no extra visual weight.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-splitter [style]="{ height: '300px' }">
+  <ng-template #panel>
+    <div class="flex items-center justify-center h-full">
+      <p>Panel A</p>
+    </div>
+  </ng-template>
+  <ng-template #panel>
+    <div class="flex items-center justify-center h-full">
+      <p>Panel B</p>
+    </div>
+  </ng-template>
+</p-splitter>
+
+<!-- Nested vertical splitter inside the right panel -->
+<p-splitter [style]="{ height: '400px' }">
+  <ng-template #panel [minSize]="20">
+    <p class="p-4">Left</p>
+  </ng-template>
+  <ng-template #panel>
+    <p-splitter layout="vertical">
+      <ng-template #panel [size]="60"><p class="p-4">Top Right</p></ng-template>
+      <ng-template #panel><p class="p-4">Bottom Right</p></ng-template>
+    </p-splitter>
+  </ng-template>
+</p-splitter>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { SplitterModule } from 'primeng/splitter';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [SplitterModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/splitter/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{content.background}` | Background of the splitter container |
+| `root.borderColor` | `{content.border.color}` | Outer border color |
+| `root.color` | `{content.color}` | Default text color inside panels |
+| `root.transitionDuration` | `{transition.duration}` | Transition timing for resize animations |
+
+### Gutter
+
+| Token | Value | Description |
+|---|---|---|
+| `gutter.background` | `{content.border.color}` | Gutter line color — matches structural borders |
+
+### Handle
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.size` | `24px` | Width/height of the drag handle hit area |
+| `handle.background` | `transparent` | Handle has no visible fill — purely invisible |
+| `handle.borderRadius` | `{content.border.radius}` | Rounded hit area for the handle |
+
+### Handle Focus Ring
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.focusRing.width` | `{focus.ring.width}` | Global focus ring width |
+| `handle.focusRing.style` | `{focus.ring.style}` | Global focus ring style |
+| `handle.focusRing.color` | `{focus.ring.color}` | Global focus ring color |
+| `handle.focusRing.offset` | `{focus.ring.offset}` | Global focus ring offset |
+| `handle.focusRing.shadow` | `{focus.ring.shadow}` | Global focus ring shadow |
+
+## Theme Notes
+
+- The gutter uses `{content.border.color}` directly (not a dedicated gutter color token), so it visually matches the separator used by Divider, Panel, and Accordion. This keeps structural chrome uniform across the UI.
+- The transparent handle means there is no knurled or dotted drag indicator by default. If you want a visual drag affordance, override `handle.background` with a surface color and add a custom icon via the `handle` slot.
+- Focus ring tokens all inherit from global `focus.*` semantic tokens, ensuring keyboard-navigable gutter handles meet the same accessibility outline standard as other interactive elements.

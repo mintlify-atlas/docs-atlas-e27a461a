@@ -1,0 +1,136 @@
+---
+title: "Listbox: Nettalco Theme Design Tokens"
+sidebarTitle: "Listbox"
+description: "Design tokens for the PrimeNG Listbox component in Nettalco Theme — box styling, list layout, option states, striped rows, and checkmark alignment."
+---
+
+The **Listbox** component displays a scrollable list of options that can be selected individually or in multiples, always visible without a dropdown overlay. Nettalco Theme styles the outer container through `form.field.*` tokens and adds dedicated tokens for list layout, option colors, option group labels, a checkmark indicator, an empty message, and striped row alternation in light and dark color schemes.
+
+## Usage
+
+```html
+<!-- Basic listbox -->
+<p-listbox
+  [(ngModel)]="selectedCity"
+  [options]="cities"
+  optionLabel="name"
+/>
+
+<!-- Multi-select listbox -->
+<p-listbox
+  [(ngModel)]="selectedCities"
+  [options]="cities"
+  optionLabel="name"
+  [multiple]="true"
+  [checkbox]="true"
+/>
+
+<!-- With filter -->
+<p-listbox
+  [(ngModel)]="selectedItem"
+  [options]="items"
+  optionLabel="label"
+  [filter]="true"
+  filterPlaceholder="Search..."
+/>
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ListboxModule } from 'primeng/listbox';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [ListboxModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  selectedCity: any;
+  selectedCities: any[] = [];
+  cities = [
+    { name: 'New York', code: 'NY' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Tokyo', code: 'TKY' }
+  ];
+}
+```
+
+## Design Tokens
+
+### Root (outer container)
+
+| Token | Value | Description |
+|---|---|---|
+| `background` | `{form.field.background}` | Container background |
+| `disabledBackground` | `{form.field.disabled.background}` | Background when disabled |
+| `borderColor` | `{form.field.border.color}` | Default border color |
+| `invalidBorderColor` | `{form.field.invalid.border.color}` | Border in invalid state |
+| `color` | `{form.field.color}` | Default text color |
+| `disabledColor` | `{form.field.disabled.color}` | Text color when disabled |
+| `shadow` | `{form.field.shadow}` | Box shadow |
+| `borderRadius` | `{form.field.border.radius}` | Corner radius |
+| `transitionDuration` | `{form.field.transition.duration}` | Transition duration |
+
+### List layout
+
+| Token | Value | Description |
+|---|---|---|
+| `list.padding` | `{list.padding}` | List outer padding |
+| `list.gap` | `{list.gap}` | Gap between option rows |
+| `list.header.padding` | `{list.header.padding}` | Filter header padding |
+
+### Option
+
+| Token | Value | Description |
+|---|---|---|
+| `option.focusBackground` | `{list.option.focus.background}` | Background on keyboard/hover focus |
+| `option.selectedBackground` | `{list.option.selected.background}` | Background when selected |
+| `option.selectedFocusBackground` | `{list.option.selected.focus.background}` | Selected + focused background |
+| `option.color` | `{list.option.color}` | Option text color |
+| `option.focusColor` | `{list.option.focus.color}` | Text color on focus |
+| `option.selectedColor` | `{list.option.selected.color}` | Text color when selected |
+| `option.selectedFocusColor` | `{list.option.selected.focus.color}` | Text when selected + focused |
+| `option.padding` | `{list.option.padding}` | Option padding |
+| `option.borderRadius` | `{list.option.border.radius}` | Option corner radius |
+
+### Option group
+
+| Token | Value | Description |
+|---|---|---|
+| `optionGroup.background` | `{list.option.group.background}` | Group label background |
+| `optionGroup.color` | `{list.option.group.color}` | Group label text color |
+| `optionGroup.fontWeight` | `{list.option.group.font.weight}` | Group label font weight |
+| `optionGroup.padding` | `{list.option.group.padding}` | Group label padding |
+
+### Checkmark
+
+| Token | Value | Description |
+|---|---|---|
+| `checkmark.color` | `{list.option.color}` | Checkmark icon color |
+| `checkmark.gutterStart` | `-0.375rem` | Negative start gutter for alignment |
+| `checkmark.gutterEnd` | `0.375rem` | End gutter for text alignment |
+
+### Striped rows (color scheme)
+
+| Color scheme | Token | Value |
+|---|---|---|
+| Light | `option.stripedBackground` | `{surface.50}` |
+| Dark | `option.stripedBackground` | `{surface.900}` |
+
+### Other
+
+| Token | Value | Description |
+|---|---|---|
+| `emptyMessage.padding` | `{list.option.padding}` | Padding of "no items" message |
+
+## Theme Notes
+
+<Note>
+Unlike Select/MultiSelect, Listbox has no hover border color token — the root container border doesn't change on hover. Only `borderColor` and `invalidBorderColor` are defined for the outer box.
+</Note>
+
+<Tip>
+Striped row backgrounds (`{surface.50}` / `{surface.900}`) are very subtle — just one step off the content background. This provides light visual rhythm in long lists without distracting from the selected/focused option highlight colors.
+</Tip>

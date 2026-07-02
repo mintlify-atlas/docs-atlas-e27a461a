@@ -1,0 +1,198 @@
+---
+title: "Nettalco Theme ToggleButton: Checked State Design Tokens"
+sidebarTitle: "Toggle Button"
+description: "Nettalco-themed PrimeNG ToggleButton with surface-scale checked states, elevated checked shadow, and full disabled/invalid token support."
+---
+
+The PrimeNG `p-togglebutton` component is a two-state button that switches between on and off, functioning as a stylized checkbox replacement for settings panels, feature flags, and binary filter toggles. Nettalco Theme defines a three-section token structure — `root`, `content`, and `icon` — giving precise control over the outer wrapper, the inner sliding pill, and icon color at every interaction state. The checked elevation shadow and surface-scale color progression are tuned to Nettalco's dark Navy surface palette.
+
+## Basic Usage
+
+```html
+<!-- Label-based toggle -->
+<p-togglebutton
+  [(ngModel)]="isEnabled"
+  onLabel="Enabled"
+  offLabel="Disabled"
+/>
+
+<!-- Icon + label -->
+<p-togglebutton
+  [(ngModel)]="isMuted"
+  onLabel="Muted"
+  offLabel="Active"
+  onIcon="pi pi-volume-off"
+  offIcon="pi pi-volume-up"
+/>
+
+<!-- Icon only -->
+<p-togglebutton
+  [(ngModel)]="isStarred"
+  onIcon="pi pi-star-fill"
+  offIcon="pi pi-star"
+  aria-label="Favourite"
+/>
+```
+
+## Component Setup (TypeScript)
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+
+@Component({
+  selector: 'app-settings-panel',
+  standalone: true,
+  imports: [FormsModule, ToggleButtonModule],
+  templateUrl: './settings-panel.component.html',
+})
+export class SettingsPanelComponent {
+  notifications = true;
+  darkMode       = false;
+  autoSave       = true;
+  isStarred      = false;
+}
+```
+
+## Size Variants
+
+```html
+<!-- Small -->
+<p-togglebutton [(ngModel)]="val" onLabel="On" offLabel="Off" size="small" />
+
+<!-- Default -->
+<p-togglebutton [(ngModel)]="val" onLabel="On" offLabel="Off" />
+
+<!-- Large -->
+<p-togglebutton [(ngModel)]="val" onLabel="On" offLabel="Off" size="large" />
+```
+
+## Reactive Forms & Validation
+
+```html
+<form [formGroup]="form">
+  <p-togglebutton
+    formControlName="termsAccepted"
+    onLabel="Accepted"
+    offLabel="Accept Terms"
+    [invalid]="form.get('termsAccepted')?.invalid && form.get('termsAccepted')?.touched"
+  />
+  <small *ngIf="form.get('termsAccepted')?.invalid" class="p-error">
+    You must accept the terms.
+  </small>
+</form>
+```
+
+```typescript
+import { FormBuilder, Validators } from '@angular/forms';
+
+form = this.fb.group({
+  termsAccepted: [false, Validators.requiredTrue],
+});
+```
+
+## Disabled State
+
+```html
+<p-togglebutton
+  [(ngModel)]="val"
+  onLabel="On"
+  offLabel="Off"
+  [disabled]="true"
+/>
+```
+
+When disabled, the component uses `{form.field.disabled.background}` and `{form.field.disabled.color}` tokens — consistent with all other Nettalco form fields.
+
+## Root Design Tokens
+
+| Token | Value | Description |
+|---|---|---|
+| `togglebutton.root.padding` | `0.25rem` | Outer wrapper inset padding |
+| `togglebutton.root.borderRadius` | `{content.border.radius}` | Outer wrapper corner radius |
+| `togglebutton.root.gap` | `0.5rem` | Space between icon and label |
+| `togglebutton.root.fontWeight` | `500` | Medium weight label text |
+| `togglebutton.root.disabledBackground` | `{form.field.disabled.background}` | Disabled state background |
+| `togglebutton.root.disabledBorderColor` | `{form.field.disabled.background}` | Disabled state border (matches bg) |
+| `togglebutton.root.disabledColor` | `{form.field.disabled.color}` | Disabled state text/icon color |
+| `togglebutton.root.invalidBorderColor` | `{form.field.invalid.border.color}` | Validation error border |
+| `togglebutton.root.focusRing.width` | `{focus.ring.width}` | Focus outline width |
+| `togglebutton.root.focusRing.style` | `{focus.ring.style}` | Focus outline style |
+| `togglebutton.root.focusRing.color` | `{focus.ring.color}` | Focus outline color |
+| `togglebutton.root.focusRing.offset` | `{focus.ring.offset}` | Focus outline offset |
+| `togglebutton.root.focusRing.shadow` | `{focus.ring.shadow}` | Focus outline shadow |
+| `togglebutton.root.transitionDuration` | `{form.field.transition.duration}` | Hover/check CSS transition |
+
+### Size Tokens
+
+| Size | Token | Value |
+|---|---|---|
+| Small | `togglebutton.root.sm.fontSize` | `{form.field.sm.font.size}` |
+| Small | `togglebutton.root.sm.padding` | `0.25rem` |
+| Large | `togglebutton.root.lg.fontSize` | `{form.field.lg.font.size}` |
+| Large | `togglebutton.root.lg.padding` | `0.25rem` |
+
+## Content Section Tokens
+
+The `content` section styles the inner sliding pill that moves when the button is checked.
+
+| Token | Value | Description |
+|---|---|---|
+| `togglebutton.content.padding` | `0.25rem 0.75rem` | Pill inner padding |
+| `togglebutton.content.borderRadius` | `{content.border.radius}` | Pill corner radius |
+| `togglebutton.content.checkedShadow` | `0px 1px 2px 0px rgba(0,0,0,0.02), 0px 1px 2px 0px rgba(0,0,0,0.04)` | Subtle checked elevation |
+| `togglebutton.content.sm.padding` | `0.25rem 0.75rem` | Small size pill padding |
+| `togglebutton.content.lg.padding` | `0.25rem 0.75rem` | Large size pill padding |
+
+## Icon Section Tokens
+
+| Token | Value | Description |
+|---|---|---|
+| `togglebutton.icon.disabledColor` | `{form.field.disabled.color}` | Icon color when disabled |
+
+## Color Scheme Tokens
+
+### Light Mode
+
+| Section | Token | Value |
+|---|---|---|
+| `root` | `background` | `{surface.100}` |
+| `root` | `checkedBackground` | `{surface.100}` |
+| `root` | `hoverBackground` | `{surface.100}` |
+| `root` | `borderColor` | `{surface.100}` |
+| `root` | `color` | `{surface.500}` |
+| `root` | `hoverColor` | `{surface.700}` |
+| `root` | `checkedColor` | `{surface.900}` |
+| `root` | `checkedBorderColor` | `{surface.100}` |
+| `content` | `checkedBackground` | `{surface.0}` → **#ffffff** |
+| `icon` | `color` | `{surface.500}` |
+| `icon` | `hoverColor` | `{surface.700}` |
+| `icon` | `checkedColor` | `{surface.900}` |
+
+### Dark Mode
+
+| Section | Token | Value |
+|---|---|---|
+| `root` | `background` | `{surface.950}` → **#060d1a** |
+| `root` | `checkedBackground` | `{surface.950}` |
+| `root` | `hoverBackground` | `{surface.950}` |
+| `root` | `borderColor` | `{surface.950}` |
+| `root` | `color` | `{surface.400}` → **#2e476d** |
+| `root` | `hoverColor` | `{surface.300}` → **#3d5a7e** |
+| `root` | `checkedColor` | `{surface.0}` → **#f0f5fb** |
+| `root` | `checkedBorderColor` | `{surface.950}` |
+| `content` | `checkedBackground` | `{surface.800}` → **#0f1e35** |
+| `icon` | `color` | `{surface.400}` |
+| `icon` | `hoverColor` | `{surface.300}` |
+| `icon` | `checkedColor` | `{surface.0}` |
+
+## Nettalco-Specific Customizations
+
+**Navy-toned dark mode surface scale.** Nettalco overrides the dark-mode `surface` palette with a Navy-blue tint (`#060d1a` at 950, through `#f0f5fb` at 0). The ToggleButton's dark-mode tokens map directly into this Navy scale, so an unchecked toggle sits on a deep Navy `#060d1a` background and the checked pill lifts to a mid-Navy `#0f1e35` — creating a subtle depth effect that fits the Nettalco brand.
+
+**Checked shadow for tactile feedback.** The `content.checkedShadow` applies a two-layer `box-shadow` when the button is in the on state. The shadow values are intentionally subtle (2px, 4% opacity) to suggest elevation without competing with the surface color contrast.
+
+**Disabled border matches disabled background.** `togglebutton.root.disabledBorderColor` is set to `{form.field.disabled.background}` (the same token as the background), making the border invisible in disabled state. This produces a flat, muted appearance that clearly signals non-interactivity without a jarring color contrast.
+
+**Consistent focus ring with form fields.** Unlike the `Button` component (which suppresses the focus shadow), `ToggleButton` uses all five focus-ring tokens including `focusRing.shadow`. This provides a more prominent keyboard-navigation indicator appropriate for a form control context.

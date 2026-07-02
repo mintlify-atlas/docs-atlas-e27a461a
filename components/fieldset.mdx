@@ -1,0 +1,100 @@
+---
+title: "Fieldset Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Fieldset"
+description: "Bordered grouping container with a clickable legend, hover state tokens, semi-bold 600 label weight, and optional collapse toggle with muted icon coloring."
+---
+
+The **Fieldset** component wraps related form controls or content blocks inside a labelled border. The legend can act as a toggle when `[toggleable]="true"` is set. The Nettalco preset gives the legend a hover background from `{content.hover.background}`, a `{content.border.radius}` rounded corner, and a semi-bold `600` font weight to make the label clearly readable within the border.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+
+<!-- Static fieldset -->
+<p-fieldset legend="Billing Address">
+  <div class="flex flex-col gap-3">
+    <input pInputText placeholder="Street" />
+    <input pInputText placeholder="City" />
+    <input pInputText placeholder="Postcode" />
+  </div>
+</p-fieldset>
+
+<!-- Toggleable fieldset -->
+<p-fieldset legend="Advanced Options" [toggleable]="true" [collapsed]="true">
+  <p>These options are hidden by default to reduce visual clutter.</p>
+</p-fieldset>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputTextModule } from 'primeng/inputtext';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [FieldsetModule, InputTextModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/fieldset/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{content.background}` | Fieldset body background |
+| `root.borderColor` | `{content.border.color}` | Surrounding border color |
+| `root.borderRadius` | `{content.border.radius}` | Corner radius |
+| `root.color` | `{content.color}` | Default text color |
+| `root.padding` | `0 1.125rem 1.125rem 1.125rem` | Inner padding (no top — legend floats above the border) |
+| `root.transitionDuration` | `{transition.duration}` | Duration for collapse/expand animation |
+
+### Legend
+
+| Token | Value | Description |
+|---|---|---|
+| `legend.background` | `{content.background}` | Legend default background |
+| `legend.hoverBackground` | `{content.hover.background}` | Background on mouse hover (toggleable legends) |
+| `legend.color` | `{content.color}` | Legend text color |
+| `legend.hoverColor` | `{content.hover.color}` | Text color on hover |
+| `legend.borderRadius` | `{content.border.radius}` | Rounded corners on the legend pill |
+| `legend.borderWidth` | `1px` | Border width around the legend |
+| `legend.borderColor` | `transparent` | Border is transparent by default (no visible outline) |
+| `legend.padding` | `0.5rem 0.75rem` | Compact horizontal padding, moderate vertical |
+| `legend.gap` | `0.5rem` | Gap between toggle icon and label text |
+| `legend.fontWeight` | `600` | Semi-bold for strong section labelling |
+
+### Legend Focus Ring
+
+| Token | Value | Description |
+|---|---|---|
+| `legend.focusRing.width` | `{focus.ring.width}` | Global focus ring width |
+| `legend.focusRing.style` | `{focus.ring.style}` | Global focus ring style |
+| `legend.focusRing.color` | `{focus.ring.color}` | Global focus ring color |
+| `legend.focusRing.offset` | `{focus.ring.offset}` | Global focus ring offset |
+| `legend.focusRing.shadow` | `{focus.ring.shadow}` | Global focus ring shadow |
+
+### Toggle Icon
+
+| Token | Value | Description |
+|---|---|---|
+| `toggleIcon.color` | `{text.muted.color}` | Default icon color (dimmed) |
+| `toggleIcon.hoverColor` | `{text.hover.muted.color}` | Icon color on hover |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.padding` | `0` | No additional inner padding — root padding is sufficient |
+
+## Theme Notes
+
+- The legend `borderColor: 'transparent'` means the `1px` border is invisible by default. It exists to maintain consistent spacing and avoid layout shifts if you override `borderColor` to a visible color for custom styling.
+- Unlike the Card component, Fieldset uses `{content.border.radius}` (not `{border.radius.xl}`), giving it a more conservative corner rounding that fits naturally beside form elements.
+- For non-toggleable fieldsets the hover tokens (`hoverBackground`, `hoverColor`) have no effect — they only activate when `[toggleable]="true"` and the legend is interactive.

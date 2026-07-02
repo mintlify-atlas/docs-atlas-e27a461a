@@ -1,0 +1,129 @@
+---
+title: "OrganizationChart Component — Nettalco Theme"
+sidebarTitle: "OrgChart"
+description: "Design tokens and Angular usage for the OrganizationChart component in the Nettalco PrimeNG v21 preset theme library."
+---
+
+The **OrganizationChart** component visualises hierarchical relationships as a top-down chart of connected node cards. Each node can be made toggleable (collapsible), selected, or hovered. Connector lines between nodes are styled via the `connector` token group. The Nettalco preset uses `{content.border.radius}` for node corners and `{content.border.color}` for all borders and connectors, keeping the chart consistent with other surface elements on the page.
+
+## Angular Usage Example
+
+```html
+<p-organizationchart
+  [value]="chartData"
+  selectionMode="single"
+  [(selection)]="selectedNode"
+>
+  <ng-template let-node pTemplate="default">
+    <div class="flex flex-col items-center gap-1">
+      <img
+        [src]="node.data.avatar"
+        [alt]="node.data.name"
+        class="w-12 h-12 rounded-full"
+      />
+      <span class="font-semibold text-sm">{{ node.data.name }}</span>
+      <span class="text-xs text-muted">{{ node.data.title }}</span>
+    </div>
+  </ng-template>
+</p-organizationchart>
+```
+
+```ts
+import { TreeNode } from 'primeng/api';
+
+chartData: TreeNode[] = [
+  {
+    label: 'CEO',
+    type: 'default',
+    data: { name: 'Alice Chen', title: 'Chief Executive Officer', avatar: '/avatars/alice.png' },
+    expanded: true,
+    children: [
+      {
+        label: 'CTO',
+        data: { name: 'Bob Smith', title: 'Chief Technology Officer', avatar: '/avatars/bob.png' },
+        children: []
+      },
+      {
+        label: 'CFO',
+        data: { name: 'Carol Wu', title: 'Chief Financial Officer', avatar: '/avatars/carol.png' },
+        children: []
+      }
+    ]
+  }
+];
+```
+
+---
+
+## Design Tokens
+
+### `root`
+
+| Token                | Value                   |
+|----------------------|-------------------------|
+| `gutter`             | `0.75rem`               |
+| `transitionDuration` | `{transition.duration}` |
+
+The `gutter` controls the horizontal spacing between sibling nodes and the vertical spacing between the connector lines and node cards.
+
+---
+
+### `node`
+
+The individual card rendered for each chart entry.
+
+| Token               | Value                        |
+|---------------------|------------------------------|
+| `background`        | `{content.background}`       |
+| `hoverBackground`   | `{content.hover.background}` |
+| `selectedBackground`| `{highlight.background}`     |
+| `borderColor`       | `{content.border.color}`     |
+| `color`             | `{content.color}`            |
+| `selectedColor`     | `{highlight.color}`          |
+| `hoverColor`        | `{content.hover.color}`      |
+| `padding`           | `0.75rem 1rem`               |
+| `toggleablePadding` | `0.75rem 1rem 1.25rem 1rem`  |
+| `borderRadius`      | `{content.border.radius}`    |
+
+> **`toggleablePadding`** adds extra bottom padding (`1.25rem`) when a node is toggleable, creating visual space for the collapse/expand toggle button that floats below the card's bottom edge.
+
+---
+
+### `nodeToggleButton`
+
+The small circular button that collapses or expands a node's children.
+
+| Token             | Value                        |
+|-------------------|------------------------------|
+| `background`      | `{content.background}`       |
+| `hoverBackground` | `{content.hover.background}` |
+| `borderColor`     | `{content.border.color}`     |
+| `color`           | `{text.muted.color}`         |
+| `hoverColor`      | `{text.color}`               |
+| `size`            | `1.5rem`                     |
+| `borderRadius`    | `50%`                        |
+| `focusRing.width` | `{focus.ring.width}`         |
+| `focusRing.style` | `{focus.ring.style}`         |
+| `focusRing.color` | `{focus.ring.color}`         |
+| `focusRing.offset`| `{focus.ring.offset}`        |
+| `focusRing.shadow`| `{focus.ring.shadow}`        |
+
+---
+
+### `connector`
+
+The lines that join parent nodes to their children.
+
+| Token          | Value                    |
+|----------------|--------------------------|
+| `color`        | `{content.border.color}` |
+| `borderRadius` | `{content.border.radius}`|
+| `height`       | `24px`                   |
+
+The `height` value (`24px`) controls the vertical run of the connector line between a parent's bottom edge and the horizontal bar above its children.
+
+---
+
+## Theme Notes
+
+OrganizationChart uses `{transition.duration}` on the root to animate node expand/collapse. There are no `transition: none` overrides applied to OrgChart elements in the global Nettalco CSS layer — the smooth collapse animation is intentional and desirable given the low density of nodes compared to table rows.

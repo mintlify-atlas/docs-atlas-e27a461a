@@ -1,0 +1,104 @@
+---
+title: "InputNumber: Nettalco Theme Design Tokens"
+sidebarTitle: "InputNumber"
+description: "Design tokens for the PrimeNG InputNumber component in Nettalco Theme, including increment/decrement button colors and border radius."
+---
+
+The **InputNumber** component extends a text input with numeric formatting and optional increment/decrement buttons. Nettalco Theme customizes the spinner button's dimensions, border radius, and color scheme for both light and dark modes, while the underlying text field inherits all styling from `form.field.*` tokens.
+
+## Usage
+
+```html
+<!-- Basic numeric input -->
+<p-inputnumber [(ngModel)]="quantity" />
+
+<!-- Currency formatting with buttons -->
+<p-inputnumber
+  [(ngModel)]="price"
+  mode="currency"
+  currency="USD"
+  [showButtons]="true"
+  buttonLayout="horizontal"
+/>
+
+<!-- Min/max with step -->
+<p-inputnumber
+  [(ngModel)]="value"
+  [min]="0"
+  [max]="100"
+  [step]="5"
+  [showButtons]="true"
+/>
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [InputNumberModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  quantity = 1;
+  price = 9.99;
+  value = 50;
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `transitionDuration` | `{transition.duration}` | Animation duration for state changes |
+
+### Button
+
+| Token | Value | Description |
+|---|---|---|
+| `button.width` | `2.5rem` | Width of the increment/decrement buttons |
+| `button.borderRadius` | `{form.field.border.radius}` | Button corner radius (matches field) |
+| `button.verticalPadding` | `{form.field.padding.y}` | Vertical padding inside each button |
+
+### Button color scheme — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `button.background` | `transparent` | Default button background |
+| `button.hoverBackground` | `{surface.100}` | Background on hover |
+| `button.activeBackground` | `{surface.200}` | Background when pressed |
+| `button.borderColor` | `{form.field.border.color}` | Button border |
+| `button.hoverBorderColor` | `{form.field.border.color}` | Border on hover |
+| `button.activeBorderColor` | `{form.field.border.color}` | Border when pressed |
+| `button.color` | `{surface.400}` | Icon color (default) |
+| `button.hoverColor` | `{surface.500}` | Icon color on hover |
+| `button.activeColor` | `{surface.600}` | Icon color when pressed |
+
+### Button color scheme — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `button.hoverBackground` | `{surface.800}` | Background on hover |
+| `button.activeBackground` | `{surface.700}` | Background when pressed |
+| `button.color` | `{surface.400}` | Icon color (default) |
+| `button.hoverColor` | `{surface.300}` | Icon color on hover |
+| `button.activeColor` | `{surface.200}` | Icon color when pressed |
+
+<Info>
+The text field portion of InputNumber does not define its own tokens — it inherits all `form.field.*` values. See the [InputText](/components/inputtext) page for the full list of inherited tokens.
+</Info>
+
+## Theme Notes
+
+<Note>
+Nettalco Theme keeps the spinner button background **transparent** by default in both light and dark modes. Hover and active states use subtle surface shades to give tactile feedback without clashing with the input field's border.
+</Note>
+
+<Tip>
+The button's `borderColor` always mirrors `{form.field.border.color}` across all states (default, hover, active). This keeps the button visually attached to the input and avoids a double-border effect on the joined side.
+</Tip>

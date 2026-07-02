@@ -1,0 +1,107 @@
+---
+title: "VirtualScroller Component — Nettalco Theme Tokens"
+sidebarTitle: "VirtualScroller"
+description: "Design tokens and Angular usage for the VirtualScroller component in the Nettalco PrimeNG v21 preset theme library."
+---
+
+The **VirtualScroller** component renders only the visible portion of a large list by recycling DOM nodes as the user scrolls, making it possible to display tens of thousands of items without performance degradation. Its token surface in the Nettalco preset is intentionally minimal — only the loading overlay (mask background and spinner icon size) is configured here. Item templates and their visual styling are entirely the responsibility of the consuming application.
+
+## Angular Usage Example
+
+```html
+<p-virtualscroller
+  [items]="largeList"
+  [itemSize]="56"
+  scrollHeight="400px"
+  styleClass="border border-surface rounded"
+>
+  <ng-template pTemplate="item" let-item let-options="options">
+    <div
+      class="flex items-center gap-3 px-4 py-3"
+      [class.border-t]="!options.first"
+    >
+      <p-avatar [label]="item.initials" shape="circle" />
+      <div>
+        <p class="font-semibold leading-tight">{{ item.name }}</p>
+        <p class="text-sm text-muted">{{ item.email }}</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="loader" let-options="options">
+    <!-- Custom loader skeleton — optional -->
+    <div class="flex items-center gap-3 px-4 py-3">
+      <p-skeleton shape="circle" size="2.5rem" />
+      <div class="flex-1">
+        <p-skeleton width="60%" height="0.875rem" styleClass="mb-1" />
+        <p-skeleton width="40%" height="0.75rem" />
+      </div>
+    </div>
+  </ng-template>
+</p-virtualscroller>
+```
+
+```ts
+largeList = Array.from({ length: 50_000 }, (_, i) => ({
+  name:     `User ${i + 1}`,
+  email:    `user${i + 1}@example.com`,
+  initials: `U${i + 1}`,
+}));
+```
+
+> **`itemSize`** must match the exact rendered pixel height (or width for horizontal mode) of each item. Mismatches cause layout jumps during scroll.
+
+---
+
+## Design Tokens
+
+### `loader`
+
+Tokens for the built-in loading overlay displayed while the component fetches lazily loaded data.
+
+#### `loader.mask`
+
+| Token        | Value                  |
+|--------------|------------------------|
+| `background` | `{content.background}` |
+| `color`      | `{text.muted.color}`   |
+
+#### `loader.icon`
+
+| Token  | Value  |
+|--------|--------|
+| `size` | `2rem` |
+
+---
+
+## Theme Notes
+
+The VirtualScroller preset is deliberately thin. All meaningful visual tokens — item background, hover states, padding, borders — are specified by the item template rather than by the component's own token set. This is consistent with PrimeNG's design intent: VirtualScroller is a performance primitive, not a visual component.
+
+### Lazy Loading Integration
+
+For server-side paginated data, combine VirtualScroller with `[lazy]="true"` and handle the `(onLazyLoad)` event:
+
+```html
+<p-virtualscroller
+  [items]="items"
+  [itemSize]="56"
+  scrollHeight="500px"
+  [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+/>
+```
+
+```ts
+onLazyLoad(event: VirtualScrollerLazyLoadEvent): void {
+  const { first, last } = event;
+  this.itemService.getPage(first, last).subscribe(page => {
+    this.items.splice(first, last - first, ...page);
+    this.items = [...this.items]; // trigger change detection
+  });
+}
+```
+
+### Use Inside DataTable
+
+PrimeNG DataTable uses VirtualScroller internally when `[virtualScroll]="true"` is set. The `loader` tokens apply to the row-level placeholder while rows are being fetched, so they inherit the DataTable surface colour (`{content.background}`) seamlessly.

@@ -1,0 +1,155 @@
+---
+title: "MegaMenu Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "MegaMenu"
+description: "Nettalco Theme design tokens for PrimeNG MegaMenu — root, item, overlay, submenu, labels, icons, separator, and mobile button configuration."
+---
+
+The **MegaMenu** component extends the standard Menubar with a wide overlay panel that can contain multiple columns of grouped links. Nettalco Theme tokens support both horizontal and vertical orientations via dedicated `root.horizontalOrientation` and `root.verticalOrientation` sub-tokens, and the overlay is styled to match the overlay navigation surface used across the design system.
+
+## Usage
+
+```html
+<p-megamenu [model]="items" orientation="horizontal" />
+```
+
+```ts
+import { MegaMenuItem } from 'primeng/api';
+
+items: MegaMenuItem[] = [
+  {
+    label: 'Company',
+    items: [
+      [
+        {
+          label: 'About',
+          items: [
+            { label: 'Mission', icon: 'pi pi-flag' },
+            { label: 'Team', icon: 'pi pi-users' }
+          ]
+        }
+      ],
+      [
+        {
+          label: 'Legal',
+          items: [
+            { label: 'Privacy', icon: 'pi pi-lock' },
+            { label: 'Terms', icon: 'pi pi-file' }
+          ]
+        }
+      ]
+    ]
+  }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.background` | `{content.background}` |
+| `root.borderColor` | `{content.border.color}` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.color` | `{content.color}` |
+| `root.gap` | `0.5rem` |
+| `root.transitionDuration` | `{transition.duration}` |
+| `root.verticalOrientation.padding` | `{navigation.list.padding}` |
+| `root.verticalOrientation.gap` | `{navigation.list.gap}` |
+| `root.horizontalOrientation.padding` | `0.5rem 0.75rem` |
+| `root.horizontalOrientation.gap` | `0.5rem` |
+
+### Base Item
+
+| Token | Value |
+|---|---|
+| `baseItem.borderRadius` | `{content.border.radius}` |
+| `baseItem.padding` | `{navigation.item.padding}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.focusBackground` | `{navigation.item.focus.background}` |
+| `item.activeBackground` | `{navigation.item.active.background}` |
+| `item.color` | `{navigation.item.color}` |
+| `item.focusColor` | `{navigation.item.focus.color}` |
+| `item.activeColor` | `{navigation.item.active.color}` |
+| `item.padding` | `{navigation.item.padding}` |
+| `item.borderRadius` | `{navigation.item.border.radius}` |
+| `item.gap` | `{navigation.item.gap}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.focusColor` | `{navigation.item.icon.focus.color}` |
+| `item.icon.activeColor` | `{navigation.item.icon.active.color}` |
+
+### Overlay
+
+| Token | Value |
+|---|---|
+| `overlay.padding` | `0` |
+| `overlay.background` | `{content.background}` |
+| `overlay.borderColor` | `{content.border.color}` |
+| `overlay.borderRadius` | `{content.border.radius}` |
+| `overlay.color` | `{content.color}` |
+| `overlay.shadow` | `{overlay.navigation.shadow}` |
+| `overlay.gap` | `0.5rem` |
+
+### Submenu
+
+| Token | Value |
+|---|---|
+| `submenu.padding` | `{navigation.list.padding}` |
+| `submenu.gap` | `{navigation.list.gap}` |
+
+### Submenu Label
+
+| Token | Value |
+|---|---|
+| `submenuLabel.padding` | `{navigation.submenu.label.padding}` |
+| `submenuLabel.fontWeight` | `{navigation.submenu.label.font.weight}` |
+| `submenuLabel.background` | `{navigation.submenu.label.background}` |
+| `submenuLabel.color` | `{navigation.submenu.label.color}` |
+
+### Submenu Icon
+
+| Token | Value |
+|---|---|
+| `submenuIcon.size` | `{navigation.submenu.icon.size}` |
+| `submenuIcon.color` | `{navigation.submenu.icon.color}` |
+| `submenuIcon.focusColor` | `{navigation.submenu.icon.focus.color}` |
+| `submenuIcon.activeColor` | `{navigation.submenu.icon.active.color}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.borderColor` | `{content.border.color}` |
+
+### Mobile Button
+
+| Token | Value |
+|---|---|
+| `mobileButton.borderRadius` | `50%` |
+| `mobileButton.size` | `1.75rem` |
+| `mobileButton.color` | `{text.muted.color}` |
+| `mobileButton.hoverColor` | `{text.hover.muted.color}` |
+| `mobileButton.hoverBackground` | `{content.hover.background}` |
+| `mobileButton.focusRing.width` | `{focus.ring.width}` |
+| `mobileButton.focusRing.style` | `{focus.ring.style}` |
+| `mobileButton.focusRing.color` | `{focus.ring.color}` |
+| `mobileButton.focusRing.offset` | `{focus.ring.offset}` |
+| `mobileButton.focusRing.shadow` | `{focus.ring.shadow}` |
+
+## Theme Notes
+
+### Transition Override
+
+Nettalco Theme removes the animated hover transition from MegaMenu item content via a global CSS override:
+
+```css
+div.p-megamenu-item-content {
+  transition: none;
+}
+```
+
+This ensures that hover and active state changes respond immediately, consistent with the rest of the menu-family components in Nettalco Theme.

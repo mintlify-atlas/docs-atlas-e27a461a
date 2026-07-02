@@ -1,0 +1,131 @@
+---
+title: "Paginator Component — Nettalco Theme Tokens"
+sidebarTitle: "Paginator"
+description: "Full design token reference and Angular usage for the standalone Paginator component in the Nettalco PrimeNG v21 preset."
+---
+
+The **Paginator** component renders page navigation controls — first/prev/next/last buttons, numbered page links, a current-page report label, rows-per-page selector, and an optional jump-to-page input. It appears as an inline strip on `{content.background}` with circular nav buttons. DataTable and TreeTable embed a Paginator automatically; this page covers the **standalone** `<p-paginator>` and documents all tokens available for customisation.
+
+## Angular Usage Example
+
+```html
+<!-- Standalone paginator bound to a data array -->
+<p-paginator
+  [totalRecords]="totalRecords"
+  [rows]="rowsPerPage"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+  [showJumpToPageInput]="true"
+  (onPageChange)="onPageChange($event)"
+/>
+```
+
+```ts
+totalRecords = 500;
+rowsPerPage  = 25;
+
+onPageChange(event: PaginatorState): void {
+  // event.first  — zero-based index of the first record on this page
+  // event.rows   — current page size
+  // event.page   — zero-based page number
+  this.loadData(event.first, event.rows);
+}
+```
+
+### Embedding in DataTable
+
+```html
+<p-table
+  [value]="items"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first}–{last} of {totalRecords}"
+>
+  <!-- column templates -->
+</p-table>
+```
+
+When embedded in DataTable or TreeTable, the paginator inherits additional border tokens (`paginatorTop` / `paginatorBottom`) defined on those components — see [DataTable](/components/datatable) and [TreeTable](/components/treetable) for details.
+
+---
+
+## Design Tokens
+
+### `root`
+
+The outer container strip.
+
+| Token                | Value                     |
+|----------------------|---------------------------|
+| `padding`            | `0.5rem 1rem`             |
+| `gap`                | `0.25rem`                 |
+| `borderRadius`       | `{content.border.radius}` |
+| `background`         | `{content.background}`    |
+| `color`              | `{content.color}`         |
+| `transitionDuration` | `{transition.duration}`   |
+
+---
+
+### `navButton`
+
+All navigation buttons: **First page**, **Previous page**, **Next page**, **Last page**, and individual **page number links**.
+
+| Token                | Value                        |
+|----------------------|------------------------------|
+| `background`         | `transparent`                |
+| `hoverBackground`    | `{content.hover.background}` |
+| `selectedBackground` | `{highlight.background}`     |
+| `color`              | `{text.muted.color}`         |
+| `hoverColor`         | `{text.hover.muted.color}`   |
+| `selectedColor`      | `{highlight.color}`          |
+| `width`              | `2.5rem`                     |
+| `height`             | `2.5rem`                     |
+| `borderRadius`       | `50%`                        |
+| `focusRing.width`    | `{focus.ring.width}`         |
+| `focusRing.style`    | `{focus.ring.style}`         |
+| `focusRing.color`    | `{focus.ring.color}`         |
+| `focusRing.offset`   | `{focus.ring.offset}`        |
+| `focusRing.shadow`   | `{focus.ring.shadow}`        |
+
+> The default `background: transparent` means nav buttons are invisible until hovered, keeping the paginator strip uncluttered. The active page link uses `selectedBackground: {highlight.background}` and `selectedColor: {highlight.color}` to stand out clearly.
+
+---
+
+### `currentPageReport`
+
+The text label produced by `currentPageReportTemplate` (e.g. *"Showing 1–10 of 500"*).
+
+| Token   | Value                |
+|---------|----------------------|
+| `color` | `{text.muted.color}` |
+
+---
+
+### `jumpToPageInput`
+
+The text field rendered when `[showJumpToPageInput]="true"`.
+
+| Token      | Value    |
+|------------|----------|
+| `maxWidth` | `2.5rem` |
+
+The `maxWidth` matches the nav button `width` token so the jump input does not visually dominate the paginator strip.
+
+---
+
+## Theme Notes
+
+### Page Links vs. Navigation Arrows
+
+Both first/prev/next/last arrow buttons **and** the numbered page links share the same `navButton` token group. This ensures visual consistency: all interactive page controls are the same size (`2.5rem × 2.5rem`), round (`borderRadius: 50%`), and share the same hover and selected states.
+
+### Rows-Per-Page Dropdown
+
+The rows-per-page selector is rendered as a PrimeNG `Select` (formerly `Dropdown`) component. Its visual appearance is governed by the Select component's own design tokens, not by the Paginator tokens.
+
+### Embedded Usage Border Tokens
+
+When the paginator is embedded in DataTable or TreeTable, the host component controls the border separating the paginator from the table via `paginatorTop.borderColor` / `paginatorBottom.borderColor`. For standalone use, add a border via the `root.borderRadius` wrapper or a parent container's styling.

@@ -1,0 +1,100 @@
+---
+title: "ConfirmPopup Component — Nettalco PrimeNG Preset"
+sidebarTitle: "ConfirmPopup"
+description: "Anchored inline confirmation overlay built on the popover namespace with a 1.5 rem icon, 1 rem content gap, and dedicated footer padding for buttons."
+---
+
+The **ConfirmPopup** component presents a compact, anchored confirmation prompt that appears directly adjacent to the trigger element — suitable for quick destructive-action confirmations that do not require interrupting the full page with a modal dialog. The Nettalco preset bases it on the `{overlay.popover.*}` token namespace (shared with Popover and Tooltip) and adds dedicated sections for `icon`, `content`, and `footer` layout tokens.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-confirm-popup />
+
+<p-button
+  label="Remove Tag"
+  severity="secondary"
+  icon="pi pi-times"
+  (onClick)="confirmRemove($event)"
+/>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [ConfirmPopupModule, ButtonModule],
+  providers: [ConfirmationService],
+})
+export class AppComponent {
+  constructor(private confirmationService: ConfirmationService) {}
+
+  confirmRemove(event: Event): void {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Remove this tag?',
+      icon: 'pi pi-exclamation-circle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        console.log('Tag removed');
+      },
+      reject: () => {
+        console.log('Cancelled');
+      },
+    });
+  }
+}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/confirmpopup/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{overlay.popover.background}` | Popup panel background |
+| `root.borderColor` | `{overlay.popover.border.color}` | Panel border color |
+| `root.color` | `{overlay.popover.color}` | Default text color |
+| `root.borderRadius` | `{overlay.popover.border.radius}` | Corner radius |
+| `root.shadow` | `{overlay.popover.shadow}` | Drop shadow |
+| `root.gutter` | `10px` | Gap between the trigger element and the popup |
+| `root.arrowOffset` | `1.25rem` | Distance from the panel corner to the arrow tip |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.padding` | `{overlay.popover.padding}` | Inner padding of the content area |
+| `content.gap` | `1rem` | Gap between the icon and the confirmation message text |
+
+### Icon
+
+| Token | Value | Description |
+|---|---|---|
+| `icon.size` | `1.5rem` | Icon width and height (smaller than ConfirmDialog's 2 rem) |
+| `icon.color` | `{overlay.popover.color}` | Icon color — inherits the popover default text color |
+
+### Footer
+
+| Token | Value | Description |
+|---|---|---|
+| `footer.gap` | `0.5rem` | Gap between Accept and Reject buttons |
+| `footer.padding` | `0 {overlay.popover.padding} {overlay.popover.padding} {overlay.popover.padding}` | No top padding; sides and bottom at popover padding value |
+
+## Theme Notes
+
+- **Popover namespace vs. modal namespace** — ConfirmPopup uses `{overlay.popover.*}`, whereas ConfirmDialog uses `{overlay.modal.*}`. The popover tokens typically resolve to a smaller, lighter panel appearance than modal tokens.
+- **Icon size difference** — ConfirmPopup uses `1.5rem` compared to ConfirmDialog's `2rem`. The smaller size suits the compact anchored layout; the larger size suits the centred modal where visual emphasis is important.
+- **`target` is required** — In the `ConfirmationService.confirm()` call you must pass `target: event.target`. This tells the component where to anchor the popup arrow. Without it the popup may render in an unexpected position.
+- **Footer padding pattern** — Like Dialog and Drawer, the footer uses `0 padding padding padding` rather than uniform padding. This prevents a double-gap between the content bottom and the footer top in the stacked layout.
+- **`<p-confirm-popup />` placement** — Place the element once in the nearest common ancestor template. Unlike ConfirmDialog, it does not need to be in `AppComponent` — it can live within any component that triggers confirmations.

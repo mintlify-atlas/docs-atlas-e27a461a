@@ -1,0 +1,119 @@
+---
+title: "Nettalco Theme SplitButton: Dropdown Action Button"
+sidebarTitle: "Split Button"
+description: "Nettalco-themed PrimeNG SplitButton combining a primary action button with a dropdown trigger, sharing the form-field border-radius token."
+---
+
+The PrimeNG `p-splitbutton` component combines a primary action button with a secondary dropdown trigger that exposes a list of additional actions. Nettalco Theme aligns the `SplitButton` wrapper's border radius with the global form-field token and carries the same `raisedShadow` used by the standard `Button` component, ensuring visual consistency when both components appear in the same toolbar or action group.
+
+## Basic Usage
+
+```html
+<!-- Default split button -->
+<p-splitbutton
+  label="Save"
+  icon="pi pi-check"
+  [model]="items"
+  (onClick)="onSave()"
+/>
+
+<!-- With severity -->
+<p-splitbutton
+  label="Export"
+  icon="pi pi-upload"
+  severity="success"
+  [model]="exportItems"
+  (onClick)="onExport()"
+/>
+
+<!-- Outlined variant -->
+<p-splitbutton
+  label="Actions"
+  icon="pi pi-cog"
+  variant="outlined"
+  severity="secondary"
+  [model]="actionItems"
+/>
+
+<!-- Rounded pill style -->
+<p-splitbutton
+  label="Submit"
+  [rounded]="true"
+  [model]="items"
+  (onClick)="onSubmit()"
+/>
+
+<!-- Raised with elevation shadow -->
+<p-splitbutton
+  label="Upload"
+  icon="pi pi-cloud-upload"
+  [raised]="true"
+  severity="info"
+  [model]="uploadItems"
+/>
+```
+
+## Component Setup (TypeScript)
+
+```typescript
+import { Component } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { SplitButtonModule } from 'primeng/splitbutton';
+
+@Component({
+  selector: 'app-actions',
+  standalone: true,
+  imports: [SplitButtonModule],
+  templateUrl: './actions.component.html',
+})
+export class ActionsComponent {
+  items: MenuItem[] = [
+    { label: 'Save as Draft',  icon: 'pi pi-pencil',  command: () => this.saveDraft() },
+    { label: 'Save & Publish', icon: 'pi pi-send',    command: () => this.publish() },
+    { separator: true },
+    { label: 'Discard',        icon: 'pi pi-trash',   command: () => this.discard() },
+  ];
+
+  onSave()    { console.log('Primary save triggered'); }
+  saveDraft() { console.log('Draft saved'); }
+  publish()   { console.log('Published'); }
+  discard()   { console.log('Discarded'); }
+}
+```
+
+## Severity Variants
+
+`SplitButton` forwards the `severity` input to both the main button and the dropdown trigger, so all eight PrimeNG severity colors are supported.
+
+```html
+<p-splitbutton label="Primary"   severity="primary"   [model]="items" />
+<p-splitbutton label="Secondary" severity="secondary" [model]="items" />
+<p-splitbutton label="Info"      severity="info"      [model]="items" />
+<p-splitbutton label="Success"   severity="success"   [model]="items" />
+<p-splitbutton label="Warn"      severity="warn"      [model]="items" />
+<p-splitbutton label="Help"      severity="help"      [model]="items" />
+<p-splitbutton label="Danger"    severity="danger"    [model]="items" />
+<p-splitbutton label="Contrast"  severity="contrast"  [model]="items" />
+```
+
+## Design Tokens
+
+The `SplitButton` preset defines a minimal set of wrapper-level tokens. The full color palette is inherited from the `Button` component tokens applied to the internal button elements.
+
+| Token | Value | Description |
+|---|---|---|
+| `splitbutton.root.borderRadius` | `{form.field.border.radius}` → **6px** | Outer wrapper corner radius; matches form fields and `Button` |
+| `splitbutton.root.roundedBorderRadius` | `2rem` | Pill shape when `[rounded]="true"` |
+| `splitbutton.root.raisedShadow` | `0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)` | Material-style elevation when `[raised]="true"` |
+
+<Note>
+  `SplitButton` does not define its own color scheme tokens. All button and dropdown panel colors are resolved from the shared `Button` and `Menu`/`Popover` component tokens in the Nettalco preset.
+</Note>
+
+## Nettalco-Specific Customizations
+
+**Consistent border radius.** `splitbutton.root.borderRadius` is wired to `{form.field.border.radius}` — the same token as `button.root.borderRadius`. This ensures the SplitButton's outer wrapper clips to exactly 6px, matching adjacent text inputs, selects, and standalone buttons in form toolbars.
+
+**Identical raised shadow.** The `raisedShadow` value is an exact copy of the one defined in the `Button` preset. When you combine a raised `SplitButton` next to a raised `Button`, both cast the same Material Design-inspired three-layer shadow, preserving visual uniformity across action groups.
+
+**Dropdown inherits Menu tokens.** The dropdown panel rendered by `SplitButton` is styled via the Nettalco `menu` preset, so hover states, item padding, separators, and surface colors all follow the same menu design tokens used elsewhere in the application.

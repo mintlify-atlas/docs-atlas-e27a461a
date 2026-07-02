@@ -1,0 +1,156 @@
+---
+title: "Stepper Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Stepper"
+description: "Multi-step wizard with primary-colored active state tokens, circular step number badges, animated separator line, and indented step panel content areas."
+---
+
+The **Stepper** component guides users through a sequential workflow by displaying numbered step headers connected by separator lines, with associated panel content below. The Nettalco preset highlights the active step using `{primary.color}` on the step number and title, while inactive steps use `{text.muted.color}` — creating a clear visual distinction between visited, current, and upcoming steps.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-stepper value="1">
+  <p-step-list>
+    <p-step value="1">Personal Info</p-step>
+    <p-step value="2">Address</p-step>
+    <p-step value="3">Review</p-step>
+  </p-step-list>
+
+  <p-step-panels>
+    <p-step-panel value="1">
+      <ng-template #content let-activateCallback="activateCallback">
+        <div class="flex flex-col gap-4 p-4">
+          <input pInputText placeholder="Full name" />
+          <input pInputText placeholder="Email address" />
+          <p-button label="Next" (onClick)="activateCallback('2')" />
+        </div>
+      </ng-template>
+    </p-step-panel>
+
+    <p-step-panel value="2">
+      <ng-template #content let-activateCallback="activateCallback">
+        <div class="flex flex-col gap-4 p-4">
+          <input pInputText placeholder="Street address" />
+          <input pInputText placeholder="City" />
+          <div class="flex gap-2">
+            <p-button label="Back" severity="secondary" (onClick)="activateCallback('1')" />
+            <p-button label="Next" (onClick)="activateCallback('3')" />
+          </div>
+        </div>
+      </ng-template>
+    </p-step-panel>
+
+    <p-step-panel value="3">
+      <ng-template #content let-activateCallback="activateCallback">
+        <div class="flex flex-col gap-4 p-4">
+          <p>Please review your details before submitting.</p>
+          <div class="flex gap-2">
+            <p-button label="Back" severity="secondary" (onClick)="activateCallback('2')" />
+            <p-button label="Submit" (onClick)="onSubmit()" />
+          </div>
+        </div>
+      </ng-template>
+    </p-step-panel>
+  </p-step-panels>
+</p-stepper>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { StepperModule } from 'primeng/stepper';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [StepperModule, ButtonModule, InputTextModule],
+})
+export class AppComponent {
+  onSubmit() {
+    console.log('Form submitted');
+  }
+}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/stepper/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.transitionDuration` | `{transition.duration}` | Transition speed for step panel show/hide animations |
+
+### Separator
+
+| Token | Value | Description |
+|---|---|---|
+| `separator.background` | `{content.border.color}` | Color of the connecting line for inactive steps |
+| `separator.activeBackground` | `{primary.color}` | Color of the connecting line for completed steps |
+| `separator.margin` | `0 0 0 1.625rem` | Left offset to align with step number center |
+| `separator.size` | `2px` | Thickness of the separator line |
+
+### Step
+
+| Token | Value | Description |
+|---|---|---|
+| `step.padding` | `0.5rem` | Outer padding around each step item |
+| `step.gap` | `1rem` | Gap between the step header and its content panel |
+
+### Step Header
+
+| Token | Value | Description |
+|---|---|---|
+| `stepHeader.padding` | `0` | No extra padding — step number and title provide spacing |
+| `stepHeader.borderRadius` | `{content.border.radius}` | Focus outline border radius |
+| `stepHeader.gap` | `0.5rem` | Gap between the number badge and the title text |
+
+### Step Title
+
+| Token | Value | Description |
+|---|---|---|
+| `stepTitle.color` | `{text.muted.color}` | Title color for inactive steps |
+| `stepTitle.activeColor` | `{primary.color}` | Title color for the currently active step |
+| `stepTitle.fontWeight` | `500` | Medium weight for step labels |
+
+### Step Number
+
+| Token | Value | Description |
+|---|---|---|
+| `stepNumber.background` | `{content.background}` | Badge background for inactive steps |
+| `stepNumber.activeBackground` | `{content.background}` | Badge background for the active step |
+| `stepNumber.borderColor` | `{content.border.color}` | Badge border for inactive steps |
+| `stepNumber.activeBorderColor` | `{content.border.color}` | Badge border for the active step |
+| `stepNumber.color` | `{text.muted.color}` | Number text color for inactive steps |
+| `stepNumber.activeColor` | `{primary.color}` | Number text color for the active step |
+| `stepNumber.size` | `2rem` | Badge diameter |
+| `stepNumber.fontSize` | `1.143rem` | Number font size inside the badge |
+| `stepNumber.fontWeight` | `500` | Medium weight for numbers |
+| `stepNumber.borderRadius` | `50%` | Circular badge shape |
+| `stepNumber.shadow` | `0px 0.5px 0px 0px rgba(0,0,0,0.06), 0px 1px 1px 0px rgba(0,0,0,0.12)` | Subtle depth on the badge |
+
+### Step Panels Container
+
+| Token | Value | Description |
+|---|---|---|
+| `steppanels.padding` | `0.875rem 0.5rem 1.125rem 0.5rem` | Padding around the entire panel group |
+
+### Step Panel (individual)
+
+| Token | Value | Description |
+|---|---|---|
+| `steppanel.background` | `{content.background}` | Panel content background |
+| `steppanel.color` | `{content.color}` | Panel content text color |
+| `steppanel.padding` | `0` | No built-in panel padding — use your own layout padding inside |
+| `steppanel.indent` | `1rem` | Left indent to align panel content under the step title |
+
+## Theme Notes
+
+- **Active state color** — Both `stepTitle.activeColor` and `stepNumber.activeColor` use `{primary.color}`. Changing the global primary palette automatically updates all active step indicators throughout the application.
+- **Step number badge** — The badge background does not change between active and inactive states (`{content.background}` for both). The active step is distinguished purely by the border and text color change to `{primary.color}` and the subtle shadow.
+- **Separator alignment** — `separator.margin: '0 0 0 1.625rem'` is tuned to visually bisect the `2rem` step number badge, so the connecting line appears centered on the badge regardless of viewport size.
+- **Panel indent** — `steppanel.indent: '1rem'` offsets the content leftward from the number badge, preventing text from starting at the very left edge of the layout.

@@ -1,0 +1,106 @@
+---
+title: "PanelMenu Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "PanelMenu"
+description: "Nettalco Theme tokens for PrimeNG PanelMenu — panel surface, item states, submenu indentation, and transition:none on both header and item content."
+---
+
+The **PanelMenu** component is a collapsible, accordion-style vertical navigation tree. Each top-level entry is an expandable panel with its own header; child items are nested below with configurable indentation. Nettalco Theme introduces a `transition: none` override on **both** the panel header content and the individual item content elements, eliminating hover animation delays across the entire component.
+
+## Usage
+
+```html
+<p-panelMenu [model]="items" [multiple]="false" />
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+items: MenuItem[] = [
+  {
+    label: 'Dashboard',
+    icon: 'pi pi-home',
+    items: [
+      { label: 'Overview', icon: 'pi pi-chart-bar' },
+      { label: 'Analytics', icon: 'pi pi-chart-line' }
+    ]
+  },
+  {
+    label: 'Settings',
+    icon: 'pi pi-cog',
+    items: [
+      { label: 'Profile', icon: 'pi pi-user' },
+      { label: 'Notifications', icon: 'pi pi-bell' }
+    ]
+  }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.gap` | `0.5rem` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Panel
+
+| Token | Value |
+|---|---|
+| `panel.background` | `{content.background}` |
+| `panel.borderColor` | `{content.border.color}` |
+| `panel.borderWidth` | `1px` |
+| `panel.color` | `{content.color}` |
+| `panel.padding` | `0.25rem 0.25rem` |
+| `panel.borderRadius` | `{content.border.radius}` |
+| `panel.first.borderWidth` | `1px` |
+| `panel.first.topBorderRadius` | `{content.border.radius}` |
+| `panel.last.borderWidth` | `1px` |
+| `panel.last.bottomBorderRadius` | `{content.border.radius}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.focusBackground` | `{navigation.item.focus.background}` |
+| `item.color` | `{navigation.item.color}` |
+| `item.focusColor` | `{navigation.item.focus.color}` |
+| `item.gap` | `0.5rem` |
+| `item.padding` | `{navigation.item.padding}` |
+| `item.borderRadius` | `{content.border.radius}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.focusColor` | `{navigation.item.icon.focus.color}` |
+
+### Submenu
+
+| Token | Value |
+|---|---|
+| `submenu.indent` | `1rem` |
+
+### Submenu Icon
+
+| Token | Value |
+|---|---|
+| `submenuIcon.color` | `{navigation.submenu.icon.color}` |
+| `submenuIcon.focusColor` | `{navigation.submenu.icon.focus.color}` |
+
+## Theme Notes
+
+### Transition Override
+
+Nettalco Theme applies `transition: none` to **both** the panel header content and the nested item content in PanelMenu. This is unique among the menu-family components in that it targets two distinct CSS selectors:
+
+```css
+/* Panel header row */
+div.p-panelmenu-header-content {
+  transition: none;
+}
+
+/* Individual item rows within expanded panels */
+div.p-panelmenu-item-content {
+  transition: none;
+}
+```
+
+Both overrides are part of the global extended CSS block in Nettalco Theme. The result is that expanding a panel header and hovering over child items both respond with zero animation delay, producing a tight, snappy feel appropriate for dense sidebar navigation.

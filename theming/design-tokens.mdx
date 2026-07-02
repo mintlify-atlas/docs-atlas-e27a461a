@@ -1,0 +1,255 @@
+---
+title: "Design Token Architecture in Nettalco Theme"
+sidebarTitle: "Design Tokens"
+description: "Explore the three-layer token system — primitive palettes, semantic role mappings, and per-component overrides — that powers Nettalco Theme."
+---
+
+Nettalco Theme is built on the `definePreset` API from `@primeuix/themes`, which composes a new preset by deeply merging a set of override objects into the **Aura** base. This produces a structured, three-layer token hierarchy: raw primitive color scales at the bottom, semantic role tokens in the middle, and fine-grained per-component overrides at the top. Understanding this hierarchy makes it straightforward to predict how a color change propagates across the entire component library, and to add your own overrides when needed.
+
+## The definePreset Call
+
+The preset is assembled in a single `definePreset(Aura, overrides)` call. The `overrides` object accepts four top-level keys:
+
+```typescript
+import { definePreset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
+
+const MyPreset = definePreset(Aura, {
+  primitive: { /* Level 1 — raw color palettes */ },
+  semantic:  { /* Level 2 — role-based references */ },
+  css:       { /* Global CSS string injected into :root */ },
+  components: { /* Level 3 — per-component token objects */ },
+});
+
+export default MyPreset;
+```
+
+Anything not specified in the overrides falls through to Aura's defaults, so Nettalco Theme only needs to declare what it changes.
+
+---
+
+## Level 1 — Primitive Tokens
+
+Primitive tokens are raw, unitless values — in practice, hex color codes organized into numeric scales from `50` (lightest) to `950` (darkest). They have no semantic meaning on their own; they are simply a vocabulary of colors that semantic tokens can reference.
+
+Nettalco Theme adds **five custom brand palettes** alongside the standard Aura palettes (emerald, blue, red, slate, etc.):
+
+```typescript
+primitive: {
+  nettalcoPrimary: {
+    50: '#EDF4FF',  // Very light blue-white
+    100: '#D7E3FB',
+    200: '#B4D3FD',
+    300: '#5A9FFC',
+    400: '#336DD9',
+    500: '#112A46', // ← Brand anchor: Navy
+    600: '#0A1D49',
+    700: '#1F498E',
+    800: '#2B5DA1',
+    900: '#22436F',
+    950: '#0C3D5C',
+  },
+  nettalcoSecondary: { /* Sky Blue #3F8CF9 */ },
+  nettalcoSuccess:   { /* Cyan #2BA5CD */ },
+  nettalcoWarn:      { /* Orange #D57952 */ },
+  nettalcoInfo:      { /* Blue Info #66A6FB */ },
+}
+```
+
+<Note>
+  Standard palettes inherited from Aura's base — such as `emerald`, `red`, `slate`, `blue`, `violet`, `zinc`, and others — are still available and used internally by some component overrides and by the `error` semantic role, which maps to `red`.
+</Note>
+
+---
+
+## Level 2 — Semantic Tokens
+
+Semantic tokens give primitive shades a **functional role**. Instead of referencing `#112A46` directly in a component, a component token says `{primary.500}` — and semantic tokens define what `primary.500` resolves to.
+
+### Role → Palette Mappings
+
+| Semantic Role | Mapped Palette | Anchor Shade | Light mode color |
+|---|---|---|---|
+| `primary` | `nettalcoPrimary` | `500` | `#112A46` (Navy) |
+| `success` | `nettalcoSuccess` | `500` | `#2BA5CD` (Cyan) |
+| `info` | `nettalcoInfo` | `500` | `#66A6FB` (Blue Info) |
+| `warn` | `nettalcoWarn` | `500` | `#D57952` (Orange) |
+| `error` | `red` (standard) | `500` | `#ef4444` |
+
+The mapping is expressed as full 11-shade objects so every shade level resolves correctly:
+
+```typescript
+semantic: {
+  primary: {
+    50:  '{nettalcoPrimary.50}',
+    100: '{nettalcoPrimary.100}',
+    // ... 200–900 ...
+    500: '{nettalcoPrimary.500}', // #112A46
+    950: '{nettalcoPrimary.950}',
+  },
+  success: {
+    50:  '{nettalcoSuccess.50}',
+    500: '{nettalcoSuccess.500}', // #2BA5CD
+    // ...
+  },
+  info: {
+    500: '{nettalcoInfo.500}', // #66A6FB
+    // ...
+  },
+  warn: {
+    500: '{nettalcoWarn.500}', // #D57952
+    // ...
+  },
+  error: {
+    500: '{red.500}', // #ef4444
+    // ...
+  },
+}
+```
+
+### colorScheme — Light and Dark Role Colors
+
+Within `semantic.colorScheme`, Nettalco Theme defines how each semantic role **renders** in light and dark mode. This is where colors become interactive states (hover, active, contrast):
+
+**Light mode primary:**
+
+```typescript
+colorScheme: {
+  light: {
+    primary: {
+      color:         '{primary.500}', // #112A46 — Navy
+      contrastColor: '#ffffff',
+      hoverColor:    '{primary.900}', // #22436F — darker navy
+      activeColor:   '{primary.800}', // #2B5DA1 — medium navy-blue
+    },
+    success: {
+      color:         '{success.500}', // #2BA5CD
+      contrastColor: '#ffffff',
+      hoverColor:    '{success.300}',
+      activeColor:   '{success.400}',
+    },
+    info: {
+      color:         '{info.500}',    // #66A6FB
+      contrastColor: '#ffffff',
+      hoverColor:    '{info.300}',
+      activeColor:   '{info.100}',
+    },
+    warn: {
+      color:         '{warn.500}',    // #D57952
+      contrastColor: '#ffffff',
+      hoverColor:    '{warn.600}',
+      activeColor:   '{warn.400}',
+    },
+    error: {
+      color:         '{error.500}',   // #ef4444
+      contrastColor: '#ffffff',
+      hoverColor:    '{error.600}',
+      activeColor:   '{error.700}',
+    },
+  },
+}
+```
+
+**Dark mode primary** (colors invert to remain legible on dark surfaces):
+
+```typescript
+  dark: {
+    primary: {
+      color:         '{primary.50}',  // #EDF4FF — very light blue
+      contrastColor: '{primary.500}', // #112A46 — navy becomes the contrast
+      hoverColor:    '{primary.100}',
+      activeColor:   '{primary.400}',
+    },
+  }
+```
+
+### Light Surface Palette
+
+In light mode, surface tokens resolve to the standard **slate** scale, providing a clean, neutral background hierarchy:
+
+```typescript
+light: {
+  surface: {
+    0:   '#ffffff',
+    50:  '#f8fafc', // slate.50
+    100: '#f1f5f9', // slate.100
+    200: '#e2e8f0',
+    300: '#cbd5e1',
+    400: '#94a3b8',
+    500: '#64748b',
+    600: '#475569',
+    700: '#334155',
+    800: '#1e293b',
+    900: '#0f172a',
+    950: '#020617',
+  },
+}
+```
+
+---
+
+## Level 3 — Component Tokens
+
+Component tokens are the most granular layer. Each PrimeNG component exposes a set of tokens for its visual anatomy (root, header, content, footer, etc.), and Nettalco Theme overrides specific values to match Nettalco's design language.
+
+For example, the `button` component override controls border-radius and padding, while `card` controls its shadow and border-radius:
+
+```typescript
+components: {
+  button: {
+    root: {
+      borderRadius: '{border.radius.sm}', // 4px
+    },
+  },
+  card: {
+    root: {
+      borderRadius: '{border.radius.lg}', // 8px
+      shadow: '0 2px 8px rgba(0,0,0,0.08)',
+    },
+  },
+  datatable: {
+    // Row, header, body cell tokens...
+  },
+}
+```
+
+All 75+ components are overridden in Nettalco Theme — the full list includes: `accordion`, `autocomplete`, `avatar`, `badge`, `blockui`, `breadcrumb`, `button`, `card`, `carousel`, `cascadeselect`, `checkbox`, `chip`, `colorpicker`, `confirmdialog`, `confirmpopup`, `contextmenu`, `datatable`, `dataview`, `datepicker`, `dialog`, `divider`, `dock`, `drawer`, `editor`, `fieldset`, `fileupload`, `floatlabel`, `galleria`, `iconfield`, `iftalabel`, `image`, `imagecompare`, `inlinemessage`, `inplace`, `inputchips`, `inputgroup`, `inputnumber`, `inputotp`, `inputtext`, `knob`, `listbox`, `megamenu`, `menu`, `menubar`, `message`, `metergroup`, `multiselect`, `orderlist`, `organizationchart`, `overlaybadge`, `paginator`, `panel`, `panelmenu`, `password`, `picklist`, `popover`, `progressbar`, `progressspinner`, `radiobutton`, `rating`, `ripple`, `scrollpanel`, `select`, `selectbutton`, `skeleton`, `slider`, `speeddial`, `splitbutton`, `splitter`, `stepper`, `steps`, `tabmenu`, `tabs`, `tabview`, `tag`, `terminal`, `textarea`, `tieredmenu`, `timeline`, `toast`, `togglebutton`, `toggleswitch`, `toolbar`, `tooltip`, `tree`, `treeselect`, `treetable`, `virtualscroller`.
+
+---
+
+## Global CSS Override
+
+The preset also injects a global CSS string via the `css` key. This override removes `transition: none` on interactive elements like table rows and menu items — a fix for the visual flicker that PrimeNG's default styles can introduce in some Angular CDK contexts:
+
+```typescript
+css: `
+  .p-datatable .p-datatable-tbody > tr,
+  .p-menu .p-menuitem-link,
+  .p-tieredmenu .p-menuitem-link {
+    transition: background-color 0.2s, color 0.2s;
+  }
+`
+```
+
+---
+
+## Extending the Preset
+
+<Note>
+  If your application needs to override a token further — say, to use a slightly different card border-radius in one module — you can call `definePreset` again on top of `MyPreset`, passing only the tokens you want to change:
+
+  ```typescript
+  import { definePreset } from '@primeuix/themes';
+  import MyPreset from '@nettalco/nettalco-theme';
+
+  export const MyAppPreset = definePreset(MyPreset, {
+    components: {
+      card: {
+        root: { borderRadius: '12px' },
+      },
+    },
+  });
+  ```
+
+  This lets you layer app-specific design decisions without forking the library.
+</Note>

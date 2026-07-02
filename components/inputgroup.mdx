@@ -1,0 +1,60 @@
+---
+title: "InputGroup: Nettalco Theme Design Tokens"
+sidebarTitle: "InputGroup"
+description: "Design tokens for the PrimeNG InputGroup component in Nettalco Theme — addon background, border, color, radius, padding, and minimum width."
+---
+
+The **InputGroup** component wraps one or more inputs alongside prefix/suffix add-ons such as icons, labels, or buttons, creating a visually joined composite field. Nettalco Theme styles the add-on element through its own `addon` token section, which deliberately mirrors `form.field` values so the add-on appears seamlessly fused with the adjacent input.
+
+## Usage
+
+```html
+<!-- Text addon prefix -->
+<p-inputgroup>
+  <p-inputgroup-addon>@</p-inputgroup-addon>
+  <input pInputText placeholder="Username" />
+</p-inputgroup>
+
+<!-- Icon addon with button suffix -->
+<p-inputgroup>
+  <p-inputgroup-addon>
+    <i class="pi pi-search"></i>
+  </p-inputgroup-addon>
+  <input pInputText placeholder="Search" />
+  <p-button label="Go" />
+</p-inputgroup>
+
+<!-- Multiple addons -->
+<p-inputgroup>
+  <p-inputgroup-addon>$</p-inputgroup-addon>
+  <input pInputText placeholder="Amount" />
+  <p-inputgroup-addon>.00</p-inputgroup-addon>
+</p-inputgroup>
+```
+
+## Design Tokens
+
+### Addon
+
+| Token | Value | Description |
+|---|---|---|
+| `addon.background` | `{form.field.background}` | Addon background (matches the input field) |
+| `addon.borderColor` | `{form.field.border.color}` | Addon border color (matches the input field) |
+| `addon.color` | `{form.field.icon.color}` | Addon content color (icon/text) |
+| `addon.borderRadius` | `{form.field.border.radius}` | Corner radius for outer edges of the addon |
+| `addon.padding` | `0.5rem` | Internal padding of the addon slot |
+| `addon.minWidth` | `2.5rem` | Minimum width to ensure square icon addons |
+
+## Theme Notes
+
+<Note>
+The addon's `background`, `borderColor`, and `borderRadius` all reference the same `form.field.*` tokens as the adjacent input. This means the add-on will automatically adapt to any customizations you make to the base form field tokens.
+</Note>
+
+<Tip>
+`addon.minWidth` is set to `2.5rem`, keeping icon-only addons square when paired with the default `0.5rem` padding. If you render text addons with longer strings, the addon will grow naturally beyond this minimum.
+</Tip>
+
+<Info>
+`addon.color` resolves to `{form.field.icon.color}`, which is `{surface.400}` in light mode and `{surface.400}` in dark mode. Use a custom CSS override or a theme extension if you need the addon text to have a higher-contrast color than the icon default.
+</Info>

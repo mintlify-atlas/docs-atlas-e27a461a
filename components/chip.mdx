@@ -1,0 +1,133 @@
+---
+title: "Chip Input Tags for Selected Items and Filters"
+sidebarTitle: "Chip"
+description: "Removable inline item tags for selected values, filters, and contact lists, styled with Nettalco surface tokens and a pill border radius."
+---
+
+## Overview
+
+`p-chip` renders a rounded pill element used to display a selected value, filter criteria, or a person's name in compact form. It supports an optional remove icon, an image or icon prefix, and smooth transitions. The Nettalco preset uses the neutral surface palette for chip backgrounds — not the severity palettes — because chips represent selected data rather than status feedback.
+
+## Usage
+
+### Basic Chip
+
+```html
+<p-chip label="Angular" />
+<p-chip label="TypeScript" />
+<p-chip label="PrimeNG" />
+```
+
+### Removable Chip
+
+```html
+<p-chip
+  *ngFor="let tag of selectedTags"
+  [label]="tag"
+  [removable]="true"
+  (onRemove)="removeTag(tag)"
+/>
+```
+
+```ts
+export class FilterComponent {
+  selectedTags = ['Angular', 'PrimeNG', 'TypeScript'];
+
+  removeTag(tag: string) {
+    this.selectedTags = this.selectedTags.filter(t => t !== tag);
+  }
+}
+```
+
+### Chip with Image
+
+```html
+<p-chip
+  label="Jane Doe"
+  image="assets/avatars/jane.jpg"
+/>
+```
+
+### Chip with Icon
+
+```html
+<p-chip label="Pinned" icon="pi pi-bookmark" />
+<p-chip label="Starred" icon="pi pi-star-fill" />
+```
+
+### Chip Group
+
+```html
+<div class="flex flex-wrap gap-2">
+  <p-chip
+    *ngFor="let filter of activeFilters"
+    [label]="filter.label"
+    [removable]="true"
+    (onRemove)="clearFilter(filter)"
+  />
+</div>
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/chip/index.ts`:
+
+### Root
+
+| Token | Value | Notes |
+|---|---|---|
+| `root.borderRadius` | `16px` | Fixed pill radius — always fully rounded |
+| `root.paddingX` | `0.75rem` | Horizontal padding |
+| `root.paddingY` | `0.5rem` | Vertical padding |
+| `root.gap` | `0.5rem` | Gap between icon/image and label |
+| `root.transitionDuration` | `{transition.duration}` | Shared global transition |
+
+### Image
+
+| Token | Value |
+|---|---|
+| `image.width` | `2rem` |
+| `image.height` | `2rem` |
+
+### Icon
+
+| Token | Value |
+|---|---|
+| `icon.size` | `1rem` |
+
+### Remove Icon
+
+| Token | Value |
+|---|---|
+| `removeIcon.size` | `1rem` |
+| `removeIcon.focusRing.width` | `{focus.ring.width}` |
+| `removeIcon.focusRing.style` | `{focus.ring.style}` |
+| `removeIcon.focusRing.color` | `{focus.ring.color}` |
+| `removeIcon.focusRing.offset` | `{focus.ring.offset}` |
+| `removeIcon.focusRing.shadow` | `{form.field.focus.ring.shadow}` |
+
+### Color Scheme — Light Mode
+
+| Element | Token | Value |
+|---|---|---|
+| Root background | `colorScheme.light.root.background` | `{surface.100}` |
+| Root text | `colorScheme.light.root.color` | `{surface.800}` |
+| Icon color | `colorScheme.light.icon.color` | `{surface.800}` |
+| Remove icon color | `colorScheme.light.removeIcon.color` | `{surface.800}` |
+
+### Color Scheme — Dark Mode
+
+| Element | Token | Value |
+|---|---|---|
+| Root background | `colorScheme.dark.root.background` | `{surface.800}` |
+| Root text | `colorScheme.dark.root.color` | `{surface.0}` |
+| Icon color | `colorScheme.dark.icon.color` | `{surface.0}` |
+| Remove icon color | `colorScheme.dark.removeIcon.color` | `{surface.0}` |
+
+## Nettalco Theme Notes
+
+Chips use the **surface** palette rather than brand or severity palettes, reflecting their role as neutral containers for selected data. In light mode, the `{surface.100}` background is `#f1f5f9` (a cool near-white), and text is `{surface.800}` = `#1e293b` (dark slate). In dark mode the chip inverts to `{surface.800}` = `#0f1e35` background with near-white `{surface.0}` = `#f0f5fb` text.
+
+The fixed `16px` border radius creates an unconditional pill shape — unlike `p-tag` which offers both a standard and a rounded variant. The remove icon inherits the same surface color as the label, keeping the entire chip monochromatic.
+
+> **Input Chips:** When used with `p-inputchips` for free-form tag entry, the chip styling is driven by the `inputchips` component token overrides rather than the standalone chip tokens. Refer to the Input Chips documentation for those specifics.

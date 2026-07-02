@@ -1,0 +1,275 @@
+---
+title: "Nettalco Theme Button: Severities, Variants & Tokens"
+sidebarTitle: "Button"
+description: "Nettalco-themed PrimeNG Button supporting 8 severity variants, 4 style variants, and 3 size tiers all driven by semantic design tokens."
+---
+
+The PrimeNG `p-button` component is the primary interactive element for triggering actions. Nettalco Theme configures it with the brand's Navy (`#112A46`) primary color, precise `border-radius` inheritance from the shared form-field token, and a full matrix of semantic color roles — each carrying its own light/dark color scheme tokens for background, border, text, and focus-ring states.
+
+## Basic Usage
+
+```html
+<!-- Default primary filled button -->
+<p-button label="Save Changes" />
+
+<!-- With leading icon -->
+<p-button label="Download" icon="pi pi-download" />
+
+<!-- Icon-only -->
+<p-button icon="pi pi-search" aria-label="Search" />
+
+<!-- Loading state -->
+<p-button label="Submitting" [loading]="true" />
+```
+
+## Severity Variants
+
+All eight PrimeNG severity values are fully themed. `danger` maps to the `error` semantic palette; `help` maps to Violet; `contrast` inverts the surface scale.
+
+<Tabs>
+  <Tab title="Filled (default)">
+    ```html
+    <p-button label="Primary"   severity="primary"   />
+    <p-button label="Secondary" severity="secondary" />
+    <p-button label="Info"      severity="info"      />
+    <p-button label="Success"   severity="success"   />
+    <p-button label="Warn"      severity="warn"      />
+    <p-button label="Help"      severity="help"      />
+    <p-button label="Danger"    severity="danger"    />
+    <p-button label="Contrast"  severity="contrast"  />
+    ```
+  </Tab>
+  <Tab title="Outlined">
+    ```html
+    <p-button label="Primary"   severity="primary"   variant="outlined" />
+    <p-button label="Secondary" severity="secondary" variant="outlined" />
+    <p-button label="Info"      severity="info"      variant="outlined" />
+    <p-button label="Success"   severity="success"   variant="outlined" />
+    <p-button label="Warn"      severity="warn"      variant="outlined" />
+    <p-button label="Help"      severity="help"      variant="outlined" />
+    <p-button label="Danger"    severity="danger"    variant="outlined" />
+    <p-button label="Contrast"  severity="contrast"  variant="outlined" />
+    ```
+  </Tab>
+  <Tab title="Text">
+    ```html
+    <p-button label="Primary"   severity="primary"   variant="text" />
+    <p-button label="Secondary" severity="secondary" variant="text" />
+    <p-button label="Info"      severity="info"      variant="text" />
+    <p-button label="Success"   severity="success"   variant="text" />
+    <p-button label="Warn"      severity="warn"      variant="text" />
+    <p-button label="Help"      severity="help"      variant="text" />
+    <p-button label="Danger"    severity="danger"    variant="text" />
+    <p-button label="Contrast"  severity="contrast"  variant="text" />
+    ```
+  </Tab>
+  <Tab title="Link">
+    ```html
+    <!-- Link variant always uses primary color regardless of severity -->
+    <p-button label="Open Documentation" variant="link" />
+    <p-button label="Learn More"         variant="link" icon="pi pi-external-link" iconPos="right" />
+    ```
+  </Tab>
+</Tabs>
+
+## Size Variants
+
+<Tabs>
+  <Tab title="Small">
+    ```html
+    <p-button label="Small"    size="small" />
+    <p-button label="Small"    size="small" severity="success" />
+    <p-button icon="pi pi-plus" size="small" aria-label="Add" />
+    ```
+  </Tab>
+  <Tab title="Default">
+    ```html
+    <p-button label="Default" />
+    <p-button label="Default" severity="info" />
+    <p-button icon="pi pi-plus" aria-label="Add" />
+    ```
+  </Tab>
+  <Tab title="Large">
+    ```html
+    <p-button label="Large"    size="large" />
+    <p-button label="Large"    size="large" severity="warn" />
+    <p-button icon="pi pi-check" size="large" aria-label="Confirm" />
+    ```
+  </Tab>
+</Tabs>
+
+## Special Styles
+
+```html
+<!-- Rounded (pill shape) -->
+<p-button label="Rounded" [rounded]="true" />
+<p-button label="Rounded Outlined" [rounded]="true" variant="outlined" />
+
+<!-- Raised (elevation shadow) -->
+<p-button label="Raised" [raised]="true" />
+
+<!-- Raised + Rounded -->
+<p-button label="Raised Rounded" [raised]="true" [rounded]="true" />
+```
+
+## Root Design Tokens
+
+These tokens apply to every button regardless of severity or variant.
+
+| Token | Value | Description |
+|---|---|---|
+| `button.root.borderRadius` | `{form.field.border.radius}` → `{border.radius.md}` = **6px** | Shared with all form fields |
+| `button.root.roundedBorderRadius` | `2rem` | Pill shape when `[rounded]="true"` |
+| `button.root.gap` | `0.5rem` | Space between icon and label |
+| `button.root.paddingX` | `{form.field.padding.x}` | Horizontal padding (default size) |
+| `button.root.paddingY` | `{form.field.padding.y}` | Vertical padding (default size) |
+| `button.root.iconOnlyWidth` | `2.5rem` | Width of icon-only button (default) |
+| `button.root.label.fontWeight` | `500` | Medium weight label |
+| `button.root.raisedShadow` | `0 3px 1px -2px rgba(0,0,0,.2), …` | Material-style elevation |
+| `button.root.focusRing.width` | `{focus.ring.width}` | Focus outline width |
+| `button.root.focusRing.style` | `{focus.ring.style}` | Focus outline style |
+| `button.root.focusRing.offset` | `{focus.ring.offset}` | Focus outline offset |
+| `button.root.badgeSize` | `1rem` | Inline badge size |
+| `button.root.transitionDuration` | `{form.field.transition.duration}` | Hover/active CSS transition |
+
+### Small (`size="small"`)
+
+| Token | Value |
+|---|---|
+| `button.root.sm.fontSize` | `{form.field.sm.font.size}` |
+| `button.root.sm.paddingX` | `{form.field.sm.padding.x}` |
+| `button.root.sm.paddingY` | `{form.field.sm.padding.y}` |
+| `button.root.sm.iconOnlyWidth` | `2rem` |
+
+### Large (`size="large"`)
+
+| Token | Value |
+|---|---|
+| `button.root.lg.fontSize` | `{form.field.lg.font.size}` |
+| `button.root.lg.paddingX` | `{form.field.lg.padding.x}` |
+| `button.root.lg.paddingY` | `{form.field.lg.padding.y}` |
+| `button.root.lg.iconOnlyWidth` | `3rem` |
+
+## Color Scheme Tokens — Filled (`root`)
+
+### Light Mode
+
+| Severity | Background | Hover BG | Border | Text |
+|---|---|---|---|---|
+| `primary` | `{primary.color}` → **#112A46** | `{primary.hover.color}` → #22436F | `{primary.color}` | `{primary.contrast.color}` → #fff |
+| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.100}` | `{surface.600}` |
+| `info` | `{info.color}` → **#66A6FB** | `{info.hover.color}` | `{info.color}` | `{info.contrast.color}` → #fff |
+| `success` | `{success.color}` → **#2BA5CD** | `{success.hover.color}` | `{success.color}` | `{success.contrast.color}` → #fff |
+| `warn` | `{warn.color}` → **#D57952** | `{warn.hover.color}` | `{warn.color}` | `{warn.contrast.color}` → #fff |
+| `help` | `{help.color}` → violet.500 | `{help.hover.color}` | `{help.color}` | `{help.contrast.color}` → #fff |
+| `danger` | `{error.color}` → red.500 | `{error.hover.color}` | `{error.color}` | `{error.contrast.color}` → #fff |
+| `contrast` | `{surface.950}` | `{surface.900}` | `{surface.950}` | `{surface.0}` → #fff |
+
+All filled severities share `focusRing.shadow: 'none'` — the focus ring is color-only, using the severity's own color token.
+
+### Dark Mode
+
+| Severity | Background | Hover BG | Border | Text |
+|---|---|---|---|---|
+| `primary` | `{primary.color}` → **#EDF4FF** | `{primary.hover.color}` → #D7E3FB | `{primary.color}` | `{primary.contrast.color}` → #112A46 |
+| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.800}` | `{surface.300}` |
+| `info` | `{info.color}` → info.400 | `{info.hover.color}` | `{info.color}` | `{info.contrast.color}` |
+| `success` | `{success.color}` → success.200 | `{success.hover.color}` | `{success.color}` | `{success.contrast.color}` |
+| `warn` | `{warn.color}` → warn.200 | `{warn.hover.color}` | `{warn.color}` | `{warn.contrast.color}` |
+| `help` | `{help.color}` → violet.400 | `{help.hover.color}` | `{help.color}` | `{help.contrast.color}` |
+| `danger` | `{error.color}` → error.400 | `{error.hover.color}` | `{error.color}` | `{error.contrast.color}` |
+| `contrast` | `{surface.0}` | `{surface.100}` | `{surface.0}` | `{surface.950}` |
+
+## Color Scheme Tokens — Outlined
+
+### Light Mode
+
+| Severity | Hover BG | Active BG | Border | Text |
+|---|---|---|---|---|
+| `primary` | `{primary.50}` | `{primary.100}` | `{primary.200}` | `{primary.color}` |
+| `secondary` | `{surface.50}` | `{surface.100}` | `{surface.200}` | `{surface.500}` |
+| `info` | `{info.50}` | `{info.100}` | `{info.200}` | `{info.500}` |
+| `success` | `{success.50}` | `{success.100}` | `{success.200}` | `{success.500}` |
+| `warn` | `{warn.50}` | `{warn.100}` | `{warn.200}` | `{warn.500}` |
+| `help` | `{help.50}` | `{help.100}` | `{help.200}` | `{help.500}` |
+| `danger` | `{error.50}` | `{error.100}` | `{error.200}` | `{error.500}` |
+| `contrast` | `{surface.50}` | `{surface.100}` | `{surface.700}` | `{surface.950}` |
+| `plain` | `{surface.50}` | `{surface.100}` | `{surface.200}` | `{surface.700}` |
+
+### Dark Mode
+
+Dark outlined buttons use `color-mix()` for transparency-based hover/active states rather than palette stops.
+
+| Severity | Hover BG | Active BG | Border | Text |
+|---|---|---|---|---|
+| `primary` | `color-mix(…primary, transparent 96%)` | `color-mix(…primary, transparent 84%)` | `{primary.700}` | `{primary.color}` |
+| `secondary` | `rgba(255,255,255,0.04)` | `rgba(255,255,255,0.16)` | `{surface.700}` | `{surface.400}` |
+| `info` | `color-mix(…info, transparent 96%)` | `color-mix(…info, transparent 84%)` | `{info.700}` | `{info.color}` |
+| `success` | `color-mix(…success, transparent 96%)` | `color-mix(…success, transparent 84%)` | `{success.700}` | `{success.color}` |
+| `warn` | `color-mix(…warn, transparent 96%)` | `color-mix(…warn, transparent 84%)` | `{warn.700}` | `{warn.color}` |
+| `help` | `color-mix(…help, transparent 96%)` | `color-mix(…help, transparent 84%)` | `{help.700}` | `{help.color}` |
+| `danger` | `color-mix(…error, transparent 96%)` | `color-mix(…error, transparent 84%)` | `{error.700}` | `{error.color}` |
+| `contrast` | `{surface.800}` | `{surface.700}` | `{surface.500}` | `{surface.0}` |
+| `plain` | `{surface.800}` | `{surface.700}` | `{surface.600}` | `{surface.0}` |
+
+## Color Scheme Tokens — Text
+
+Text buttons have no border and only show a background tint on hover/active.
+
+### Light Mode
+
+| Severity | Hover BG | Active BG | Text |
+|---|---|---|---|
+| `primary` | `{primary.50}` | `{primary.100}` | `{primary.color}` |
+| `secondary` | `{surface.50}` | `{surface.100}` | `{surface.500}` |
+| `info` | `{info.50}` | `{info.100}` | `{info.500}` |
+| `success` | `{success.50}` | `{success.100}` | `{success.500}` |
+| `warn` | `{warn.50}` | `{warn.100}` | `{warn.500}` |
+| `help` | `{help.50}` | `{help.100}` | `{help.500}` |
+| `danger` | `{error.50}` | `{error.100}` | `{error.500}` |
+| `contrast` | `{surface.50}` | `{surface.100}` | `{surface.950}` |
+| `plain` | `{surface.50}` | `{surface.100}` | `{surface.700}` |
+
+### Dark Mode
+
+| Severity | Hover BG | Active BG | Text |
+|---|---|---|---|
+| `primary` | `color-mix(…primary, transparent 96%)` | `color-mix(…primary, transparent 84%)` | `{primary.color}` |
+| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.400}` |
+| `info` | `color-mix(…info, transparent 96%)` | `color-mix(…info, transparent 84%)` | `{info.color}` |
+| `success` | `color-mix(…success, transparent 96%)` | `color-mix(…success, transparent 84%)` | `{success.color}` |
+| `warn` | `color-mix(…warn, transparent 96%)` | `color-mix(…warn, transparent 84%)` | `{warn.color}` |
+| `help` | `color-mix(…help, transparent 96%)` | `color-mix(…help, transparent 84%)` | `{help.color}` |
+| `danger` | `color-mix(…error, transparent 96%)` | `color-mix(…error, transparent 84%)` | `{error.color}` |
+| `contrast` | `{surface.800}` | `{surface.700}` | `{surface.0}` |
+| `plain` | `{surface.800}` | `{surface.700}` | `{surface.0}` |
+
+## Color Scheme Tokens — Link
+
+| Token | Light & Dark Value |
+|---|---|
+| `button.colorScheme.*.link.color` | `{primary.color}` |
+| `button.colorScheme.*.link.hoverColor` | `{primary.color}` |
+| `button.colorScheme.*.link.activeColor` | `{primary.color}` |
+
+Link buttons always render in the primary color. No background shift on interaction.
+
+## Nettalco-Specific Customizations
+
+<AccordionGroup>
+  <Accordion title="Brand primary color (#112A46 Navy)">
+    The `primary` severity maps to `{primary.color}`, which resolves to Nettalco's deep Navy `#112A46` in light mode and the pale brand blue `#EDF4FF` in dark mode. The `contrastColor` is always `#ffffff` in light mode, ensuring WCAG-compliant contrast against the dark Navy background. In dark mode, the contrast color is the Navy `#112A46` itself, rendering dark text on the light primary button.
+  </Accordion>
+  <Accordion title="Secondary uses custom nettalcoSecondary palette">
+    While the button's `secondary` severity uses the surface scale, the broader `secondary` semantic role (`{nettalcoSecondary.*}`) resolves to Nettalco's Sky Blue (`#3F8CF9`). This palette is available for custom override uses and is explicitly defined in `mypreset.ts`.
+  </Accordion>
+  <Accordion title="Focus ring shadow suppressed">
+    All filled-variant severities set `focusRing.shadow: 'none'`. The focus indicator is purely a colored outline using the severity's own primary color, avoiding any box-shadow layering that could clash with the `raisedShadow` on elevated buttons.
+  </Accordion>
+  <Accordion title="Dark mode uses color-mix() for outlined/text hover states">
+    In dark mode, outlined and text buttons use `color-mix(in srgb, {severity.color}, transparent 96%)` for hover and `transparent 84%` for active states. This creates a translucent tint directly from the live semantic color token, so the hover shade always matches the current dark-mode resolved color automatically.
+  </Accordion>
+  <Accordion title="Border radius inherits from form field">
+    `button.root.borderRadius` is set to `{form.field.border.radius}`, which maps through to `{border.radius.md}` = **6px**. This means all buttons, text inputs, selects, and other form fields share a consistent corner radius — changing the form field token globally updates every interactive element simultaneously.
+  </Accordion>
+</AccordionGroup>

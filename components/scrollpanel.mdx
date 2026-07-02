@@ -1,0 +1,81 @@
+---
+title: "ScrollPanel Component — Nettalco Theme Token Set"
+sidebarTitle: "ScrollPanel"
+description: "Custom scrollable container with a 9 px rounded scrollbar thumb, separate light and dark color scheme bar tokens, and global transition duration control."
+---
+
+The **ScrollPanel** component replaces the native browser scrollbar with a custom-styled track and thumb. The Nettalco preset defines a `9px` wide bar with small border radius, and separate light/dark color scheme tokens — `{surface.100}` in light mode and `{surface.800}` in dark mode — so the scrollbar always has appropriate contrast without any manual theming.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-scroll-panel [style]="{ width: '100%', height: '200px' }">
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+    velit esse cillum dolore eu fugiat nulla pariatur.
+  </p>
+  <p>
+    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+    deserunt mollit anim id est laborum. Continue reading for more detailed
+    information about this topic.
+  </p>
+</p-scroll-panel>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [ScrollPanelModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/scrollpanel/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.transitionDuration` | `{transition.duration}` | Controls scrollbar fade-in/out transition speed |
+
+### Bar
+
+| Token | Value | Description |
+|---|---|---|
+| `bar.size` | `9px` | Scrollbar thumb width (vertical) / height (horizontal) |
+| `bar.borderRadius` | `{border.radius.sm}` | Rounded ends on the scrollbar thumb |
+
+### Bar Focus Ring
+
+| Token | Value | Description |
+|---|---|---|
+| `bar.focusRing.width` | `{focus.ring.width}` | Global focus ring width |
+| `bar.focusRing.style` | `{focus.ring.style}` | Global focus ring style |
+| `bar.focusRing.color` | `{focus.ring.color}` | Global focus ring color |
+| `bar.focusRing.offset` | `{focus.ring.offset}` | Global focus ring offset |
+| `bar.focusRing.shadow` | `{focus.ring.shadow}` | Global focus ring shadow |
+
+### Color Scheme — Bar Background
+
+| Scheme | Token | Value | Description |
+|---|---|---|---|
+| Light | `colorScheme.light.bar.background` | `{surface.100}` | Light grey scrollbar thumb in light mode |
+| Dark | `colorScheme.dark.bar.background` | `{surface.800}` | Dark grey scrollbar thumb in dark mode |
+
+## Theme Notes
+
+- The `bar.size` of `9px` is intentionally wider than the browser default (~6 px in most browsers) to improve touch-target usability on pointer-fine devices.
+- `{border.radius.sm}` on the bar gives the scrollbar gently rounded pill-shaped ends — distinct from `{border.radius.xl}` used by the Card, avoiding over-styled appearances.
+- Both light and dark color schemes use the same `{surface}` scale, just at opposite ends (100 vs 800). This means the scrollbar will always have a neutral, un-themed appearance rather than inheriting brand primary colors.
+- The `transitionDuration` token controls the CSS transition on the scrollbar's opacity, producing a smooth auto-hide effect on platforms where PrimeNG animates the track visibility.

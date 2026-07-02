@@ -1,0 +1,243 @@
+---
+title: "TreeTable Component — Nettalco Theme Tokens"
+sidebarTitle: "TreeTable"
+description: "Design tokens and Angular usage for the TreeTable component in the Nettalco PrimeNG v21 preset, including the transition override."
+---
+
+The **TreeTable** component renders hierarchical data in a familiar table layout where each row can be expanded to reveal child rows. It shares many structural token sections with [DataTable](/components/datatable) — `header`, `headerCell`, `row`, `bodyCell`, `footerCell`, and `footer` — but adds a `nodeToggleButton` for expanding and collapsing tree nodes in place of the `rowToggleButton`.
+
+## Angular Usage Example
+
+```html
+<p-treetable
+  [value]="treeNodes"
+  [paginator]="true"
+  [rows]="10"
+  selectionMode="single"
+  [(selection)]="selected"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name" ttSortableColumn="name">
+        Name <p-sortIcon field="name" />
+      </th>
+      <th>Size</th>
+      <th>Type</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+      <td>
+        <p-treeTableToggler [rowNode]="rowNode" />
+        {{ rowData.name }}
+      </td>
+      <td>{{ rowData.size }}</td>
+      <td>{{ rowData.type }}</td>
+    </tr>
+  </ng-template>
+</p-treetable>
+```
+
+---
+
+## Design Tokens
+
+### `root`
+
+| Token                | Value                   |
+|----------------------|-------------------------|
+| `transitionDuration` | `{transition.duration}` |
+
+> **Color-scheme override — `root.borderColor`**
+> - Light: `{content.border.color}`
+> - Dark: `{surface.800}`
+
+---
+
+### `header`
+
+| Token         | Value                       |
+|---------------|-----------------------------|
+| `background`  | `{content.background}`      |
+| `borderColor` | `{treetable.border.color}`  |
+| `color`       | `{content.color}`           |
+| `borderWidth` | `0 0 1px 0`                 |
+| `padding`     | `0.75rem 1rem`              |
+
+---
+
+### `headerCell`
+
+| Token                | Value                        |
+|----------------------|------------------------------|
+| `background`         | `{content.background}`       |
+| `hoverBackground`    | `{content.hover.background}` |
+| `selectedBackground` | `{highlight.background}`     |
+| `borderColor`        | `{treetable.border.color}`   |
+| `color`              | `{content.color}`            |
+| `hoverColor`         | `{content.hover.color}`      |
+| `selectedColor`      | `{highlight.color}`          |
+| `gap`                | `0.5rem`                     |
+| `padding`            | `0.75rem 1rem`               |
+| `focusRing.width`    | `{focus.ring.width}`         |
+| `focusRing.style`    | `{focus.ring.style}`         |
+| `focusRing.color`    | `{focus.ring.color}`         |
+| `focusRing.offset`   | `-1px`                       |
+| `focusRing.shadow`   | `{focus.ring.shadow}`        |
+
+---
+
+### `columnTitle`
+
+| Token        | Value |
+|--------------|-------|
+| `fontWeight` | `600` |
+
+---
+
+### `row`
+
+| Token                | Value                        |
+|----------------------|------------------------------|
+| `background`         | `{content.background}`       |
+| `hoverBackground`    | `{content.hover.background}` |
+| `selectedBackground` | `{highlight.background}`     |
+| `color`              | `{content.color}`            |
+| `hoverColor`         | `{content.hover.color}`      |
+| `selectedColor`      | `{highlight.color}`          |
+| `focusRing.width`    | `{focus.ring.width}`         |
+| `focusRing.style`    | `{focus.ring.style}`         |
+| `focusRing.color`    | `{focus.ring.color}`         |
+| `focusRing.offset`   | `-1px`                       |
+| `focusRing.shadow`   | `{focus.ring.shadow}`        |
+
+---
+
+### `bodyCell`
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `borderColor` | `{treetable.border.color}` |
+| `padding`     | `0.75rem 1rem`             |
+| `gap`         | `0.5rem`                   |
+
+> **Color-scheme override — `bodyCell.selectedBorderColor`**
+> - Light: `{primary.100}`
+> - Dark: `{primary.900}`
+
+---
+
+### `footerCell`
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `background`  | `{content.background}`     |
+| `borderColor` | `{treetable.border.color}` |
+| `color`       | `{content.color}`          |
+| `padding`     | `0.75rem 1rem`             |
+
+### `columnFooter`
+
+| Token        | Value |
+|--------------|-------|
+| `fontWeight` | `600` |
+
+---
+
+### `footer`
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `background`  | `{content.background}`     |
+| `borderColor` | `{treetable.border.color}` |
+| `color`       | `{content.color}`          |
+| `borderWidth` | `0 0 1px 0`                |
+| `padding`     | `0.75rem 1rem`             |
+
+---
+
+### `nodeToggleButton`
+
+The expand/collapse button rendered inline in each tree row.
+
+| Token                     | Value                        |
+|---------------------------|------------------------------|
+| `hoverBackground`         | `{content.hover.background}` |
+| `selectedHoverBackground` | `{content.background}`       |
+| `color`                   | `{text.muted.color}`         |
+| `hoverColor`              | `{text.color}`               |
+| `selectedHoverColor`      | `{primary.color}`            |
+| `size`                    | `1.75rem`                    |
+| `borderRadius`            | `50%`                        |
+| `focusRing.width`         | `{focus.ring.width}`         |
+| `focusRing.style`         | `{focus.ring.style}`         |
+| `focusRing.color`         | `{focus.ring.color}`         |
+| `focusRing.offset`        | `{focus.ring.offset}`        |
+| `focusRing.shadow`        | `{focus.ring.shadow}`        |
+
+---
+
+### Additional Tokens
+
+#### `sortIcon`
+
+| Token        | Value                      |
+|--------------|----------------------------|
+| `color`      | `{text.muted.color}`       |
+| `hoverColor` | `{text.hover.muted.color}` |
+| `size`       | `0.875rem`                 |
+
+#### `loadingIcon`
+
+| Token  | Value  |
+|--------|--------|
+| `size` | `2rem` |
+
+#### `columnResizer`
+
+| Token   | Value    |
+|---------|----------|
+| `width` | `0.5rem` |
+
+#### `resizeIndicator`
+
+| Token   | Value             |
+|---------|-------------------|
+| `width` | `1px`             |
+| `color` | `{primary.color}` |
+
+#### `paginatorTop` / `paginatorBottom`
+
+| Token         | Value                       |
+|---------------|-----------------------------|
+| `borderColor` | `{content.border.color}`    |
+| `borderWidth` | `0 0 1px 0`                 |
+
+---
+
+## Theme Notes
+
+### Global `transition: none` Override
+
+The Nettalco CSS layer (`css/index.ts`) removes CSS transitions from TreeTable body rows and header cells to prevent hover-flicker during rapid mouse movement:
+
+```css
+.p-treetable .p-treetable-tbody > tr,
+th.p-treetable-header-cell,
+.p-treetable thead.p-treetable-thead > tr > th {
+    transition: none;
+}
+```
+
+This mirrors the same override applied to `p-datatable`. All interactive state changes (hover background, selection highlight) still apply instantly.
+
+### Overlay Loading Mask
+
+```css
+.p-treetable-mask.p-overlay-mask {
+    --px-mask-background: light-dark(rgba(255,255,255,0.5), rgba(0,0,0,0.3));
+}
+```
+
+Unlike DataTable, TreeTable does **not** expose size variant (`sm` / `lg`) sub-tokens on its padding properties. Use custom CSS or override individual cell padding tokens if density adjustment is needed.

@@ -1,0 +1,101 @@
+---
+title: "Checkbox: Nettalco Theme Design Tokens"
+sidebarTitle: "Checkbox"
+description: "Design tokens for the PrimeNG Checkbox component in Nettalco Theme — box dimensions, checked colors, border states, icon sizing, and size variants."
+---
+
+The **Checkbox** component renders a binary toggle as a styled square box with a checkmark icon. Nettalco Theme provides a rich set of tokens for the box's dimensions, background in each state (default, checked, hover, disabled), border color per state, focus ring, and the checkmark icon's size and color — including `sm` and `lg` size variants.
+
+## Usage
+
+```html
+<!-- Basic checkbox -->
+<p-checkbox [(ngModel)]="checked" [binary]="true" label="Accept terms" />
+
+<!-- Checkbox group -->
+<div class="flex flex-col gap-2">
+  <p-checkbox [(ngModel)]="selectedFruits" value="apple" label="Apple" />
+  <p-checkbox [(ngModel)]="selectedFruits" value="banana" label="Banana" />
+  <p-checkbox [(ngModel)]="selectedFruits" value="cherry" label="Cherry" />
+</div>
+
+<!-- Size variants -->
+<p-checkbox [(ngModel)]="checked" [binary]="true" size="small" label="Small" />
+<p-checkbox [(ngModel)]="checked" [binary]="true" size="large" label="Large" />
+
+<!-- Invalid state -->
+<p-checkbox [(ngModel)]="checked" [binary]="true" [invalid]="true" label="Required" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [CheckboxModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  checked = false;
+  selectedFruits: string[] = [];
+}
+```
+
+## Design Tokens
+
+### Root (box)
+
+| Token | Value | Description |
+|---|---|---|
+| `borderRadius` | `{border.radius.sm}` → `4px` | Corner radius of the checkbox box |
+| `width` | `1.25rem` | Default box width |
+| `height` | `1.25rem` | Default box height |
+| `background` | `{form.field.background}` | Unchecked background |
+| `checkedBackground` | `{primary.color}` | Background when checked |
+| `checkedHoverBackground` | `{primary.hover.color}` | Background when checked + hovered |
+| `disabledBackground` | `{form.field.disabled.background}` | Background when disabled |
+| `filledBackground` | `{form.field.filled.background}` | Background in filled variant mode |
+| `borderColor` | `{form.field.border.color}` | Default border color |
+| `hoverBorderColor` | `{form.field.hover.border.color}` | Border on hover (unchecked) |
+| `focusBorderColor` | `{form.field.border.color}` | Border on focus (unchecked) |
+| `checkedBorderColor` | `{primary.color}` | Border when checked |
+| `checkedHoverBorderColor` | `{primary.hover.color}` | Border when checked + hovered |
+| `checkedFocusBorderColor` | `{primary.color}` | Border when checked + focused |
+| `checkedDisabledBorderColor` | `{form.field.border.color}` | Border when checked + disabled |
+| `invalidBorderColor` | `{form.field.invalid.border.color}` | Border in invalid state |
+| `shadow` | `{form.field.shadow}` | Box shadow |
+| `focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
+| `transitionDuration` | `{form.field.transition.duration}` | Transition duration |
+| `sm.width` | `1rem` | Box width in `sm` variant |
+| `sm.height` | `1rem` | Box height in `sm` variant |
+| `lg.width` | `1.5rem` | Box width in `lg` variant |
+| `lg.height` | `1.5rem` | Box height in `lg` variant |
+
+### Icon (checkmark)
+
+| Token | Value | Description |
+|---|---|---|
+| `icon.size` | `0.875rem` | Default checkmark icon size |
+| `icon.color` | `{form.field.color}` | Icon color when unchecked |
+| `icon.checkedColor` | `{primary.contrast.color}` | Icon color when checked |
+| `icon.checkedHoverColor` | `{primary.contrast.color}` | Icon color when checked + hovered |
+| `icon.disabledColor` | `{form.field.disabled.color}` | Icon color when disabled |
+| `icon.sm.size` | `0.75rem` | Icon size in `sm` variant |
+| `icon.lg.size` | `1rem` | Icon size in `lg` variant |
+
+## Theme Notes
+
+<Note>
+Checkbox uses `{focus.ring.*}` tokens (the global focus ring) rather than `{form.field.focus.ring.*}`. This is intentional — checkboxes are interactive controls rather than text entry fields, and the global focus ring can be styled independently from the form field focus ring.
+</Note>
+
+<Tip>
+The checked state uses `{primary.color}` for both background and border. Since Nettalco Theme's primary palette is emerald, checked checkboxes render with a vibrant green fill and a matching contrast-white checkmark via `{primary.contrast.color}`.
+</Tip>

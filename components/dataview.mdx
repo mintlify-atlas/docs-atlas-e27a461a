@@ -1,0 +1,130 @@
+---
+title: "DataView Component — Nettalco Theme Tokens"
+sidebarTitle: "DataView"
+description: "Design tokens and Angular usage for the DataView component in the Nettalco PrimeNG v21 preset theme library."
+---
+
+The **DataView** component renders a collection of items in either a list or a grid layout with an optional header, footer, and integrated paginator. Unlike DataTable, DataView has no built-in column definitions — the item template is entirely controlled by the application. Its token surface is intentionally minimal: borders are transparent by default and padding on the content area is zero, giving templates full layout control.
+
+## Angular Usage Example
+
+```html
+<p-dataview [value]="products" layout="grid">
+  <ng-template pTemplate="header">
+    <div class="flex justify-between items-center">
+      <span class="text-xl font-semibold">Products</span>
+      <p-dataviewLayoutOptions />
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="grid" let-items>
+    <div class="grid grid-cols-3 gap-4 p-4">
+      @for (item of items; track item.id) {
+        <div class="border rounded p-4">
+          <img [src]="item.image" [alt]="item.name" class="w-full" />
+          <h3>{{ item.name }}</h3>
+          <span>{{ item.price | currency }}</span>
+        </div>
+      }
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="list" let-items>
+    <div class="flex flex-col divide-y">
+      @for (item of items; track item.id) {
+        <div class="flex gap-4 p-4">
+          <img [src]="item.image" [alt]="item.name" class="w-16 h-16 object-cover" />
+          <div>
+            <h3>{{ item.name }}</h3>
+            <span>{{ item.price | currency }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </ng-template>
+</p-dataview>
+```
+
+---
+
+## Design Tokens
+
+### `root`
+
+The outer container of the DataView component.
+
+| Token          | Value         |
+|----------------|---------------|
+| `borderColor`  | `transparent` |
+| `borderWidth`  | `0`           |
+| `borderRadius` | `0`           |
+| `padding`      | `0`           |
+
+---
+
+### `header`
+
+The optional header panel above the content area.
+
+| Token          | Value                    |
+|----------------|--------------------------|
+| `background`   | `{content.background}`   |
+| `color`        | `{content.color}`        |
+| `borderColor`  | `{content.border.color}` |
+| `borderWidth`  | `0 0 1px 0`              |
+| `padding`      | `0.75rem 1rem`           |
+| `borderRadius` | `0`                      |
+
+---
+
+### `content`
+
+The scrollable content area that wraps item templates.
+
+| Token          | Value                    |
+|----------------|--------------------------|
+| `background`   | `{content.background}`   |
+| `color`        | `{content.color}`        |
+| `borderColor`  | `transparent`            |
+| `borderWidth`  | `0`                      |
+| `padding`      | `0`                      |
+| `borderRadius` | `0`                      |
+
+---
+
+### `footer`
+
+The optional footer panel below the content area.
+
+| Token          | Value                    |
+|----------------|--------------------------|
+| `background`   | `{content.background}`   |
+| `color`        | `{content.color}`        |
+| `borderColor`  | `{content.border.color}` |
+| `borderWidth`  | `1px 0 0 0`              |
+| `padding`      | `0.75rem 1rem`           |
+| `borderRadius` | `0`                      |
+
+---
+
+### `paginatorTop`
+
+| Token         | Value                    |
+|---------------|--------------------------|
+| `borderColor` | `{content.border.color}` |
+| `borderWidth` | `0 0 1px 0`              |
+
+### `paginatorBottom`
+
+| Token         | Value                    |
+|---------------|--------------------------|
+| `borderColor` | `{content.border.color}` |
+| `borderWidth` | `1px 0 0 0`              |
+
+---
+
+## Theme Notes
+
+DataView has no `transition` tokens or global CSS overrides in the Nettalco preset. The `content` section intentionally sets `padding: 0` and `borderColor: transparent` so that item templates carry full responsibility for internal spacing and borders — wrap item markup in a `<div class="p-4">` or equivalent to add comfortable spacing.
+
+The `paginatorBottom.borderWidth` uses `1px 0 0 0` (top border only) while `paginatorTop.borderWidth` uses `0 0 1px 0` (bottom border only), ensuring clean visual separation between the paginator and the item list regardless of which position is chosen.

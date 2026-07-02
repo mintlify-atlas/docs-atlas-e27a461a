@@ -1,0 +1,249 @@
+---
+title: "Authenticate with GitHub Packages for @nettalco"
+sidebarTitle: "Authentication"
+description: "Configure .npmrc with a GitHub Personal Access Token to install or publish @nettalco/nettalco-theme from GitHub Packages in any environment."
+---
+
+`@nettalco/nettalco-theme` is hosted on **GitHub Packages** — not the public npm registry at `registry.npmjs.org`. This means every environment that needs to install or publish the package must authenticate with a valid GitHub token, regardless of whether that environment is a developer's local machine, a CI pipeline, or a Docker build. This page covers all authentication scenarios, from local `.npmrc` setup to GitHub Actions integration.
+
+## Why GitHub Packages Requires Authentication
+
+GitHub Packages enforces authentication even for packages in public repositories. Unlike `registry.npmjs.org`, there is no anonymous read access. Every `npm install`, `npm ci`, and `npm publish` targeting `npm.pkg.github.com` must present a token.
+
+---
+
+## .npmrc Configuration
+
+The `.npmrc` file is the standard mechanism for scoping a registry and providing credentials. It must be placed in the **root of the consuming project** — not inside `node_modules`, not in your home directory, and not in the library's source tree.
+
+### .npmrc.example
+
+The library ships a reference file at `.npmrc.example` showing both the recommended and discouraged forms:
+
+```ini .npmrc
+# This file should be at the root of each project that uses @nettalco/nettalco-theme
+# Do NOT commit this file to git if it contains a token directly
+
+# Option 1: Use environment variable (RECOMMENDED)
+@nettalco:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+
+# Option 2: Hardcoded token (NOT RECOMMENDED for any repository)
+# @nettalco:registry=https://npm.pkg.github.com
+# //npm.pkg.github.com/:_authToken=ghp_YourTokenHere123456789
+```
+
+<Warning>
+  **Never commit a raw token in your `.npmrc` file.** The `${GITHUB_TOKEN}` syntax is not just convention — npm reads it as an environment variable reference at runtime, so the actual token never appears in the file. If you accidentally commit a real token, revoke it immediately in your GitHub account settings.
+</Warning>
+
+The two lines in your `.npmrc` do the following:
+
+| Line | Purpose |
+|---|---|
+| `@nettalco:registry=https://npm.pkg.github.com` | Tells npm to route all `@nettalco/*` package requests to GitHub Packages instead of the public npm registry. |
+| `//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}` | Provides the auth token for that registry host, reading from the `GITHUB_TOKEN` environment variable. |
+
+---
+
+## Option 1: Environment Variable (Recommended)
+
+Set the `GITHUB_TOKEN` environment variable in your shell before running any npm commands:
+
+<CodeGroup>
+
+```bash macOS / Linux
+export GITHUB_TOKEN=ghp_YourPersonalAccessTokenHere
+npm install
+```
+
+```powershell Windows PowerShell
+$env:GITHUB_TOKEN = "ghp_YourPersonalAccessTokenHere"
+npm install
+```
+
+```cmd Windows Command Prompt
+set GITHUB_TOKEN=ghp_YourPersonalAccessTokenHere
+npm install
+```
+
+</CodeGroup>
+
+To avoid setting this every session, add it to your shell profile (`.bashrc`, `.zshrc`, etc.) or your system environment variables.
+
+---
+
+## Option 2: Hardcoded Token (Not Recommended)
+
+You can write the token directly into `.npmrc` — but only if the file is excluded from version control:
+
+```ini .npmrc (NOT for git repos)
+@nettalco:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=ghp_YourActualTokenHere
+```
+
+Add `.npmrc` to your `.gitignore`:
+
+```gitignore .gitignore
+.npmrc
+```
+
+<Note>
+  This approach is acceptable for local development on a personal machine, but is **never safe** for shared repositories, Docker images pushed to a registry, or any artifact that might be stored or transmitted.
+</Note>
+
+---
+
+## Creating a GitHub Personal Access Token
+
+You'll need a GitHub PAT with the correct scopes depending on your use case:
+
+| Use Case | Required Scope |
+|---|---|
+| Install the package | `read:packages` |
+| Publish a new version | `write:packages` |
+
+<Steps>
+
+### Navigate to Token Settings
+
+Go to **GitHub → Settings → Developer Settings → Personal access tokens → Tokens (classic)** (or use Fine-grained tokens if your organization supports them).
+
+### Create a New Token
+
+Click **Generate new token (classic)**. Give it a descriptive name like `nettalco-theme-install` or `nettalco-theme-publish`.
+
+### Select Scopes
+
+- For installation only: check **`read:packages`**
+- For publishing: check **`write:packages`** (which implies `read:packages`)
+
+### Copy and Store Securely
+
+Copy the generated token immediately — GitHub only shows it once. Store it in a password manager or your system's credential store.
+
+### Add to .npmrc or Environment
+
+Use the token as the value of `GITHUB_TOKEN` in your environment, or (if .npmrc is gitignored) place it directly in the `.npmrc` file.
+
+</Steps>
+
+---
+
+## CI/CD Integration
+
+### GitHub Actions
+
+GitHub Actions automatically provides a `GITHUB_TOKEN` secret for every repository. You do not need to create a personal access token for workflows that only install or publish within the same organization:
+
+```yaml .github/workflows/install.yml
+name: Install and Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@nettalco'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        run: npm run build
+```
+
+<Info>
+  The `registry-url` and `scope` parameters on `actions/setup-node` automatically configure your `.npmrc` for the workflow run. The `GITHUB_TOKEN` env variable is then picked up by that configuration.
+</Info>
+
+### Publishing from GitHub Actions
+
+For publishing a new version, the same `GITHUB_TOKEN` is used — but the workflow must be triggered appropriately (e.g., on tag push or manual dispatch):
+
+```yaml .github/workflows/publish.yml
+name: Publish to GitHub Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@nettalco'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish
+        run: npm publish --verbose
+        working-directory: dist/nettalco-theme
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+<Warning>
+  Note the difference: the **install** step uses `GITHUB_TOKEN`, while the **publish** step uses `NODE_AUTH_TOKEN`. `actions/setup-node` writes `//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}` to the `.npmrc` when `registry-url` is set, so the publish command picks up `NODE_AUTH_TOKEN` automatically.
+</Warning>
+
+### Other CI Environments (Azure Pipelines, CircleCI, etc.)
+
+For non-GitHub CI systems, store your PAT (`write:packages` scope) as a secret in your CI provider's vault and inject it as an environment variable:
+
+```yaml Azure Pipelines (excerpt)
+- task: Npm@1
+  inputs:
+    command: 'install'
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN) # Set in pipeline library variables
+```
+
+---
+
+## Troubleshooting
+
+<Accordion title="npm ERR! 401 Unauthorized">
+  Your token is missing, expired, or lacks the required scope. Verify:
+  - `GITHUB_TOKEN` is set in the current shell session
+  - The token has `read:packages` (or `write:packages` for publishing)
+  - The `.npmrc` line `//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}` is present and correctly formatted
+</Accordion>
+
+<Accordion title="npm ERR! 404 Not Found">
+  The package scope routing may be missing. Ensure this line appears in your `.npmrc`:
+  ```
+  @nettalco:registry=https://npm.pkg.github.com
+  ```
+  Without it, npm looks for `@nettalco/nettalco-theme` on `registry.npmjs.org` where it doesn't exist.
+</Accordion>
+
+<Accordion title="Token works locally but fails in CI">
+  CI environments don't inherit your local shell environment. Ensure the token is stored as a CI secret and explicitly passed via `env:` on the npm step. Never hardcode tokens in workflow YAML files.
+</Accordion>

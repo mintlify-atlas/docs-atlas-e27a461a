@@ -1,0 +1,64 @@
+---
+title: "Breadcrumb Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "Breadcrumb"
+description: "Design tokens for the PrimeNG Breadcrumb in Nettalco Theme — root layout, item colours, hover states, focus ring configuration, and separator styling."
+---
+
+The **Breadcrumb** component renders a horizontal trail of navigational links representing the current location within an application hierarchy. Nettalco Theme styles it through dedicated `root`, `item`, and `separator` token sections, with item colours sourced from the `text.muted` token family so breadcrumb links sit at a subdued contrast level until hovered.
+
+## Usage
+
+```html
+<p-breadcrumb [model]="crumbs" [home]="home" />
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+home: MenuItem = { icon: 'pi pi-home', routerLink: '/' };
+
+crumbs: MenuItem[] = [
+  { label: 'Products', routerLink: '/products' },
+  { label: 'Electronics', routerLink: '/products/electronics' },
+  { label: 'Laptops' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.padding` | `1rem` |
+| `root.background` | `{content.background}` |
+| `root.gap` | `0.5rem` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.color` | `{text.muted.color}` |
+| `item.hoverColor` | `{text.color}` |
+| `item.borderRadius` | `{content.border.radius}` |
+| `item.gap` | `{navigation.item.gap}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.hoverColor` | `{navigation.item.icon.focus.color}` |
+| `item.focusRing.width` | `{focus.ring.width}` |
+| `item.focusRing.style` | `{focus.ring.style}` |
+| `item.focusRing.color` | `{focus.ring.color}` |
+| `item.focusRing.offset` | `{focus.ring.offset}` |
+| `item.focusRing.shadow` | `{focus.ring.shadow}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.color` | `{navigation.item.icon.color}` |
+
+## Theme Notes
+
+Breadcrumb items default to `{text.muted.color}` — a lower-contrast shade — to visually de-emphasise intermediate path segments relative to the current page heading. On hover, items transition to the full `{text.color}` value, making interactive segments clear without over-emphasising the trail.
+
+The Breadcrumb component is **not** part of the menu-item `transition: none` override block in Nettalco Theme; only the seven `p-*-item-content` / `p-panelmenu-header-content` selectors are affected by that rule.

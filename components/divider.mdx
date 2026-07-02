@@ -1,0 +1,82 @@
+---
+title: "Divider Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Divider"
+description: "Horizontal and vertical separator with semantic border color, optional inline label, and distinct margin and padding tokens per layout orientation."
+---
+
+The **Divider** component renders a visual separator between content sections. It supports horizontal and vertical orientations, an optional text or icon label, and three alignment modes (`left`, `center`, `right`). The Nettalco preset defines separate margin/padding tokens for each orientation so spacing is correct in both flex rows and flex columns.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+
+<!-- Horizontal divider -->
+<p>Section A content goes here.</p>
+<p-divider />
+<p>Section B content goes here.</p>
+
+<!-- Horizontal divider with label -->
+<p-divider align="center">
+  <span class="text-sm font-semibold">OR</span>
+</p-divider>
+
+<!-- Vertical divider inside a flex row -->
+<div class="flex items-center h-24">
+  <span>Left panel</span>
+  <p-divider layout="vertical" />
+  <span>Right panel</span>
+</div>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { DividerModule } from 'primeng/divider';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [DividerModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/divider/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.borderColor` | `{content.border.color}` | Color of the divider line |
+
+### Content (inline label)
+
+| Token | Value | Description |
+|---|---|---|
+| `content.background` | `{content.background}` | Background behind the inline label (covers the line) |
+| `content.color` | `{text.color}` | Color of the inline label text or icon |
+
+### Horizontal
+
+| Token | Value | Description |
+|---|---|---|
+| `horizontal.margin` | `1rem 0` | Vertical breathing room above and below the line |
+| `horizontal.padding` | `0 1rem` | Horizontal inset so the line does not touch container edges |
+| `horizontal.content.padding` | `0 0.5rem` | Tight horizontal padding around an inline label |
+
+### Vertical
+
+| Token | Value | Description |
+|---|---|---|
+| `vertical.margin` | `0 1rem` | Horizontal breathing room to the left and right of the line |
+| `vertical.padding` | `0.5rem 0` | Vertical inset so the line does not touch container edges |
+| `vertical.content.padding` | `0.5rem 0` | Vertical padding around an inline label on a vertical divider |
+
+## Theme Notes
+
+- The divider line color resolves from `{content.border.color}`, the same token used by Panel, Fieldset, and Accordion borders. This ensures every structural boundary in your UI shares a consistent shade.
+- When using an inline label, `content.background` must match the surrounding surface background. If you place a Divider inside a Card or a Panel, and those surfaces have a different background, override `content.background` locally using PrimeNG's `dt()` utility or a scoped CSS variable.
+- The vertical divider is intended for use inside a flex or grid row. Setting a fixed `height` on the parent container is required for the vertical line to render correctly.

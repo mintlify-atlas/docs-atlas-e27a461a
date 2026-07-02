@@ -1,0 +1,170 @@
+---
+title: "Nettalco Theme SpeedDial: FAB Design Tokens & Usage"
+sidebarTitle: "Speed Dial"
+description: "Nettalco-themed PrimeNG SpeedDial floating action button with brand-consistent item gap spacing and smooth transition duration design tokens."
+---
+
+The PrimeNG `p-speeddial` component renders a floating action button (FAB) that expands into a radial or linear group of action items on click or hover. Nettalco Theme provides a lean token set for the `SpeedDial` — gap and transition duration — while the main FAB button and action item buttons inherit their visual styling from the Nettalco `Button` preset, keeping colors, border radius, and focus behavior consistent with the rest of the application.
+
+## Basic Usage
+
+```html
+<!-- Default (semi-circle up) -->
+<p-speeddial [model]="items" direction="up" />
+
+<!-- Linear directions -->
+<p-speeddial [model]="items" direction="left"  />
+<p-speeddial [model]="items" direction="right" />
+<p-speeddial [model]="items" direction="down"  />
+
+<!-- Quarter circle -->
+<p-speeddial [model]="items" type="quarter-circle" direction="up-left"   />
+<p-speeddial [model]="items" type="quarter-circle" direction="up-right"  />
+<p-speeddial [model]="items" type="quarter-circle" direction="down-left" />
+<p-speeddial [model]="items" type="quarter-circle" direction="down-right"/>
+
+<!-- Circle (all directions) -->
+<p-speeddial [model]="items" type="circle" />
+
+<!-- Linear -->
+<p-speeddial [model]="items" type="linear" direction="up" />
+```
+
+## Component Setup (TypeScript)
+
+```typescript
+import { Component } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
+@Component({
+  selector: 'app-speed-dial-demo',
+  standalone: true,
+  imports: [SpeedDialModule, ToastModule],
+  providers: [MessageService],
+  templateUrl: './speed-dial-demo.component.html',
+})
+export class SpeedDialDemoComponent {
+  items: MenuItem[] = [
+    {
+      icon: 'pi pi-pencil',
+      command: () => this.messageService.add({ severity: 'info', summary: 'Edit', detail: 'Edit action' }),
+    },
+    {
+      icon: 'pi pi-share-alt',
+      command: () => this.messageService.add({ severity: 'success', summary: 'Share', detail: 'Share action' }),
+    },
+    {
+      icon: 'pi pi-trash',
+      command: () => this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Delete action' }),
+    },
+    {
+      icon: 'pi pi-upload',
+      command: () => this.messageService.add({ severity: 'warn', summary: 'Upload', detail: 'Upload action' }),
+    },
+  ];
+
+  constructor(private messageService: MessageService) {}
+}
+```
+
+## Positioning Variants
+
+```html
+<!-- Fixed position FAB (typical bottom-right FAB) -->
+<p-speeddial
+  [model]="items"
+  direction="up"
+  [style]="{ position: 'fixed', bottom: '2rem', right: '2rem' }"
+/>
+
+<!-- Inline within page content -->
+<div style="position: relative; height: 200px;">
+  <p-speeddial
+    [model]="items"
+    direction="up"
+    [style]="{ position: 'absolute', bottom: '1rem', right: '1rem' }"
+  />
+</div>
+```
+
+## Open on Hover
+
+```html
+<p-speeddial
+  [model]="items"
+  direction="up"
+  [hideOnClickOutside]="false"
+  (onVisibleChange)="onVisibleChange($event)"
+/>
+```
+
+## Custom Trigger Button
+
+```html
+<p-speeddial [model]="items" direction="up">
+  <ng-template #button>
+    <p-button
+      icon="pi pi-plus"
+      [rounded]="true"
+      severity="success"
+      aria-label="Create new"
+    />
+  </ng-template>
+</p-speeddial>
+```
+
+## With Tooltips
+
+```html
+<p-speeddial
+  [model]="itemsWithTooltips"
+  direction="left"
+  [showIcon]="'pi pi-bars'"
+  [hideIcon]="'pi pi-times'"
+/>
+```
+
+```typescript
+itemsWithTooltips: MenuItem[] = [
+  { icon: 'pi pi-pencil',    tooltipOptions: { tooltipLabel: 'Edit',   position: 'top' } },
+  { icon: 'pi pi-share-alt', tooltipOptions: { tooltipLabel: 'Share',  position: 'top' } },
+  { icon: 'pi pi-trash',     tooltipOptions: { tooltipLabel: 'Delete', position: 'top' } },
+];
+```
+
+## Mask / Overlay Backdrop
+
+```html
+<p-speeddial
+  [model]="items"
+  direction="up"
+  [mask]="true"
+  maskStyle="background: rgba(0,0,0,0.4)"
+/>
+```
+
+## Design Tokens
+
+Nettalco Theme defines two tokens for `SpeedDial`. Visual styles for the trigger and action buttons are inherited from the `Button` component tokens.
+
+| Token | Value | Description |
+|---|---|---|
+| `speeddial.root.gap` | `0.5rem` | Space between the trigger button and each action item button, and between action items when expanded |
+| `speeddial.root.transitionDuration` | `{transition.duration}` | CSS transition duration for the expand/collapse animation |
+
+<Note>
+  The trigger FAB button and each action item button are rendered as standard PrimeNG `Button` elements. Their border radius, colors, focus ring, padding, and shadow all come from `button.*` tokens in the Nettalco preset. To change the visual style of SpeedDial's buttons, update the relevant `Button` design tokens.
+</Note>
+
+## Nettalco-Specific Customizations
+
+**Shared transition duration reference.** `speeddial.root.transitionDuration` resolves to `{transition.duration}` — the global timing token used across overlays, drawers, and tooltips in the Nettalco preset. This means all animated components in the application expand, collapse, and fade at a matching speed, providing perceptual consistency.
+
+**Gap aligned with Button spacing.** The `0.5rem` gap between action items mirrors `button.root.gap` (also `0.5rem`), which governs the space between a button's icon and label. Using the same base spacing unit keeps the SpeedDial's action cluster visually proportional to single-button icon/label pairs.
+
+**Button token inheritance.** Because the SpeedDial's action items are `Button` components, they automatically receive Nettalco's Navy primary color, focus-ring suppressed shadow, and 6px border radius. No separate color overrides are needed for the SpeedDial — updating `button.*` tokens propagates through automatically.
+
+**Minimal footprint by design.** The two-token preset for SpeedDial is intentional: PrimeNG's Aura base handles the detailed animation keyframes and stacking context, while Nettalco only needs to align gap and timing with the broader design system. This avoids redundant token definitions and makes the preset easier to maintain.

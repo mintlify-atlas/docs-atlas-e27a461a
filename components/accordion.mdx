@@ -1,0 +1,111 @@
+---
+title: "Accordion Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Accordion"
+description: "Stacked disclosure panels with muted-to-active header color, semantic border tokens, and a CSS transition override for instant panel open/close."
+---
+
+The **Accordion** component renders a vertically stacked set of collapsible panels. The Nettalco preset styles headers with a muted default color that shifts to `{text.color}` on hover or when active. A deliberate `transition: none` CSS override is applied to `.p-accordion-header-content` and `.p-accordion-content` to keep expansion and collapse instantaneous — matching application environments where animation-free UIs are preferred.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-accordion [multiple]="true">
+  <p-accordion-panel value="0">
+    <p-accordion-header>What is Nettalco Theme?</p-accordion-header>
+    <p-accordion-content>
+      <p>
+        Nettalco Theme is a custom PrimeNG v21 preset that maps design tokens
+        onto the Aura base, giving your Angular app a consistent visual language.
+      </p>
+    </p-accordion-content>
+  </p-accordion-panel>
+
+  <p-accordion-panel value="1">
+    <p-accordion-header>How are tokens applied?</p-accordion-header>
+    <p-accordion-content>
+      <p>
+        Tokens are defined as TypeScript objects and passed to
+        <code>providePrimeNG</code> via the <code>theme</code> option.
+      </p>
+    </p-accordion-content>
+  </p-accordion-panel>
+
+  <p-accordion-panel value="2" [disabled]="true">
+    <p-accordion-header>Coming Soon</p-accordion-header>
+    <p-accordion-content>
+      <p>This section is not yet available.</p>
+    </p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { AccordionModule } from 'primeng/accordion';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [AccordionModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/accordion/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.transitionDuration` | `{transition.duration}` | Duration used for internal CSS transitions (where not overridden — see Theme Notes) |
+
+### Panel
+
+| Token | Value | Description |
+|---|---|---|
+| `panel.borderWidth` | `0 0 1px 0` | Bottom border only, acting as a separator between panels |
+| `panel.borderColor` | `{content.border.color}` | Separator line color |
+
+### Header
+
+| Token | Value | Description |
+|---|---|---|
+| `header.color` | `{text.muted.color}` | Default (inactive) header text color |
+| `header.hoverColor` | `{text.color}` | Text color on mouse hover |
+| `header.activeColor` | `{text.color}` | Text color when panel is expanded |
+| `header.activeHoverColor` | `{text.color}` | Text color when expanded and hovered |
+| `header.padding` | `1.125rem` | Uniform header padding |
+| `header.fontWeight` | `600` | Semi-bold to distinguish headers from body text |
+| `header.borderRadius` | `0` | No per-header rounding (only first/last get rounded corners) |
+| `header.background` | `{content.background}` | All background states resolve to the same value |
+| `header.first.topBorderRadius` | `{content.border.radius}` | Top corners rounded on the very first panel |
+| `header.last.bottomBorderRadius` | `{content.border.radius}` | Bottom corners rounded on the last panel when closed |
+| `header.last.activeBottomBorderRadius` | `0` | Bottom corners square on the last panel when open |
+
+### Header Toggle Icon
+
+| Token | Value | Description |
+|---|---|---|
+| `header.toggleIcon.color` | `{text.muted.color}` | Default chevron color |
+| `header.toggleIcon.hoverColor` | `{text.color}` | Chevron color on hover |
+| `header.toggleIcon.activeColor` | `{text.color}` | Chevron color when panel is open |
+| `header.toggleIcon.activeHoverColor` | `{text.color}` | Chevron color when open and hovered |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.background` | `{content.background}` | Content area background |
+| `content.color` | `{text.color}` | Content text color |
+| `content.padding` | `0 1.125rem 1.125rem 1.125rem` | No top padding; header supplies the visual gap |
+| `content.borderWidth` | `0` | No border around the content area |
+
+## Theme Notes
+
+- **`transition: none` override** — The Nettalco preset sets `transition: none` directly on `.p-accordion-header-content` and `.p-accordion-content` via component-level CSS. This means panel expansion/collapse is instantaneous even though `root.transitionDuration` is defined. The token is kept for consistency with the PrimeNG type contract but has no visual effect in this preset.
+- **Header background** — All four background states (`background`, `hoverBackground`, `activeBackground`, `activeHoverBackground`) are set to `{content.background}`. There is no fill change on hover or activation; visual feedback is provided exclusively through text and icon color changes.
+- **First/last rounding** — Only the top of the first panel header and the bottom of the last panel header get `{content.border.radius}`. This produces a clean card-like outline for the whole accordion group without rounding intermediate items.

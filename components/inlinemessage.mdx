@@ -1,0 +1,105 @@
+---
+title: "Inline Message for Form Field Validation Hints"
+sidebarTitle: "Inline Message"
+description: "Compact single-line status indicator for form validation and contextual hints, using Nettalco semantic severity tokens without a close button."
+---
+
+## Overview
+
+`p-inlinemessage` is a compact, non-dismissible status chip intended for placement adjacent to form controls or inside layout cells. It is lighter than `p-message` — there is no close button and the padding derives from the shared form-field spacing tokens — making it ideal for inline validation feedback such as "Email is required" beneath an input.
+
+## Usage
+
+```html
+<!-- Standalone inline messages -->
+<p-inlineMessage severity="success" text="Username is available." />
+<p-inlineMessage severity="info"    text="Password must be 8+ characters." />
+<p-inlineMessage severity="warn"    text="Caps Lock is on." />
+<p-inlineMessage severity="error"   text="Email address is invalid." />
+```
+
+### Paired with a Form Field
+
+```html
+<div class="flex flex-col gap-1">
+  <label for="email">Email</label>
+  <input
+    pInputText
+    id="email"
+    [(ngModel)]="email"
+    [ngClass]="{ 'ng-invalid ng-dirty': emailInvalid }"
+  />
+  <p-inlineMessage
+    *ngIf="emailInvalid"
+    severity="error"
+    text="Enter a valid email address."
+  />
+</div>
+```
+
+### With Custom Icon
+
+```html
+<p-inlineMessage severity="info">
+  <ng-template pTemplate="icon">
+    <i class="pi pi-info-circle"></i>
+  </ng-template>
+  Sync runs every 15 minutes.
+</p-inlineMessage>
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/inlinemessage/index.ts`:
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.padding` | `{form.field.padding.y} {form.field.padding.x}` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.gap` | `0.5rem` |
+
+Padding inherits from the global form-field padding token so inline messages visually align with adjacent inputs.
+
+### Text & Icon
+
+| Token | Value |
+|---|---|
+| `text.fontWeight` | `500` |
+| `icon.size` | `1rem` |
+
+### Color Scheme — Light Mode
+
+| Severity | Background | Border | Color | Shadow |
+|---|---|---|---|---|
+| `info` | `color-mix(in srgb, {info.50}, transparent 5%)` | `{info.200}` | `{info.600}` | `0px 4px 8px color-mix(in srgb, {info.500}, transparent 96%)` |
+| `success` | `color-mix(in srgb, {success.50}, transparent 5%)` | `{success.200}` | `{success.600}` | `0px 4px 8px color-mix(in srgb, {success.500}, transparent 96%)` |
+| `warn` | `color-mix(in srgb, {warn.50}, transparent 5%)` | `{warn.200}` | `{warn.600}` | `0px 4px 8px color-mix(in srgb, {warn.500}, transparent 96%)` |
+| `error` | `color-mix(in srgb, {error.50}, transparent 5%)` | `{error.200}` | `{error.600}` | `0px 4px 8px color-mix(in srgb, {error.500}, transparent 96%)` |
+| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | — |
+| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | — |
+
+### Color Scheme — Dark Mode
+
+| Severity | Background | Border | Color | Shadow |
+|---|---|---|---|---|
+| `info` | `color-mix(in srgb, {info.500}, transparent 84%)` | `color-mix(in srgb, {info.700}, transparent 64%)` | `{info.500}` | `0px 4px 8px …` |
+| `success` | `color-mix(in srgb, {success.500}, transparent 84%)` | `color-mix(in srgb, {success.700}, transparent 64%)` | `{success.500}` | `0px 4px 8px …` |
+| `warn` | `color-mix(in srgb, {warn.500}, transparent 84%)` | `color-mix(in srgb, {warn.700}, transparent 64%)` | `{warn.500}` | `0px 4px 8px …` |
+| `error` | `color-mix(in srgb, {error.500}, transparent 84%)` | `color-mix(in srgb, {error.700}, transparent 64%)` | `{error.500}` | `0px 4px 8px …` |
+| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.300}` | — |
+| `contrast` | `{surface.0}` | `{surface.100}` | `{surface.950}` | — |
+
+## Nettalco Semantic Color Mappings
+
+| Severity | Semantic Token | Primitive Palette | Brand Hex (500) |
+|---|---|---|---|
+| `success` | `{success.*}` | `nettalcoSuccess` | `#2BA5CD` (Cyan) |
+| `info` | `{info.*}` | `nettalcoInfo` | `#66A6FB` (Sky Blue) |
+| `warn` | `{warn.*}` | `nettalcoWarn` | `#D57952` (Orange) |
+| `error` | `{error.*}` | `red` (standard) | `#ef4444` (Red) |
+
+Because `p-inlinemessage` shares the same semantic palette as `p-message` and `p-toast`, a `warn` inline message will always match the Nettalco Orange hue (`#D57952`) of a warn toast shown simultaneously, keeping the visual language consistent across all feedback surfaces.
+
+> **Accessibility note:** Inline messages render as `role="alert"` or `role="status"` depending on severity. Pair with `aria-live` regions when used inside reactive forms to announce validation changes to screen readers.

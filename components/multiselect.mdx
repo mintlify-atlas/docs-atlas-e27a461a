@@ -1,0 +1,148 @@
+---
+title: "MultiSelect: Nettalco Theme Design Tokens"
+sidebarTitle: "MultiSelect"
+description: "Design tokens for the PrimeNG MultiSelect component in Nettalco Theme — field, overlay, list, option, chip tags, and empty message styling."
+---
+
+The **MultiSelect** component extends the dropdown pattern to allow selecting multiple options simultaneously, displaying selections as chip tags inside the trigger field. Nettalco Theme uses the same `form.field.*` inheritance as Select for the trigger, and adds chip-specific tokens on top of the standard overlay, list, and option token groups.
+
+## Usage
+
+```html
+<!-- Basic multi-select -->
+<p-multiselect
+  [(ngModel)]="selectedCities"
+  [options]="cities"
+  optionLabel="name"
+  placeholder="Select Cities"
+/>
+
+<!-- With filter and select all -->
+<p-multiselect
+  [(ngModel)]="selectedItems"
+  [options]="items"
+  optionLabel="label"
+  [filter]="true"
+  [showToggleAll]="true"
+  placeholder="Choose items"
+/>
+
+<!-- Chip display -->
+<p-multiselect
+  [(ngModel)]="selectedTags"
+  [options]="tags"
+  display="chip"
+  placeholder="Add tags"
+/>
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MultiSelectModule } from 'primeng/multiselect';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [MultiSelectModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  selectedCities: any[] = [];
+  cities = [
+    { name: 'New York', code: 'NY' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Tokyo', code: 'TKY' }
+  ];
+}
+```
+
+## Design Tokens
+
+### Root (trigger field — inherits `form.field`)
+
+| Token | Value | Description |
+|---|---|---|
+| `background` | `{form.field.background}` | Trigger background |
+| `borderColor` | `{form.field.border.color}` | Default border |
+| `hoverBorderColor` | `{form.field.hover.border.color}` | Border on hover |
+| `focusBorderColor` | `{form.field.focus.border.color}` | Border on focus |
+| `invalidBorderColor` | `{form.field.invalid.border.color}` | Border in invalid state |
+| `color` | `{form.field.color}` | Text color |
+| `placeholderColor` | `{form.field.placeholder.color}` | Placeholder text color |
+| `shadow` | `{form.field.shadow}` | Box shadow |
+| `paddingX` | `{form.field.padding.x}` | Horizontal padding |
+| `paddingY` | `{form.field.padding.y}` | Vertical padding |
+| `borderRadius` | `{form.field.border.radius}` | Corner radius |
+| `transitionDuration` | `{form.field.transition.duration}` | Transition duration |
+
+### Dropdown (chevron)
+
+| Token | Value | Description |
+|---|---|---|
+| `dropdown.width` | `2.5rem` | Width of the chevron area |
+| `dropdown.color` | `{form.field.icon.color}` | Chevron icon color |
+
+### Overlay (dropdown panel)
+
+| Token | Value | Description |
+|---|---|---|
+| `overlay.background` | `{overlay.select.background}` | Panel background |
+| `overlay.borderColor` | `{overlay.select.border.color}` | Panel border |
+| `overlay.borderRadius` | `{overlay.select.border.radius}` | Panel corner radius |
+| `overlay.color` | `{overlay.select.color}` | Panel text color |
+| `overlay.shadow` | `{overlay.select.shadow}` | Panel drop shadow |
+
+### List layout
+
+| Token | Value | Description |
+|---|---|---|
+| `list.padding` | `{list.padding}` | List outer padding |
+| `list.gap` | `{list.gap}` | Gap between options |
+| `list.header.padding` | `{list.header.padding}` | Filter/header padding |
+
+### Option
+
+| Token | Value | Description |
+|---|---|---|
+| `option.focusBackground` | `{list.option.focus.background}` | Background on focus |
+| `option.selectedBackground` | `{list.option.selected.background}` | Background when selected |
+| `option.selectedFocusBackground` | `{list.option.selected.focus.background}` | Selected + focused background |
+| `option.color` | `{list.option.color}` | Option text color |
+| `option.focusColor` | `{list.option.focus.color}` | Text color on focus |
+| `option.selectedColor` | `{list.option.selected.color}` | Text color when selected |
+| `option.padding` | `{list.option.padding}` | Option padding |
+| `option.borderRadius` | `{list.option.border.radius}` | Option corner radius |
+| `option.gap` | `0.5rem` | Gap between checkbox and option label |
+
+### Option group
+
+| Token | Value | Description |
+|---|---|---|
+| `optionGroup.background` | `{list.option.group.background}` | Group header background |
+| `optionGroup.color` | `{list.option.group.color}` | Group header text |
+| `optionGroup.fontWeight` | `{list.option.group.font.weight}` | Group header font weight |
+| `optionGroup.padding` | `{list.option.group.padding}` | Group header padding |
+
+### Chip (selected-value tags)
+
+| Token | Value | Description |
+|---|---|---|
+| `chip.borderRadius` | `{border.radius.sm}` → `4px` | Corner radius of each chip tag |
+
+### Other
+
+| Token | Value | Description |
+|---|---|---|
+| `clearIcon.color` | `{form.field.icon.color}` | Clear (×) icon color |
+| `emptyMessage.padding` | `{list.option.padding}` | Padding of the "no results" message |
+
+## Theme Notes
+
+<Note>
+MultiSelect adds an `option.gap: 0.5rem` token not present in Select. This controls the spacing between the selection checkbox and the option label text inside the dropdown list.
+</Note>
+
+<Tip>
+The chip's `borderRadius` (`{border.radius.sm}` = 4 px) matches InputChips chips, giving a visually consistent tag shape across both components. If you want a more rounded pill chip, override `{border.radius.sm}` in the base tokens.
+</Tip>

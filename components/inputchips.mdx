@@ -1,0 +1,95 @@
+---
+title: "InputChips: Nettalco Theme Design Tokens"
+sidebarTitle: "InputChips"
+description: "Design tokens for the PrimeNG InputChips component in Nettalco Theme — field styling, chip shape, and light/dark chip focus colors."
+---
+
+The **InputChips** component lets users enter multiple values as removable chip tags inside a text field. Nettalco Theme inherits the field's appearance from the global `form.field.*` token system and adds specific tokens for the chip's border radius and focus background colors in light and dark modes.
+
+## Usage
+
+```html
+<!-- Basic chip input -->
+<p-inputchips [(ngModel)]="tags" placeholder="Add a tag" />
+
+<!-- With separator (allow comma-separated entry) -->
+<p-inputchips [(ngModel)]="emails" separator="," placeholder="Enter emails" />
+
+<!-- Disabled state -->
+<p-inputchips [(ngModel)]="tags" [disabled]="true" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InputChipsModule } from 'primeng/inputchips';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [InputChipsModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  tags: string[] = ['Angular', 'PrimeNG'];
+  emails: string[] = [];
+}
+```
+
+## Design Tokens
+
+### Root (inherits `form.field`)
+
+| Token | Value | Description |
+|---|---|---|
+| `background` | `{form.field.background}` | Field background |
+| `disabledBackground` | `{form.field.disabled.background}` | Background when disabled |
+| `filledBackground` | `{form.field.filled.background}` | Background in filled mode |
+| `filledFocusBackground` | `{form.field.filled.focus.background}` | Filled background when focused |
+| `borderColor` | `{form.field.border.color}` | Default border color |
+| `hoverBorderColor` | `{form.field.hover.border.color}` | Border color on hover |
+| `focusBorderColor` | `{form.field.focus.border.color}` | Border color on focus |
+| `invalidBorderColor` | `{form.field.invalid.border.color}` | Border color in invalid state |
+| `color` | `{form.field.color}` | Text color inside the field |
+| `disabledColor` | `{form.field.disabled.color}` | Text color when disabled |
+| `placeholderColor` | `{form.field.placeholder.color}` | Placeholder text color |
+| `shadow` | `{form.field.shadow}` | Box shadow |
+| `paddingX` | `{form.field.padding.x}` | Horizontal padding |
+| `paddingY` | `{form.field.padding.y}` | Vertical padding |
+| `borderRadius` | `{form.field.border.radius}` | Field corner radius |
+| `focusRing.width` | `{form.field.focus.ring.width}` | Focus ring width |
+| `focusRing.style` | `{form.field.focus.ring.style}` | Focus ring style |
+| `focusRing.color` | `{form.field.focus.ring.color}` | Focus ring color |
+| `focusRing.offset` | `{form.field.focus.ring.offset}` | Focus ring offset |
+| `focusRing.shadow` | `{form.field.focus.ring.shadow}` | Focus ring shadow |
+| `transitionDuration` | `{form.field.transition.duration}` | Transition duration |
+
+### Chip
+
+| Token | Value | Description |
+|---|---|---|
+| `chip.borderRadius` | `{border.radius.sm}` → `4px` | Corner radius of each chip tag |
+
+### Chip color scheme — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `chip.focusBackground` | `{surface.200}` | Chip background when focused/selected |
+| `chip.color` | `{surface.800}` | Chip text color |
+
+### Chip color scheme — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `chip.focusBackground` | `{surface.700}` | Chip background when focused/selected |
+| `chip.color` | `{surface.0}` → `#ffffff` | Chip text color |
+
+## Theme Notes
+
+<Note>
+The chip uses `{border.radius.sm}` (4 px) — slightly smaller than the field's `{border.radius.md}` (6 px). This gives chips a more compact, pill-adjacent look while still feeling grounded within the field container.
+</Note>
+
+<Tip>
+Chip focus colors are explicitly defined per color scheme. Light mode uses `{surface.200}` (a light slate) and dark mode uses `{surface.700}` (a darker zinc), ensuring adequate contrast in both themes when a chip is keyboard-focused for deletion.
+</Tip>

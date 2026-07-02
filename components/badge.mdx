@@ -1,0 +1,130 @@
+---
+title: "Badge Counters and Severity Dot Indicators"
+sidebarTitle: "Badge"
+description: "Numeric counter and dot-style notification badges in four sizes and seven severity variants, driven by Nettalco semantic color and contrast tokens."
+---
+
+## Overview
+
+`p-badge` renders a small pill-shaped counter or a dot indicator, commonly overlaid on buttons, avatars, or navigation icons to signal pending items or status. The Nettalco preset provides four size variants (`sm`, default, `lg`, `xl`) and seven color severities that resolve through the same semantic token layer used by tags, toasts, and messages — ensuring visual consistency across the entire application.
+
+## Usage
+
+### Number Badge
+
+```html
+<!-- Standalone numeric badge -->
+<p-badge value="5" />
+<p-badge value="99+" severity="danger" />
+
+<!-- Different sizes -->
+<p-badge value="3" size="small"  severity="info" />
+<p-badge value="3"               severity="success" />
+<p-badge value="3" size="large"  severity="warn" />
+<p-badge value="3" size="xlarge" severity="danger" />
+```
+
+### Dot Badge (no number)
+
+```html
+<!-- Dot badge — use empty value or omit value entirely -->
+<p-badge />
+<p-badge severity="success" />
+<p-badge severity="warn" />
+<p-badge severity="danger" />
+```
+
+### Overlay Badge on a Button
+
+```html
+<p-overlaybadge value="4" severity="danger">
+  <button pButton icon="pi pi-bell" [rounded]="true" outlined />
+</p-overlaybadge>
+```
+
+### Overlay Badge on an Avatar
+
+```html
+<p-overlaybadge value="2" severity="success">
+  <p-avatar label="JD" shape="circle" size="large" />
+</p-overlaybadge>
+```
+
+### All Severities
+
+```html
+<p-badge value="1" severity="primary"   />
+<p-badge value="2" severity="secondary" />
+<p-badge value="3" severity="success"   />
+<p-badge value="4" severity="info"      />
+<p-badge value="5" severity="warn"      />
+<p-badge value="6" severity="danger"    />
+<p-badge value="7" severity="contrast"  />
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/badge/index.ts`:
+
+### Root (Default Size)
+
+| Token | Value |
+|---|---|
+| `root.borderRadius` | `{border.radius.md}` |
+| `root.padding` | `0 0.5rem` |
+| `root.fontSize` | `0.75rem` |
+| `root.fontWeight` | `700` |
+| `root.minWidth` | `1.5rem` |
+| `root.height` | `1.5rem` |
+
+### Dot
+
+| Token | Value |
+|---|---|
+| `dot.size` | `0.5rem` |
+
+### Size Variants
+
+| Size | Token | Font Size | Min Width | Height |
+|---|---|---|---|---|
+| Small | `sm` | `0.625rem` | `1.25rem` | `1.25rem` |
+| Default | — | `0.75rem` | `1.5rem` | `1.5rem` |
+| Large | `lg` | `0.875rem` | `1.75rem` | `1.75rem` |
+| Extra Large | `xl` | `1rem` | `2rem` | `2rem` |
+
+### Color Scheme — Light Mode
+
+| Severity | Background | Text Color |
+|---|---|---|
+| `primary` | `{primary.color}` | `{primary.contrast.color}` |
+| `secondary` | `{surface.100}` | `{surface.600}` |
+| `success` | `{success.color}` | `{success.contrast.color}` |
+| `info` | `{info.color}` | `{info.contrast.color}` |
+| `warn` | `{warn.color}` | `{warn.contrast.color}` |
+| `danger` | `{error.color}` | `{error.contrast.color}` |
+| `contrast` | `{surface.950}` | `{surface.0}` |
+
+### Color Scheme — Dark Mode
+
+| Severity | Background | Text Color |
+|---|---|---|
+| `primary` | `{primary.color}` | `{primary.contrast.color}` |
+| `secondary` | `{surface.800}` | `{surface.300}` |
+| `success` | `{success.color}` | `{success.contrast.color}` |
+| `info` | `{info.color}` | `{info.contrast.color}` |
+| `warn` | `{warn.color}` | `{warn.contrast.color}` |
+| `danger` | `{error.color}` | `{error.contrast.color}` |
+| `contrast` | `{surface.0}` | `{surface.950}` |
+
+## Nettalco Semantic Color Mappings
+
+Badge severity backgrounds use `{severity.color}` — the resolved semantic color value — rather than a specific palette step. This ensures the badge background matches the exact brand color used in buttons and other solid-fill elements.
+
+| Severity | `color` token resolves to | Hex (light) | Contrast (light) |
+|---|---|---|---|
+| `success` | `{success.color}` → `nettalcoSuccess.500` | `#2BA5CD` | `#ffffff` |
+| `info` | `{info.color}` → `nettalcoInfo.500` | `#66A6FB` | `#ffffff` |
+| `warn` | `{warn.color}` → `nettalcoWarn.500` | `#D57952` | `#ffffff` |
+| `danger` | `{error.color}` → `red.500` | `#ef4444` | `#ffffff` |
+
+All contrast colors are white (`#ffffff`) in light mode by the `colorScheme.light.*.contrastColor` definitions. In dark mode the `success` contrast resolves to `{success.contrast.color}` = `{success.800}` = `#0C3D5C` (dark cyan), and `warn` contrast resolves to `{warn.950}` = `#5C3E1A`.

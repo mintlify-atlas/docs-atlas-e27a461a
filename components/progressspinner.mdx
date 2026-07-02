@@ -1,0 +1,103 @@
+---
+title: "Progress Spinner with Nettalco Brand Arc Colors"
+sidebarTitle: "Progress Spinner"
+description: "Animated SVG loading spinner whose four arc segments map to Nettalco's error, info, success, and warn semantic color tokens for on-brand loading states."
+---
+
+## Overview
+
+`p-progressspinner` renders an SVG circle animation used to indicate an indeterminate loading state. The Nettalco preset assigns each of the four animated arc color stops to a different semantic severity color — `error`, `info`, `success`, and `warn` — so the spinner cycles through all four brand hues as it rotates. Both light and dark color schemes use the same semantic references, meaning the spinner adapts automatically when the theme switches.
+
+## Usage
+
+### Basic Spinner
+
+```html
+<!-- Default spinner, centered in its container -->
+<p-progressspinner />
+```
+
+### Custom Size
+
+```html
+<p-progressspinner
+  [style]="{ width: '80px', height: '80px' }"
+  strokeWidth="4"
+/>
+```
+
+### With Loading Guard
+
+```html
+<div class="content-area">
+  <p-progressspinner *ngIf="loading" />
+  <div *ngIf="!loading">
+    <!-- page content -->
+  </div>
+</div>
+```
+
+```ts
+export class DashboardComponent implements OnInit {
+  loading = true;
+
+  ngOnInit() {
+    this.dataService.fetch().subscribe(data => {
+      this.data = data;
+      this.loading = false;
+    });
+  }
+}
+```
+
+### Fill Mode (custom animation name)
+
+```html
+<p-progressspinner
+  animationDuration=".8s"
+  [style]="{ width: '3rem', height: '3rem' }"
+/>
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/progressspinner/index.ts`:
+
+### Color Scheme — Light Mode
+
+| Token | Value | Resolves To |
+|---|---|---|
+| `colorScheme.light.root.colorOne` | `{error.color}` | `#ef4444` (Red) |
+| `colorScheme.light.root.colorTwo` | `{info.color}` | `#66A6FB` (Nettalco Sky Blue) |
+| `colorScheme.light.root.colorThree` | `{success.color}` | `#2BA5CD` (Nettalco Cyan) |
+| `colorScheme.light.root.colorFour` | `{warn.color}` | `#D57952` (Nettalco Orange) |
+
+### Color Scheme — Dark Mode
+
+| Token | Value | Resolves To |
+|---|---|---|
+| `colorScheme.dark.root.colorOne` | `{error.color}` | `#f87171` (Red 400) |
+| `colorScheme.dark.root.colorTwo` | `{info.color}` | `#69A7ED` (Nettalco Info 400) |
+| `colorScheme.dark.root.colorThree` | `{success.color}` | `#6ECBCD` (Nettalco Success 200) |
+| `colorScheme.dark.root.colorFour` | `{warn.color}` | `#F4B33C` (Nettalco Warn 200) |
+
+The four color tokens (`colorOne` through `colorFour`) map directly to the stroke-dasharray segments of the SVG animation keyframes.
+
+## Nettalco Theme Notes
+
+The spinner uses the same semantic color tokens — `{error.color}`, `{info.color}`, `{success.color}`, `{warn.color}` — as all other severity-aware components. These resolve via the `colorScheme` semantic layer:
+
+```
+{success.color} → nettalcoSuccess.500 → #2BA5CD (Cyan, light mode)
+                → nettalcoSuccess.200 → #6ECBCD (Cyan light, dark mode)
+
+{warn.color}    → nettalcoWarn.500   → #D57952 (Orange, light mode)
+                → nettalcoWarn.200   → #F4B33C (Orange light, dark mode)
+
+{info.color}    → nettalcoInfo.500   → #66A6FB (Sky Blue, light mode)
+                → nettalcoInfo.400   → #69A7ED (Sky Blue, dark mode)
+```
+
+The spinner does not add its own color-scheme tokens beyond the four arc colors — sizing and stroke width are controlled via the `style` and `strokeWidth` component inputs at the template level.
+
+> **Usage tip:** Place a `p-progressspinner` inside a full-screen overlay `<div>` with `position: fixed` and `z-index: 9999` for page-level loading guards, wrapping it in an `*ngIf` bound to a `loading` boolean in your component.

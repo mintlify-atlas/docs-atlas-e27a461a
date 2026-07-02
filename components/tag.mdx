@@ -1,0 +1,131 @@
+---
+title: "Tag Labels with Nettalco Custom Severity Color Schemes"
+sidebarTitle: "Tag"
+description: "Small inline label badges for categorisation, status display, and metadata annotation, with Nettalco-specific success cyan and warn orange severity tokens."
+---
+
+## Overview
+
+`p-tag` renders a compact, pill-style label used for categorisation, status indicators, and metadata annotations. The Nettalco preset defines a full color scheme for seven severities — `primary`, `secondary`, `success`, `info`, `warn`, `danger`, and `contrast` — where the `success` severity deliberately resolves to **Cyan** (`#2BA5CD`, the Nettalco brand success color) and `warn` resolves to **Orange** (`#D57952`), rather than the conventional green and amber.
+
+## Usage
+
+### All Severities
+
+```html
+<p-tag value="Primary"   severity="primary"   />
+<p-tag value="Secondary" severity="secondary" />
+<p-tag value="Success"   severity="success"   />
+<p-tag value="Info"      severity="info"      />
+<p-tag value="Warning"   severity="warn"      />
+<p-tag value="Danger"    severity="danger"    />
+<p-tag value="Contrast"  severity="contrast"  />
+```
+
+### Rounded Style
+
+```html
+<p-tag value="Active"  severity="success" [rounded]="true" />
+<p-tag value="Pending" severity="warn"    [rounded]="true" />
+```
+
+The `rounded` prop switches `borderRadius` from `{content.border.radius}` to `{border.radius.xl}` (fully rounded pill).
+
+### With Icon
+
+```html
+<p-tag value="Verified" severity="success" icon="pi pi-check" />
+<p-tag value="Alert"    severity="warn"    icon="pi pi-exclamation-triangle" />
+<p-tag value="Error"    severity="danger"  icon="pi pi-times" />
+```
+
+### Inside a Table Cell
+
+```html
+<p-table [value]="orders">
+  <ng-template pTemplate="body" let-order>
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ order.name }}</td>
+      <td>
+        <p-tag
+          [value]="order.status"
+          [severity]="statusSeverity(order.status)"
+        />
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+```
+
+```ts
+statusSeverity(status: string): string {
+  const map: Record<string, string> = {
+    Shipped: 'success',
+    Processing: 'info',
+    Delayed: 'warn',
+    Cancelled: 'danger',
+  };
+  return map[status] ?? 'secondary';
+}
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/tag/index.ts`:
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.fontSize` | `0.875rem` |
+| `root.fontWeight` | `700` |
+| `root.padding` | `0.25rem 0.5rem` |
+| `root.gap` | `0.25rem` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.roundedBorderRadius` | `{border.radius.xl}` |
+
+### Icon
+
+| Token | Value |
+|---|---|
+| `icon.size` | `0.75rem` |
+
+### Color Scheme — Light Mode
+
+| Severity | Background | Text Color |
+|---|---|---|
+| `primary` | `{primary.100}` | `{primary.700}` |
+| `secondary` | `{surface.100}` | `{surface.600}` |
+| `success` | `{success.100}` | `{success.700}` |
+| `info` | `{info.100}` | `{info.700}` |
+| `warn` | `{warn.100}` | `{warn.700}` |
+| `danger` | `{error.100}` | `{error.700}` |
+| `contrast` | `{surface.950}` | `{surface.0}` |
+
+### Color Scheme — Dark Mode
+
+| Severity | Background | Text Color |
+|---|---|---|
+| `primary` | `color-mix(in srgb, {primary.500}, transparent 84%)` | `{primary.300}` |
+| `secondary` | `{surface.800}` | `{surface.300}` |
+| `success` | `color-mix(in srgb, {success.500}, transparent 84%)` | `{success.300}` |
+| `info` | `color-mix(in srgb, {info.500}, transparent 84%)` | `{info.300}` |
+| `warn` | `color-mix(in srgb, {warn.500}, transparent 84%)` | `{warn.300}` |
+| `danger` | `color-mix(in srgb, {error.500}, transparent 84%)` | `{error.300}` |
+| `contrast` | `{surface.0}` | `{surface.950}` |
+
+## Nettalco Semantic Color Mappings
+
+| Severity | Semantic Token | Primitive Palette | Light bg (100) | Light text (700) |
+|---|---|---|---|---|
+| `success` | `{success.*}` | `nettalcoSuccess` | `#8CC3D7` | `#0C566F` |
+| `info` | `{info.*}` | `nettalcoInfo` | `#B4D3FD` | `#4775BF` |
+| `warn` | `{warn.*}` | `nettalcoWarn` | `#E4DBE7` | `#CA8825` |
+| `danger` | `{error.*}` | `red` (standard) | `#fee2e2` | `#b91c1c` |
+
+### Key Brand Color Notes
+
+- **`success` → Cyan:** `{success.100}` resolves to `nettalcoSuccess.100` = `#8CC3D7`. The `.700` text token resolves to `#0C566F` (dark cyan). This gives success tags a distinctive teal-cyan appearance — aligned with Nettalco brand identity rather than generic green.
+- **`warn` → Orange:** `{warn.500}` resolves to `nettalcoWarn.500` = `#D57952`. Warn tags use Nettalco's brand orange, distinguishing them visually from yellow-amber warning conventions.
+- **`danger` uses standard `red`:** The error/danger severity falls back to the PrimeNG `red` primitive (not a custom Nettalco palette), providing high-urgency contrast while staying familiar to users.

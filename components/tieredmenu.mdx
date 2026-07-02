@@ -1,0 +1,108 @@
+---
+title: "TieredMenu Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "TieredMenu"
+description: "Design tokens and theme notes for the PrimeNG TieredMenu in Nettalco Theme, including root, list, item, submenu icon, and transition:none override."
+---
+
+The **TieredMenu** component displays a nested list of items where hovering over a parent reveals a cascading submenu. In Nettalco Theme it shares the same `content` and `navigation` token namespaces as the other overlay-navigation components, maintaining visual coherence across the menu family.
+
+## Usage
+
+```html
+<p-tieredMenu [model]="items" />
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+items: MenuItem[] = [
+  {
+    label: 'File',
+    icon: 'pi pi-file',
+    items: [
+      { label: 'New', icon: 'pi pi-plus' },
+      { label: 'Open', icon: 'pi pi-folder-open' },
+      {
+        label: 'Export',
+        icon: 'pi pi-upload',
+        items: [
+          { label: 'PDF', icon: 'pi pi-file-pdf' },
+          { label: 'CSV', icon: 'pi pi-table' }
+        ]
+      }
+    ]
+  },
+  { label: 'Edit', icon: 'pi pi-pencil' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.background` | `{content.background}` |
+| `root.borderColor` | `{content.border.color}` |
+| `root.color` | `{content.color}` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.shadow` | `{overlay.navigation.shadow}` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### List
+
+| Token | Value |
+|---|---|
+| `list.padding` | `{navigation.list.padding}` |
+| `list.gap` | `{navigation.list.gap}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.focusBackground` | `{navigation.item.focus.background}` |
+| `item.activeBackground` | `{navigation.item.active.background}` |
+| `item.color` | `{navigation.item.color}` |
+| `item.focusColor` | `{navigation.item.focus.color}` |
+| `item.activeColor` | `{navigation.item.active.color}` |
+| `item.padding` | `{navigation.item.padding}` |
+| `item.borderRadius` | `{navigation.item.border.radius}` |
+| `item.gap` | `{navigation.item.gap}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.focusColor` | `{navigation.item.icon.focus.color}` |
+| `item.icon.activeColor` | `{navigation.item.icon.active.color}` |
+
+### Submenu
+
+| Token | Value |
+|---|---|
+| `submenu.mobileIndent` | `1rem` |
+
+### Submenu Icon
+
+| Token | Value |
+|---|---|
+| `submenuIcon.size` | `{navigation.submenu.icon.size}` |
+| `submenuIcon.color` | `{navigation.submenu.icon.color}` |
+| `submenuIcon.focusColor` | `{navigation.submenu.icon.focus.color}` |
+| `submenuIcon.activeColor` | `{navigation.submenu.icon.active.color}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.borderColor` | `{content.border.color}` |
+
+## Theme Notes
+
+### Transition Override
+
+Nettalco Theme suppresses the default hover transition on TieredMenu item content elements:
+
+```css
+div.p-tieredmenu-item-content {
+  transition: none;
+}
+```
+
+This is applied as part of the global extended CSS block, which targets all menu-family item content elements to eliminate hover transition delays across the entire navigation system.

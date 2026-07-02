@@ -1,0 +1,143 @@
+---
+title: "Avatar Initials, Icons, and Images with Size Variants"
+sidebarTitle: "Avatar"
+description: "User representation component supporting text initials, icon glyphs, and image photos, in three sizes with an AvatarGroup stacking offset token."
+---
+
+## Overview
+
+`p-avatar` renders a square or circle representation of a person or entity using a text label (initials), an icon, or an image. The Nettalco preset sizes avatars at `2rem` (default), `3rem` (lg), and `4rem` (xl), using `{content.border.color}` as the fallback background for initials and icon variants. `p-avatargroup` stacks multiple avatars with a configurable overlap offset derived from the size scale.
+
+## Usage
+
+### Text Initials
+
+```html
+<p-avatar label="JD" />
+<p-avatar label="AB" size="large" />
+<p-avatar label="XY" size="xlarge" />
+```
+
+### Icon Avatar
+
+```html
+<p-avatar icon="pi pi-user" />
+<p-avatar icon="pi pi-user" shape="circle" size="large" />
+```
+
+### Image Avatar
+
+```html
+<p-avatar image="assets/avatars/john.jpg" shape="circle" />
+<p-avatar image="assets/avatars/jane.jpg" shape="circle" size="large" />
+```
+
+### AvatarGroup
+
+```html
+<p-avatargroup>
+  <p-avatar image="assets/avatars/user1.jpg" shape="circle" size="large" />
+  <p-avatar image="assets/avatars/user2.jpg" shape="circle" size="large" />
+  <p-avatar image="assets/avatars/user3.jpg" shape="circle" size="large" />
+  <p-avatar label="+3" shape="circle" size="large" />
+</p-avatargroup>
+```
+
+### Avatar with Badge
+
+```html
+<p-overlaybadge value="3" severity="danger">
+  <p-avatar
+    image="assets/avatars/current-user.jpg"
+    shape="circle"
+    size="large"
+  />
+</p-overlaybadge>
+```
+
+### Dynamic from User Object
+
+```ts
+export class UserCardComponent {
+  user = { name: 'Carlos Rivera', avatarUrl: '', initials: 'CR' };
+
+  get displayImage() { return this.user.avatarUrl || null; }
+  get displayLabel() { return this.user.avatarUrl ? null : this.user.initials; }
+}
+```
+
+```html
+<p-avatar
+  [image]="displayImage"
+  [label]="displayLabel"
+  shape="circle"
+  size="large"
+/>
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/avatar/index.ts`:
+
+### Root (Default Size)
+
+| Token | Value | Notes |
+|---|---|---|
+| `root.width` | `2rem` | 32px |
+| `root.height` | `2rem` | 32px |
+| `root.fontSize` | `1rem` | Label/initial font size |
+| `root.background` | `{content.border.color}` | Fallback bg for initials & icons |
+| `root.color` | `{content.color}` | Text/icon color |
+| `root.borderRadius` | `{content.border.radius}` | Square with rounded corners |
+
+### Icon
+
+| Token | Value |
+|---|---|
+| `icon.size` | `1rem` |
+
+### Group (Default Size)
+
+| Token | Value | Notes |
+|---|---|---|
+| `group.borderColor` | `{content.background}` | Border separating stacked avatars |
+| `group.offset` | `-0.75rem` | Negative margin for overlap |
+
+### Large Size (`lg`)
+
+| Token | Value |
+|---|---|
+| `lg.width` | `3rem` |
+| `lg.height` | `3rem` |
+| `lg.fontSize` | `1.5rem` |
+| `lg.icon.size` | `1.5rem` |
+| `lg.group.offset` | `-1rem` |
+
+### Extra Large Size (`xl`)
+
+| Token | Value |
+|---|---|
+| `xl.width` | `4rem` |
+| `xl.height` | `4rem` |
+| `xl.fontSize` | `2rem` |
+| `xl.icon.size` | `2rem` |
+| `xl.group.offset` | `-1.5rem` |
+
+## Nettalco Theme Notes
+
+The avatar background and text color are neutral by design — they derive from `{content.border.color}` and `{content.color}` respectively, not from any brand palette. This ensures initials and icon avatars look natural without dominating the interface.
+
+```
+Light: root.background → {content.border.color} → ~{surface.200} → #e2e8f0
+Dark:  root.background → {content.border.color} → dark surface border
+```
+
+The group stacking `borderColor` uses `{content.background}` — the page/card background color — so the separator ring between stacked avatars appears as a clean gap rather than a visible border. The offset values are proportional to avatar size:
+
+| Size | Offset | Overlap |
+|---|---|---|
+| Default (2rem) | `-0.75rem` | ~37.5% |
+| Large (3rem) | `-1rem` | ~33% |
+| XL (4rem) | `-1.5rem` | ~37.5% |
+
+> **Fallback initials:** When an image URL fails to load, the browser falls back to rendering the `label` prop (initials). Always provide both `image` and `label` for user avatars where the image may be unavailable.

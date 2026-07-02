@@ -1,0 +1,67 @@
+---
+title: "InputOTP: Nettalco Theme Design Tokens"
+sidebarTitle: "InputOTP"
+description: "Design tokens for the PrimeNG InputOTP component in Nettalco Theme — gap between slots and per-size slot widths for sm, default, and lg."
+---
+
+The **InputOTP** component renders a one-time password input as a row of individual character slots, commonly used for two-factor authentication. Nettalco Theme controls the spacing between slots and the width of each slot at small, default, and large size variants. Each individual slot inherits its border, background, and focus styling from the global `form.field.*` system.
+
+## Usage
+
+```html
+<!-- Default 6-digit OTP -->
+<p-inputotp [(ngModel)]="otp" [length]="6" />
+
+<!-- Integer mask -->
+<p-inputotp [(ngModel)]="otp" [length]="4" integerOnly />
+
+<!-- Size variants -->
+<p-inputotp [(ngModel)]="otp" [length]="6" size="small" />
+<p-inputotp [(ngModel)]="otp" [length]="6" size="large" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InputOtpModule } from 'primeng/inputotp';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [InputOtpModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  otp: string | undefined;
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `gap` | `0.5rem` | Space between each OTP slot |
+
+### Input (slot dimensions)
+
+| Token | Value | Description |
+|---|---|---|
+| `input.width` | `2.5rem` | Default slot width |
+| `input.sm.width` | `2rem` | Slot width in `sm` size variant |
+| `input.lg.width` | `3rem` | Slot width in `lg` size variant |
+
+<Info>
+InputOTP slots are square by default — the height is driven by the vertical padding and font size inherited from `form.field.*`, keeping the height in sync with other form fields at every size variant.
+</Info>
+
+## Theme Notes
+
+<Note>
+InputOTP has a minimal set of bespoke tokens. The gap (`0.5rem`) and slot widths are the only layout values defined here; all color, border, shadow, and focus ring properties come from the shared `form.field` token system.
+</Note>
+
+<Tip>
+The three slot widths (2 rem / 2.5 rem / 3 rem) correspond proportionally to the `sm`, default, and `lg` padding scales. This ensures the slots look balanced relative to other form controls at every size.
+</Tip>

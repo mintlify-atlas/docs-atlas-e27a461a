@@ -1,0 +1,159 @@
+---
+title: "Tree Component — Nettalco Theme Tokens"
+sidebarTitle: "Tree"
+description: "Design tokens and Angular usage for the Tree component in the Nettalco PrimeNG v21 preset, covering nodes, icons, and toggle buttons."
+---
+
+The **Tree** component renders hierarchical data as an indented node list. Each node can be expanded or collapsed, optionally selected, and decorated with an icon. The Nettalco preset configures comfortable default padding, a subtle `2px` gap between nodes, and a `1rem` indent per tree level. A filter input can be shown above the tree to narrow visible nodes.
+
+## Angular Usage Example
+
+```html
+<p-tree
+  [value]="treeNodes"
+  selectionMode="checkbox"
+  [(selection)]="selectedNodes"
+  [filter]="true"
+  filterPlaceholder="Search…"
+>
+  <ng-template let-node pTemplate="default">
+    <span>{{ node.label }}</span>
+  </ng-template>
+</p-tree>
+```
+
+```ts
+import { TreeNode } from 'primeng/api';
+
+treeNodes: TreeNode[] = [
+  {
+    label: 'Documents',
+    icon: 'pi pi-folder',
+    children: [
+      { label: 'Resume.pdf',  icon: 'pi pi-file' },
+      { label: 'Cover.docx', icon: 'pi pi-file' }
+    ]
+  },
+  {
+    label: 'Photos',
+    icon: 'pi pi-images',
+    children: [
+      { label: 'Vacation.jpg', icon: 'pi pi-image' }
+    ]
+  }
+];
+```
+
+---
+
+## Design Tokens
+
+### `root`
+
+The outermost container.
+
+| Token                | Value                   |
+|----------------------|-------------------------|
+| `background`         | `{content.background}`  |
+| `color`              | `{content.color}`       |
+| `padding`            | `1rem`                  |
+| `gap`                | `2px`                   |
+| `indent`             | `1rem`                  |
+| `transitionDuration` | `{transition.duration}` |
+
+---
+
+### `node`
+
+Each individual tree node row.
+
+| Token                | Value                        |
+|----------------------|------------------------------|
+| `padding`            | `0.25rem 0.5rem`             |
+| `borderRadius`       | `{content.border.radius}`    |
+| `hoverBackground`    | `{content.hover.background}` |
+| `selectedBackground` | `{highlight.background}`     |
+| `color`              | `{text.color}`               |
+| `hoverColor`         | `{text.hover.color}`         |
+| `selectedColor`      | `{highlight.color}`          |
+| `gap`                | `0.25rem`                    |
+| `focusRing.width`    | `{focus.ring.width}`         |
+| `focusRing.style`    | `{focus.ring.style}`         |
+| `focusRing.color`    | `{focus.ring.color}`         |
+| `focusRing.offset`   | `-1px`                       |
+| `focusRing.shadow`   | `{focus.ring.shadow}`        |
+
+---
+
+### `nodeIcon`
+
+The icon displayed alongside the node label.
+
+| Token           | Value                      |
+|-----------------|----------------------------|
+| `color`         | `{text.muted.color}`       |
+| `hoverColor`    | `{text.hover.muted.color}` |
+| `selectedColor` | `{highlight.color}`        |
+
+---
+
+### `nodeToggleButton`
+
+The expand/collapse chevron button on each branch node.
+
+| Token                     | Value                        |
+|---------------------------|------------------------------|
+| `borderRadius`            | `50%`                        |
+| `size`                    | `1.75rem`                    |
+| `hoverBackground`         | `{content.hover.background}` |
+| `selectedHoverBackground` | `{content.background}`       |
+| `color`                   | `{text.muted.color}`         |
+| `hoverColor`              | `{text.hover.muted.color}`   |
+| `selectedHoverColor`      | `{primary.color}`            |
+| `focusRing.width`         | `{focus.ring.width}`         |
+| `focusRing.style`         | `{focus.ring.style}`         |
+| `focusRing.color`         | `{focus.ring.color}`         |
+| `focusRing.offset`        | `{focus.ring.offset}`        |
+| `focusRing.shadow`        | `{focus.ring.shadow}`        |
+
+---
+
+### `loadingIcon`
+
+| Token  | Value  |
+|--------|--------|
+| `size` | `2rem` |
+
+---
+
+### `filter`
+
+The search input container displayed above the node list when `[filter]="true"`.
+
+| Token    | Value           |
+|----------|-----------------|
+| `margin` | `0 0 0.5rem 0`  |
+
+---
+
+## Theme Notes
+
+### Global `transition: none` Override
+
+The Nettalco CSS layer (`css/index.ts`) removes transitions from tree node content elements to prevent hover-flicker on large trees:
+
+```css
+div.p-tree-node-content {
+    transition: none;
+}
+```
+
+### Overlay Loading Mask
+
+```css
+.p-tree-mask.p-overlay-mask {
+    --px-mask-background: light-dark(rgba(255,255,255,0.5), rgba(0,0,0,0.3));
+}
+```
+
+The `root.gap` of `2px` is intentionally small — it creates a tight, file-browser-style list. Increase it via token override if your design requires more breathing room between nodes.

@@ -1,0 +1,87 @@
+---
+title: "Nettalco Theme: PrimeNG Preset for Angular Apps"
+sidebarTitle: "Introduction"
+description: "Nettalco Theme is a production-ready custom PrimeNG v21 preset that brings Nettalco brand colors, dark mode, and full component coverage to Angular apps."
+---
+
+Nettalco Theme (`@nettalco/nettalco-theme`) is a fully crafted PrimeNG preset built specifically for Nettalco's Angular applications. It extends the official **Aura** base preset via `@primeuix/themes`'s `definePreset`, layering Nettalco's brand identity — five carefully curated color palettes, precise semantic role mappings, and per-component token overrides — on top of PrimeNG's robust styling engine. Drop it in, configure one provider, and every one of PrimeNG's 75+ components instantly reflects the Nettalco look and feel.
+
+## What's Inside
+
+<CardGroup cols={2}>
+  <Card title="Two-Level Token Architecture" icon="layer-group">
+    Primitive palettes define raw color scales; semantic tokens map those scales to roles like `primary`, `success`, `warn`, and `error` — keeping customization predictable and coherent.
+  </Card>
+  <Card title="5 Brand Color Palettes" icon="palette">
+    `nettalcoPrimary`, `nettalcoSecondary`, `nettalcoSuccess`, `nettalcoWarn`, and `nettalcoInfo` — each a full 50–950 scale tuned to Nettalco's brand guidelines.
+  </Card>
+  <Card title="Light & Dark Mode" icon="moon">
+    Full light and dark color schemes built in. Dark mode uses a custom dark-blue surface scale rather than the default zinc gray, keeping the Nettalco aesthetic in both modes.
+  </Card>
+  <Card title="75+ Components Covered" icon="grid-2">
+    Every PrimeNG component — from Button and DataTable to TreeSelect and VirtualScroller — is covered with tailored token overrides.
+  </Card>
+</CardGroup>
+
+## Brand Color Palettes
+
+The preset ships with five custom primitive palettes that replace PrimeNG's default Aura colors:
+
+| Palette | Key Color | Hex | Role |
+|---|---|---|---|
+| `nettalcoPrimary` | Navy | `#112A46` | Primary actions, focus rings |
+| `nettalcoSecondary` | Sky Blue | `#3F8CF9` | Secondary actions, accents |
+| `nettalcoSuccess` | Cyan | `#2BA5CD` | Success states, confirmations |
+| `nettalcoWarn` | Orange | `#D57952` | Warnings, caution indicators |
+| `nettalcoInfo` | Blue Info | `#66A6FB` | Informational messages |
+
+Standard palettes (emerald, red, slate, blue, etc.) from the Aura base are retained and available for component-level use; the `error` semantic role maps to the standard `red` palette.
+
+## Package Details
+
+<Info>
+  **Package:** `@nettalco/nettalco-theme` **v1.1.1**  
+  **Registry:** GitHub Packages — `https://npm.pkg.github.com`  
+  **License:** Private — internal Nettalco use only
+</Info>
+
+### Peer Dependencies
+
+| Package | Required Version |
+|---|---|
+| `@angular/core` | `^21.2.0` |
+| `@angular/common` | `^21.2.0` |
+| `@primeuix/themes` | `^2.0.0` |
+| `primeng` | `^21.0.0` |
+
+## Architecture Overview
+
+Nettalco Theme uses the `definePreset(Aura, overrides)` API from `@primeuix/themes`. The override object has four top-level sections:
+
+```typescript
+definePreset(Aura, {
+  primitive: { /* raw color palettes */ },
+  semantic: { /* role-based token mappings */ },
+  css:       { /* global CSS string overrides */ },
+  components: { /* per-component token objects */ },
+})
+```
+
+**Primitive tokens** are raw values — color hex codes organized into numbered scales (50, 100 … 950). **Semantic tokens** reference primitive tokens using the `{palette.shade}` syntax and give them functional meaning (`primary`, `success`, etc.). **Component tokens** are the most specific layer and control individual parts of a given component (e.g. `button.root.borderRadius`).
+
+## Navigate the Docs
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Authenticate with GitHub Packages and install the library with npm, yarn, or pnpm.
+  </Card>
+  <Card title="Quickstart" icon="bolt" href="/quickstart">
+    Configure `providePrimeNG` and have themed components rendering in under 5 minutes.
+  </Card>
+  <Card title="Design Tokens" icon="code" href="/theming/design-tokens">
+    Deep dive into the primitive → semantic → component token hierarchy.
+  </Card>
+  <Card title="Color Palette" icon="swatchbook" href="/theming/color-palette">
+    Full 50–950 swatch tables for all five brand palettes and semantic role mappings.
+  </Card>
+</CardGroup>

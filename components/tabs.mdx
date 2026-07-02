@@ -1,0 +1,118 @@
+---
+title: "Tabs Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "Tabs"
+description: "Nettalco Theme design tokens for the PrimeNG v17+ Tabs component — tablist, tab states, tabpanel, navigation buttons, active bar, and colour scheme."
+---
+
+The **Tabs** component is the modern PrimeNG v17+ replacement for the legacy `TabView` component. It provides a tab strip with inline panel content and supports scrollable overflow navigation buttons. Nettalco Theme tokens cover every visual layer: the tablist rail, individual tab states, the panel content area, overflow navigation buttons, and the sliding active-bar indicator. If you are upgrading from `TabView`, migrate to `Tabs` to benefit from this token coverage.
+
+## Usage
+
+```html
+<p-tabs value="0">
+  <p-tablist>
+    <p-tab value="0">Overview</p-tab>
+    <p-tab value="1">Activity</p-tab>
+    <p-tab value="2">Settings</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="0">Overview content here.</p-tabpanel>
+    <p-tabpanel value="1">Activity feed here.</p-tabpanel>
+    <p-tabpanel value="2">Settings form here.</p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Tablist
+
+| Token | Value |
+|---|---|
+| `tablist.borderWidth` | `0 0 1px 0` |
+| `tablist.background` | `{content.background}` |
+| `tablist.borderColor` | `{content.border.color}` |
+
+### Tab
+
+| Token | Value |
+|---|---|
+| `tab.background` | `transparent` |
+| `tab.hoverBackground` | `transparent` |
+| `tab.activeBackground` | `transparent` |
+| `tab.borderWidth` | `0 0 1px 0` |
+| `tab.borderColor` | `{content.border.color}` |
+| `tab.hoverBorderColor` | `{content.border.color}` |
+| `tab.activeBorderColor` | `{primary.color}` |
+| `tab.color` | `{text.muted.color}` |
+| `tab.hoverColor` | `{text.color}` |
+| `tab.activeColor` | `{primary.color}` |
+| `tab.padding` | `1rem 1.125rem` |
+| `tab.fontWeight` | `600` |
+| `tab.margin` | `0 0 -1px 0` |
+| `tab.gap` | `0.5rem` |
+| `tab.focusRing.width` | `{focus.ring.width}` |
+| `tab.focusRing.style` | `{focus.ring.style}` |
+| `tab.focusRing.color` | `{focus.ring.color}` |
+| `tab.focusRing.offset` | `-1px` |
+| `tab.focusRing.shadow` | `{focus.ring.shadow}` |
+
+### Tabpanel
+
+| Token | Value |
+|---|---|
+| `tabpanel.background` | `{content.background}` |
+| `tabpanel.color` | `{content.color}` |
+| `tabpanel.padding` | `0.875rem 1.125rem 1.125rem 1.125rem` |
+| `tabpanel.focusRing.width` | `{focus.ring.width}` |
+| `tabpanel.focusRing.style` | `{focus.ring.style}` |
+| `tabpanel.focusRing.color` | `{focus.ring.color}` |
+| `tabpanel.focusRing.offset` | `{focus.ring.offset}` |
+| `tabpanel.focusRing.shadow` | `inset {focus.ring.shadow}` |
+
+### Nav Button
+
+| Token | Value |
+|---|---|
+| `navButton.background` | `{content.background}` |
+| `navButton.color` | `{text.muted.color}` |
+| `navButton.hoverColor` | `{text.color}` |
+| `navButton.width` | `2.5rem` |
+| `navButton.focusRing.width` | `{focus.ring.width}` |
+| `navButton.focusRing.style` | `{focus.ring.style}` |
+| `navButton.focusRing.color` | `{focus.ring.color}` |
+| `navButton.focusRing.offset` | `-1px` |
+| `navButton.focusRing.shadow` | `{focus.ring.shadow}` |
+
+### Active Bar
+
+| Token | Value |
+|---|---|
+| `activeBar.height` | `1px` |
+| `activeBar.bottom` | `-1px` |
+| `activeBar.background` | `{primary.color}` |
+
+### Colour Scheme Overrides
+
+The `navButton.shadow` token differs between light and dark mode to produce a natural fade effect at the scroll edge:
+
+| Scheme | `navButton.shadow` |
+|---|---|
+| Light | `0px 0px 10px 50px rgba(255, 255, 255, 0.6)` |
+| Dark | `0px 0px 10px 50px color-mix(in srgb, {content.background}, transparent 50%)` |
+
+## Theme Notes
+
+### Tabs vs TabView
+
+`Tabs` (introduced in PrimeNG v17) is the recommended component for tabbed content. The legacy `TabView` component uses a different token namespace and is not styled by this token section. New projects should always use `Tabs`.
+
+### Tab Focus Ring Offset
+
+The `tab.focusRing.offset` is set to `-1px` (rather than the global `{focus.ring.offset}`) to prevent the focus ring from clipping against the tablist's bottom border.

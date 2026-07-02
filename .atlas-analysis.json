@@ -1,26 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Nettalco Theme",
+  "projectType": "sdk-library",
+  "projectName": "Nettalco Theme",
+  "projectDescription": "A custom PrimeNG theme preset for Angular applications that extends the Aura base with Nettalco's official brand color palette and per-component design tokens.",
   "theme": "willow",
-  "colors": {
-    "primary": "#040404"
-  },
-  "favicon": "https://media.brand.dev/633252d2-ad54-4919-8454-f04a2c4c44d5.png",
-  "logo": {
-    "light": "https://media.brand.dev/e4d081a7-2535-4280-9b37-592267b137cf.svg",
-    "dark": "https://media.brand.dev/e4d081a7-2535-4280-9b37-592267b137cf.svg"
-  },
-  "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/Nettalco/nettalco-theme"
-    }
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/Nettalco/nettalco-theme"
-    }
-  },
+  "primaryColor": "#040404",
+  "lightColor": null,
+  "darkColor": null,
   "navigation": {
     "tabs": [
       {
@@ -162,5 +147,26 @@
         ]
       }
     ]
-  }
+  },
+  "keyFeatures": [
+    "Full PrimeNG v21 component coverage with custom design tokens for every component",
+    "Two-level design token architecture: Primitive tokens (brand color palettes) + Semantic tokens (role-based references)",
+    "Light and dark mode support via configurable darkModeSelector",
+    "Extends PrimeNG's Aura base preset using @primeuix/themes definePreset API",
+    "Custom brand color palettes: Navy Primary, Sky Blue Secondary, Cyan Success, Orange Warning, Red Error",
+    "Per-component CSS overrides via global css token to remove transition flicker",
+    "Published to GitHub Packages as @nettalco/nettalco-theme",
+    "PowerShell publish script with semver bumping and git tagging"
+  ],
+  "publicApiSurface": [
+    "MyPreset (default export) — the PrimeNG preset object to pass to providePrimeNG()",
+    "definePreset(Aura, { primitive, semantic, css, components }) — @primeuix/themes API used internally",
+    "primitive.nettalcoPrimary — Navy blue brand palette (50–950)",
+    "primitive.nettalcoSecondary — Sky blue brand palette (50–950)",
+    "primitive.nettalcoSuccess — Cyan brand palette (50–950)",
+    "primitive.nettalcoWarn — Orange brand palette (50–950)",
+    "primitive.nettalcoInfo — Info blue brand palette (50–950)",
+    "semantic.colorScheme.light / dark — Light and dark mode semantic token overrides",
+    "components.* — Per-component design token objects (button, card, datatable, select, …)"
+  ]
 }

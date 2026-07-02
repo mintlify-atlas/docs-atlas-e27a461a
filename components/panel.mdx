@@ -1,0 +1,94 @@
+---
+title: "Panel Component — Nettalco Angular PrimeNG Preset"
+sidebarTitle: "Panel"
+description: "Collapsible and static panel with a transparent header, semantic border tokens, and independent padding controls for header, content, and footer areas."
+---
+
+The **Panel** component is a bordered container that optionally collapses its content via a toggle button. The Nettalco preset keeps the header background transparent so the panel blends naturally with the surrounding surface, while using `{content.border.color}` throughout to maintain consistent visual boundaries.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+
+<!-- Static panel -->
+<p-panel header="System Information">
+  <p>Server uptime: 99.98% — Region: EU-West — Last deploy: 2 min ago.</p>
+</p-panel>
+
+<!-- Toggleable panel (collapsed by default) -->
+<p-panel header="Advanced Settings" [toggleable]="true" [collapsed]="true">
+  <p>These settings affect global application behaviour.</p>
+  <ng-template #footer>
+    <p-button label="Save" size="small" />
+  </ng-template>
+</p-panel>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { PanelModule } from 'primeng/panel';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [PanelModule, ButtonModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/panel/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{content.background}` | Panel body background |
+| `root.borderColor` | `{content.border.color}` | Outer border color |
+| `root.color` | `{content.color}` | Default text color |
+| `root.borderRadius` | `{content.border.radius}` | Outer corner radius |
+
+### Header
+
+| Token | Value | Description |
+|---|---|---|
+| `header.background` | `transparent` | Header does not add its own background fill |
+| `header.color` | `{text.color}` | Header text color |
+| `header.padding` | `1.125rem` | Uniform header padding |
+| `header.borderColor` | `{content.border.color}` | Header bottom border color |
+| `header.borderWidth` | `0` | No explicit header border (border comes from root) |
+| `header.borderRadius` | `0` | Header corners are square; only root carries the radius |
+
+### Toggleable Header
+
+| Token | Value | Description |
+|---|---|---|
+| `toggleableHeader.padding` | `0.375rem 1.125rem` | Reduced vertical padding when collapse toggle is visible |
+
+### Title
+
+| Token | Value | Description |
+|---|---|---|
+| `title.fontWeight` | `600` | Semi-bold title for clear section labelling |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.padding` | `0 1.125rem 1.125rem 1.125rem` | No top padding (header supplies the gap); equal sides and bottom |
+
+### Footer
+
+| Token | Value | Description |
+|---|---|---|
+| `footer.padding` | `0 1.125rem 1.125rem 1.125rem` | Mirrors content padding for visual consistency |
+
+## Theme Notes
+
+- The header `borderWidth: '0'` means the separator line between header and content is produced by the **root border** wrapping the whole component, not an internal header border. If you want an explicit divider, override `header.borderWidth` to `'0 0 1px 0'`.
+- `toggleableHeader.padding` uses a smaller vertical padding (`0.375rem`) than the static header (`1.125rem`) to keep the collapse icon click target compact.
+- All padding values intentionally use `1.125rem` (18 px) rather than the 20 px used by the Card component, giving the Panel a tighter information-dense appearance.

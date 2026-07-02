@@ -1,0 +1,113 @@
+---
+title: "Slider: Nettalco Theme Design Tokens"
+sidebarTitle: "Slider"
+description: "Design tokens for the PrimeNG Slider component in Nettalco Theme — track size and radius, primary range fill, handle dimensions, and light/dark handle fill."
+---
+
+The **Slider** component renders a draggable range control that allows numeric value selection along a track. Nettalco Theme provides tokens for the track's background, border radius, and thickness; the filled range segment; the handle's outer circle, inner content circle dimensions, hover backgrounds, drop shadow, and focus ring; plus explicit light and dark color scheme values for the inner handle content.
+
+## Usage
+
+```html
+<!-- Basic horizontal slider -->
+<p-slider [(ngModel)]="value" />
+
+<!-- Vertical slider -->
+<p-slider [(ngModel)]="value" orientation="vertical" styleClass="h-48" />
+
+<!-- Range slider -->
+<p-slider [(ngModel)]="rangeValues" [range]="true" />
+
+<!-- Step and min/max -->
+<p-slider [(ngModel)]="value" [min]="0" [max]="100" [step]="10" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { SliderModule } from 'primeng/slider';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [SliderModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  value = 40;
+  rangeValues = [20, 80];
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `transitionDuration` | `{transition.duration}` | Transition animation duration |
+
+### Track
+
+| Token | Value | Description |
+|---|---|---|
+| `track.background` | `{content.border.color}` | Unfilled track background |
+| `track.borderRadius` | `{content.border.radius}` | Track corner radius |
+| `track.size` | `3px` | Track height (horizontal) / width (vertical) |
+
+### Range
+
+| Token | Value | Description |
+|---|---|---|
+| `range.background` | `{primary.color}` | Filled (active) range color |
+
+### Handle (outer circle)
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.width` | `20px` | Handle outer circle width |
+| `handle.height` | `20px` | Handle outer circle height |
+| `handle.borderRadius` | `50%` | Circular handle |
+| `handle.background` | `{content.border.color}` | Outer circle background |
+| `handle.hoverBackground` | `{content.border.color}` | Outer circle background on hover |
+| `handle.focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `handle.focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `handle.focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `handle.focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `handle.focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
+
+### Handle content (inner circle)
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.content.borderRadius` | `50%` | Circular inner handle |
+| `handle.content.width` | `16px` | Inner circle width |
+| `handle.content.height` | `16px` | Inner circle height |
+| `handle.content.hoverBackground` | `{content.background}` | Inner circle background on hover |
+| `handle.content.shadow` | `0px 0.5px 0px 0px rgba(0,0,0,0.08), 0px 1px 1px 0px rgba(0,0,0,0.14)` | Inner circle drop shadow |
+
+### Handle content colors — Light
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.content.background` | `{surface.0}` → `#ffffff` | Inner circle default background |
+
+### Handle content colors — Dark
+
+| Token | Value | Description |
+|---|---|---|
+| `handle.content.background` | `{surface.950}` | Inner circle default background |
+
+## Theme Notes
+
+<Note>
+The slider handle uses a **two-circle design**: a larger outer circle (`20px`) with `{content.border.color}` background acts as a border ring, while a smaller inner circle (`16px`) carries the actual fill color. This gives the handle a subtle elevated appearance enhanced by the inner shadow.
+</Note>
+
+<Tip>
+The range fill uses `{primary.color}` (emerald in Nettalco). For a range slider, both the filled segment and the selected handle end will visually connect, creating a clear indication of the selected range boundaries.
+</Tip>
+
+<Info>
+The inner handle background swaps from white (`{surface.0}`) in light mode to near-black (`{surface.950}`) in dark mode, ensuring the handle remains visually distinguishable against the track in both themes.
+</Info>

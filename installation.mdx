@@ -1,0 +1,157 @@
+---
+title: "Install Nettalco Theme in Your Angular Project"
+sidebarTitle: "Installation"
+description: "Step-by-step guide to authenticating with GitHub Packages and installing @nettalco/nettalco-theme in any Angular 21+ project."
+---
+
+Because `@nettalco/nettalco-theme` is published to **GitHub Packages** rather than the public npm registry, installation requires a brief authentication step before the familiar `npm install` command. This guide walks you through every step — from creating your `.npmrc` to importing the CSS needed to make PrimeNG components render correctly.
+
+## Requirements
+
+Before you begin, make sure your project meets these prerequisites:
+
+| Requirement | Minimum Version |
+|---|---|
+| Node.js | 18+ |
+| Angular | 21+ |
+| PrimeNG | 21+ |
+| `@primeuix/themes` | 2.0+ |
+| GitHub Personal Access Token | with `read:packages` scope |
+
+<Note>
+  Don't have a GitHub Personal Access Token yet? Head to **GitHub → Settings → Developer Settings → Personal access tokens** and create a fine-grained or classic token with at least the `read:packages` scope. See [Authentication](/publishing/authentication) for full details.
+</Note>
+
+## Installation Steps
+
+<Steps>
+
+### Authenticate with GitHub Packages
+
+Create a `.npmrc` file in the **root of your consuming project** (not inside `node_modules` or any library folder). This file tells npm to route all `@nettalco`-scoped packages through the GitHub Packages registry.
+
+```ini .npmrc
+# Route @nettalco packages to GitHub Packages
+@nettalco:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+<Warning>
+  **Never hard-code your token in `.npmrc`.** Use the `${GITHUB_TOKEN}` environment variable reference as shown above. If you commit a raw token, rotate it immediately on GitHub. Add `.npmrc` to `.gitignore` if your project-level file ever contains a literal token value.
+</Warning>
+
+Set the environment variable in your shell before running any npm commands:
+
+```bash
+# macOS / Linux
+export GITHUB_TOKEN=ghp_YourTokenHere
+
+# Windows PowerShell
+$env:GITHUB_TOKEN = "ghp_YourTokenHere"
+
+# Windows Command Prompt
+set GITHUB_TOKEN=ghp_YourTokenHere
+```
+
+### Install @nettalco/nettalco-theme
+
+With authentication configured, install the package using your preferred package manager:
+
+<CodeGroup>
+
+```bash npm
+npm install @nettalco/nettalco-theme
+```
+
+```bash yarn
+yarn add @nettalco/nettalco-theme
+```
+
+```bash pnpm
+pnpm add @nettalco/nettalco-theme
+```
+
+</CodeGroup>
+
+### Install Peer Dependencies
+
+If your project doesn't already have PrimeNG and PrimeIcons installed, add them now:
+
+<CodeGroup>
+
+```bash npm
+npm install primeng primeicons @primeuix/themes
+```
+
+```bash yarn
+yarn add primeng primeicons @primeuix/themes
+```
+
+```bash pnpm
+pnpm add primeng primeicons @primeuix/themes
+```
+
+</CodeGroup>
+
+<Info>
+  `@primeuix/themes` is the package that provides the `definePreset` API and the Aura base that Nettalco Theme extends. It must be present at runtime.
+</Info>
+
+### Import PrimeNG Stylesheets
+
+PrimeNG requires its base CSS and PrimeIcons to be loaded globally. Add these imports to your project's entry point:
+
+<CodeGroup>
+
+```typescript main.ts
+import 'primeng/resources/primeng.css';
+import 'primeicons/primeicons.css';
+```
+
+```scss styles.scss
+@import 'primeng/resources/primeng.css';
+@import 'primeicons/primeicons.css';
+```
+
+</CodeGroup>
+
+If you're using `angular.json` instead, add them to the `styles` array:
+
+```json angular.json (excerpt)
+"styles": [
+  "node_modules/primeng/resources/primeng.css",
+  "node_modules/primeicons/primeicons.css",
+  "src/styles.scss"
+]
+```
+
+</Steps>
+
+## Verifying the Installation
+
+After completing the steps above, check that the package appears in your `node_modules`:
+
+```bash
+ls node_modules/@nettalco/nettalco-theme
+# Should show: package.json, fesm2022/, esm2022/, etc.
+```
+
+Or verify the installed version:
+
+```bash
+npm list @nettalco/nettalco-theme
+# └── @nettalco/nettalco-theme@1.1.1
+```
+
+## What's Next
+
+With the package installed, configure `providePrimeNG` to activate the preset:
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="bolt" href="/quickstart">
+    Configure the theme provider and have styled components running in minutes.
+  </Card>
+  <Card title="Authentication Details" icon="key" href="/publishing/authentication">
+    Learn more about GitHub Packages auth, CI/CD integration, and token scopes.
+  </Card>
+</CardGroup>

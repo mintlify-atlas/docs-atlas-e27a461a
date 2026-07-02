@@ -1,0 +1,62 @@
+---
+title: "Dock Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "Dock"
+description: "Nettalco Theme design tokens for the PrimeNG Dock component — translucent root surface, item sizing, border radius, padding, and focus ring settings."
+---
+
+The **Dock** component renders a macOS-style application launcher bar with magnification effects. In Nettalco Theme the root surface uses a semi-transparent white background and border with a pronounced `xl` border radius, giving the Dock a frosted-glass appearance that floats over page content. Item tokens control individual icon cell sizing, padding, corner radius, and focus ring.
+
+## Usage
+
+```html
+<p-dock [model]="dockItems" position="bottom">
+  <ng-template pTemplate="item" let-item>
+    <img [src]="item.icon" [alt]="item.label" width="100%" />
+  </ng-template>
+</p-dock>
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+dockItems: MenuItem[] = [
+  { label: 'Finder',   icon: 'assets/dock/finder.svg' },
+  { label: 'Terminal', icon: 'assets/dock/terminal.svg' },
+  { label: 'Calendar', icon: 'assets/dock/calendar.svg' },
+  { label: 'Mail',     icon: 'assets/dock/mail.svg' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.background` | `rgba(255, 255, 255, 0.1)` |
+| `root.borderColor` | `rgba(255, 255, 255, 0.2)` |
+| `root.padding` | `0.5rem` |
+| `root.borderRadius` | `{border.radius.xl}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.borderRadius` | `{content.border.radius}` |
+| `item.padding` | `0.5rem` |
+| `item.size` | `3rem` |
+| `item.focusRing.width` | `{focus.ring.width}` |
+| `item.focusRing.style` | `{focus.ring.style}` |
+| `item.focusRing.color` | `{focus.ring.color}` |
+| `item.focusRing.offset` | `{focus.ring.offset}` |
+| `item.focusRing.shadow` | `{focus.ring.shadow}` |
+
+## Theme Notes
+
+### Translucent Surface
+
+Unlike other navigation components that derive their background from `{content.background}`, the Dock root uses a **hardcoded** semi-transparent white (`rgba(255, 255, 255, 0.1)`) and border (`rgba(255, 255, 255, 0.2)`). This is intentional: the Dock is designed to overlay page content and should appear glassy rather than opaque. If you need dark-mode-aware transparency, override these two tokens in your application's theme configuration.
+
+### Sizing
+
+Each dock item cell is `3rem × 3rem` by default (set via `item.size`), with `0.5rem` of padding inside and the same `0.5rem` padding on the root container. The `{border.radius.xl}` radius on the root creates the characteristic pill-shaped dock bar.

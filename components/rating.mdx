@@ -1,0 +1,73 @@
+---
+title: "Rating: Nettalco Theme Design Tokens"
+sidebarTitle: "Rating"
+description: "Design tokens for the PrimeNG Rating component in Nettalco Theme — star gap, transition, focus ring, and icon size and color for each interaction state."
+---
+
+The **Rating** component renders a row of star icons for numeric rating input or display. Nettalco Theme controls the gap between stars, the transition animation, the focus ring for keyboard navigation, and the icon's size and color across default (empty), hover, and active (filled) states.
+
+## Usage
+
+```html
+<!-- Basic rating -->
+<p-rating [(ngModel)]="rating" />
+
+<!-- Read-only display -->
+<p-rating [(ngModel)]="rating" [readonly]="true" [cancel]="false" />
+
+<!-- Custom star count -->
+<p-rating [(ngModel)]="rating" [stars]="10" />
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RatingModule } from 'primeng/rating';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [RatingModule, FormsModule],
+  templateUrl: './example.component.html'
+})
+export class ExampleComponent {
+  rating = 3;
+}
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `gap` | `0.25rem` | Space between star icons |
+| `transitionDuration` | `{transition.duration}` | Icon color transition duration |
+| `focusRing.width` | `{focus.ring.width}` | Focus ring width |
+| `focusRing.style` | `{focus.ring.style}` | Focus ring style |
+| `focusRing.color` | `{focus.ring.color}` | Focus ring color |
+| `focusRing.offset` | `{focus.ring.offset}` | Focus ring offset |
+| `focusRing.shadow` | `{focus.ring.shadow}` | Focus ring shadow |
+
+### Icon
+
+| Token | Value | Description |
+|---|---|---|
+| `icon.size` | `1rem` | Star icon size |
+| `icon.color` | `{text.muted.color}` | Color of unfilled (empty) stars |
+| `icon.hoverColor` | `{primary.color}` | Star color on hover |
+| `icon.activeColor` | `{primary.color}` | Color of filled (active) stars |
+
+## Theme Notes
+
+<Note>
+Both `hoverColor` and `activeColor` resolve to `{primary.color}` — the emerald primary in Nettalco Theme. Hovering previews the same color as the committed selection, giving immediate visual feedback before the user clicks.
+</Note>
+
+<Tip>
+Empty stars use `{text.muted.color}` (`{surface.500}` in light mode), which provides a clear contrast against the filled emerald stars while remaining subtle enough not to distract from the active rating level.
+</Tip>
+
+<Info>
+The Rating component inherits no tokens from `form.field.*`. All styling is self-contained in the `root` and `icon` token sections, keeping Rating independent from the form input token system.
+</Info>

@@ -1,0 +1,94 @@
+---
+title: "Card Component — Nettalco Angular PrimeNG Preset"
+sidebarTitle: "Card"
+description: "Styled surface container with rounded XL corners, soft drop shadow, and semantic content tokens for background, body padding, title, and subtitle."
+---
+
+The **Card** component provides a self-contained content surface. In the Nettalco preset it renders with extra-large border radius (`{border.radius.xl}` → 12 px), a subtle drop shadow, and semantic background/color tokens so it adapts automatically between light and dark color schemes.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-card>
+  <ng-template #header>
+    <img alt="card header image" src="assets/card-header.jpg" />
+  </ng-template>
+
+  <ng-template #title>Project Overview</ng-template>
+
+  <ng-template #subtitle>Last updated 3 days ago</ng-template>
+
+  <ng-template #content>
+    <p>
+      A summary of the current project status, key milestones, and upcoming
+      deadlines are displayed here inside the card body.
+    </p>
+  </ng-template>
+
+  <ng-template #footer>
+    <p-button label="View Details" />
+    <p-button label="Dismiss" severity="secondary" />
+  </ng-template>
+</p-card>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [CardModule, ButtonModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/card/index.ts` and map directly to the PrimeNG `CardDesignTokens` interface.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{content.background}` | Card surface background — adapts to color scheme |
+| `root.borderRadius` | `{border.radius.xl}` → **12 px** | Extra-large rounded corners |
+| `root.color` | `{content.color}` | Default text color |
+| `root.shadow` | `0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)` | Subtle elevation shadow |
+
+### Body
+
+| Token | Value | Description |
+|---|---|---|
+| `body.padding` | `1.25rem` | Uniform inner padding on all four sides |
+| `body.gap` | `0.5rem` | Vertical gap between body sub-sections |
+
+### Caption
+
+| Token | Value | Description |
+|---|---|---|
+| `caption.gap` | `0.5rem` | Gap between title and subtitle inside the caption area |
+
+### Title
+
+| Token | Value | Description |
+|---|---|---|
+| `title.fontSize` | `1.25rem` | Title text size |
+| `title.fontWeight` | `500` | Medium weight for readable hierarchy |
+
+### Subtitle
+
+| Token | Value | Description |
+|---|---|---|
+| `subtitle.color` | `{text.muted.color}` | Dimmed color to subordinate the subtitle visually |
+
+## Theme Notes
+
+- **Border radius** uses `{border.radius.xl}` (12 px) rather than the default `{content.border.radius}` used by most other panel components. This gives the Card a noticeably rounder appearance.
+- **Shadow** is hardcoded to a two-layer Tailwind-style shadow rather than a semantic token, which keeps it consistent regardless of color scheme.
+- **No border** is defined on the root — the card relies on background contrast and shadow for visual separation. If you need a visible border, extend the preset with a `borderColor` and `borderWidth` override.
+- The card background and text color both resolve through the `content.*` semantic namespace, so they respond correctly to PrimeNG's `darkModeSelector` without any extra CSS.

@@ -1,0 +1,98 @@
+---
+title: "ContextMenu Component — Nettalco Theme for PrimeNG"
+sidebarTitle: "ContextMenu"
+description: "Nettalco Theme tokens for the PrimeNG ContextMenu overlay — root surface, list layout, item states, submenu icon colours, and transition:none override."
+---
+
+The **ContextMenu** component appears at the pointer position on a right-click (or programmatic trigger) and presents a floating list of contextual actions, optionally with nested submenus. Nettalco Theme styles it through the same overlay-navigation tokens as TieredMenu, sharing an identical token structure.
+
+## Usage
+
+```html
+<p-contextMenu #cm [model]="items" />
+<div (contextmenu)="cm.show($event)" style="height: 200px; border: 1px dashed #ccc;">
+  Right-click here
+</div>
+```
+
+```ts
+import { MenuItem } from 'primeng/api';
+
+items: MenuItem[] = [
+  { label: 'View', icon: 'pi pi-search' },
+  { label: 'Edit', icon: 'pi pi-pencil' },
+  { separator: true },
+  { label: 'Delete', icon: 'pi pi-trash' }
+];
+```
+
+## Design Tokens
+
+### Root
+
+| Token | Value |
+|---|---|
+| `root.background` | `{content.background}` |
+| `root.borderColor` | `{content.border.color}` |
+| `root.color` | `{content.color}` |
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.shadow` | `{overlay.navigation.shadow}` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### List
+
+| Token | Value |
+|---|---|
+| `list.padding` | `{navigation.list.padding}` |
+| `list.gap` | `{navigation.list.gap}` |
+
+### Item
+
+| Token | Value |
+|---|---|
+| `item.focusBackground` | `{navigation.item.focus.background}` |
+| `item.activeBackground` | `{navigation.item.active.background}` |
+| `item.color` | `{navigation.item.color}` |
+| `item.focusColor` | `{navigation.item.focus.color}` |
+| `item.activeColor` | `{navigation.item.active.color}` |
+| `item.padding` | `{navigation.item.padding}` |
+| `item.borderRadius` | `{navigation.item.border.radius}` |
+| `item.gap` | `{navigation.item.gap}` |
+| `item.icon.color` | `{navigation.item.icon.color}` |
+| `item.icon.focusColor` | `{navigation.item.icon.focus.color}` |
+| `item.icon.activeColor` | `{navigation.item.icon.active.color}` |
+
+### Submenu
+
+| Token | Value |
+|---|---|
+| `submenu.mobileIndent` | `1rem` |
+
+### Submenu Icon
+
+| Token | Value |
+|---|---|
+| `submenuIcon.size` | `{navigation.submenu.icon.size}` |
+| `submenuIcon.color` | `{navigation.submenu.icon.color}` |
+| `submenuIcon.focusColor` | `{navigation.submenu.icon.focus.color}` |
+| `submenuIcon.activeColor` | `{navigation.submenu.icon.active.color}` |
+
+### Separator
+
+| Token | Value |
+|---|---|
+| `separator.borderColor` | `{content.border.color}` |
+
+## Theme Notes
+
+### Transition Override
+
+Nettalco Theme removes the hover transition on ContextMenu item content elements via a global extended CSS rule:
+
+```css
+div.p-contextmenu-item-content {
+  transition: none;
+}
+```
+
+Because a context menu appears in direct response to a user gesture, instant feedback on hover is especially important — this override ensures there is no perceptible lag between pointer movement and item highlight.

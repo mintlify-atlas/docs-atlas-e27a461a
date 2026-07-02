@@ -1,0 +1,107 @@
+---
+title: "Progress Bar Determinate and Indeterminate Modes"
+sidebarTitle: "Progress Bar"
+description: "Horizontal progress indicator with primary brand fill color, percentage label, and support for determinate and indeterminate animation modes."
+---
+
+## Overview
+
+`p-progressbar` renders a horizontal bar that communicates task completion. The Nettalco preset fills the value track with `{primary.color}` — resolving to Nettalco Navy (`#112A46`) in light mode and the light primary `#EDF4FF` in dark mode — while the track background uses the subtle content border color for a low-contrast rail. An optional percentage label sits inside the fill area.
+
+## Usage
+
+### Determinate (with value)
+
+```html
+<!-- Static value -->
+<p-progressbar [value]="75" />
+
+<!-- Dynamic value with label -->
+<p-progressbar [value]="uploadProgress" [showValue]="true" />
+```
+
+```ts
+export class UploadComponent {
+  uploadProgress = 0;
+
+  startUpload() {
+    const interval = setInterval(() => {
+      this.uploadProgress += 10;
+      if (this.uploadProgress >= 100) clearInterval(interval);
+    }, 500);
+  }
+}
+```
+
+### Indeterminate (loading state)
+
+```html
+<p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
+```
+
+### Custom Height
+
+```html
+<!-- Thin rail -->
+<p-progressbar [value]="40" [style]="{ height: '0.5rem' }" />
+
+<!-- Bold bar -->
+<p-progressbar [value]="60" [style]="{ height: '2rem' }" />
+```
+
+### Custom Color via Inline Style
+
+```html
+<!-- Override value fill for a specific instance -->
+<p-progressbar
+  [value]="55"
+  [style]="{ '--p-progressbar-value-background': 'var(--p-success-color)' }"
+/>
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/progressbar/index.ts`:
+
+### Root (Track)
+
+| Token | Value | Notes |
+|---|---|---|
+| `root.background` | `{content.border.color}` | Unfilled track rail |
+| `root.borderRadius` | `{content.border.radius}` | Matches card/content corner radius |
+| `root.height` | `1.25rem` | Default bar height (`20px`) |
+
+### Value (Fill)
+
+| Token | Value | Notes |
+|---|---|---|
+| `value.background` | `{primary.color}` | Resolves to Nettalco Navy `#112A46` (light) |
+
+### Label
+
+| Token | Value | Notes |
+|---|---|---|
+| `label.color` | `{primary.contrast.color}` | White (`#ffffff`) in light mode |
+| `label.fontSize` | `0.75rem` | Small, non-intrusive percentage text |
+| `label.fontWeight` | `600` | Semi-bold for legibility against the fill |
+
+## Nettalco Theme Notes
+
+The progress bar's fill is intentionally tied to `{primary.color}` rather than a fixed hex, so it automatically switches between Nettalco **Navy** (`#112A46`) in light mode and the near-white **`#EDF4FF`** in dark mode as defined by the `colorScheme.light.primary.color` and `colorScheme.dark.primary.color` semantic tokens.
+
+```
+Light: {primary.color} → {nettalcoPrimary.500} → #112A46
+Dark:  {primary.color} → {nettalcoPrimary.50}  → #EDF4FF
+```
+
+To use a semantic severity color instead of the primary brand color for a specific bar, override the CSS custom property:
+
+```html
+<!-- Success-colored bar -->
+<p-progressbar
+  [value]="completionRate"
+  [style]="{ '--p-progressbar-value-background': 'var(--p-success-color)' }"
+/>
+```
+
+> The track `background` uses `{content.border.color}` which maps to a surface neutral, keeping the unfilled portion visually receded against any Nettalco surface background in both light and dark color schemes.

@@ -1,0 +1,287 @@
+---
+title: "DataTable Component — Nettalco Theme Tokens"
+sidebarTitle: "DataTable"
+description: "Design tokens, size variants, and Angular usage for the DataTable component in the Nettalco PrimeNG v21 preset theme."
+---
+
+The **DataTable** is the most feature-rich data component in the Nettalco preset. It provides a fully styled tabular layout with support for sorting, filtering, pagination, row selection, row grouping, column resizing, and expandable rows — all driven by a structured set of design tokens and a global CSS override that eliminates hover-flicker on table rows.
+
+## Angular Usage Example
+
+```html
+<p-table
+  [value]="products"
+  [paginator]="true"
+  [rows]="10"
+  selectionMode="single"
+  [(selection)]="selected"
+  styleClass="p-datatable-sm"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">
+        Name <p-sortIcon field="name" />
+      </th>
+      <th pSortableColumn="price">
+        Price <p-sortIcon field="price" />
+      </th>
+      <th>Category</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-product>
+    <tr [pSelectableRow]="product">
+      <td>{{ product.name }}</td>
+      <td>{{ product.price | currency }}</td>
+      <td>{{ product.category }}</td>
+      <td>
+        <p-tag [value]="product.status" />
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <tr>
+      <td colspan="4">Total: {{ products.length }} products</td>
+    </tr>
+  </ng-template>
+</p-table>
+```
+
+### Size Variants
+
+Apply a `styleClass` to the `<p-table>` element to switch between density presets. All padding tokens (`header`, `headerCell`, `bodyCell`, `footerCell`, `footer`) carry corresponding `sm` and `lg` sub-tokens.
+
+| Class              | Padding (cell) |
+|--------------------|----------------|
+| `p-datatable-sm`   | `0.375rem 0.5rem` |
+| *(default)*        | `0.75rem 1rem`    |
+| `p-datatable-lg`   | `1rem 1.25rem`    |
+
+---
+
+## Design Tokens
+
+### `root`
+
+| Token                | Value                    |
+|----------------------|--------------------------|
+| `transitionDuration` | `{transition.duration}`  |
+
+> **Color-scheme override — `root.borderColor`**
+> - Light: `{content.border.color}`
+> - Dark: `{surface.800}`
+
+---
+
+### `header`
+
+The toolbar-style panel rendered above the table grid.
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `background`  | `{content.background}`     |
+| `borderColor` | `{datatable.border.color}` |
+| `color`       | `{content.color}`          |
+| `borderWidth` | `0 0 1px 0`                |
+| `padding`     | `0.75rem 1rem`             |
+| `sm.padding`  | `0.375rem 0.5rem`          |
+| `lg.padding`  | `1rem 1.25rem`             |
+
+---
+
+### `headerCell`
+
+Individual `<th>` cells in the table head.
+
+| Token                | Value                          |
+|----------------------|--------------------------------|
+| `background`         | `{content.background}`         |
+| `hoverBackground`    | `{content.hover.background}`   |
+| `selectedBackground` | `{highlight.background}`       |
+| `borderColor`        | `{datatable.border.color}`     |
+| `color`              | `{content.color}`              |
+| `hoverColor`         | `{content.hover.color}`        |
+| `selectedColor`      | `{highlight.color}`            |
+| `gap`                | `0.5rem`                       |
+| `padding`            | `0.75rem 1rem`                 |
+| `sm.padding`         | `0.375rem 0.5rem`              |
+| `lg.padding`         | `1rem 1.25rem`                 |
+| `focusRing.width`    | `{focus.ring.width}`           |
+| `focusRing.style`    | `{focus.ring.style}`           |
+| `focusRing.color`    | `{focus.ring.color}`           |
+| `focusRing.offset`   | `-1px`                         |
+| `focusRing.shadow`   | `{focus.ring.shadow}`          |
+
+---
+
+### `columnTitle`
+
+Typography weight applied to the visible column header text span.
+
+| Token        | Value |
+|--------------|-------|
+| `fontWeight` | `600` |
+
+---
+
+### `row`
+
+Tokens applied to every `<tr>` inside `<tbody>`.
+
+| Token                | Value                        |
+|----------------------|------------------------------|
+| `background`         | `{content.background}`       |
+| `hoverBackground`    | `{content.hover.background}` |
+| `selectedBackground` | `{highlight.background}`     |
+| `color`              | `{content.color}`            |
+| `hoverColor`         | `{content.hover.color}`      |
+| `selectedColor`      | `{highlight.color}`          |
+| `focusRing.width`    | `{focus.ring.width}`         |
+| `focusRing.style`    | `{focus.ring.style}`         |
+| `focusRing.color`    | `{focus.ring.color}`         |
+| `focusRing.offset`   | `-1px`                       |
+| `focusRing.shadow`   | `{focus.ring.shadow}`        |
+
+> **Color-scheme override — `row.stripedBackground`**
+> - Light: `{surface.50}`
+> - Dark: `{surface.950}`
+
+---
+
+### `bodyCell`
+
+Individual `<td>` cells in the table body.
+
+| Token                   | Value                      |
+|-------------------------|----------------------------|
+| `borderColor`           | `{datatable.border.color}` |
+| `padding`               | `0.75rem 1rem`             |
+| `sm.padding`            | `0.375rem 0.5rem`          |
+| `lg.padding`            | `1rem 1.25rem`             |
+
+> **Color-scheme override — `bodyCell.selectedBorderColor`**
+> - Light: `{primary.100}`
+> - Dark: `{primary.900}`
+
+---
+
+### `footer`
+
+The panel rendered below the table grid (not the column footer row).
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `background`  | `{content.background}`     |
+| `borderColor` | `{datatable.border.color}` |
+| `color`       | `{content.color}`          |
+| `borderWidth` | `0 0 1px 0`                |
+| `padding`     | `0.75rem 1rem`             |
+| `sm.padding`  | `0.375rem 0.5rem`          |
+| `lg.padding`  | `1rem 1.25rem`             |
+
+---
+
+### `footerCell`
+
+Individual cells inside the `<tfoot>` column footer row.
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `background`  | `{content.background}`     |
+| `borderColor` | `{datatable.border.color}` |
+| `color`       | `{content.color}`          |
+| `padding`     | `0.75rem 1rem`             |
+| `sm.padding`  | `0.375rem 0.5rem`          |
+| `lg.padding`  | `1rem 1.25rem`             |
+
+### `columnFooter`
+
+| Token        | Value |
+|--------------|-------|
+| `fontWeight` | `600` |
+
+---
+
+### Additional Tokens
+
+#### `sortIcon`
+
+| Token        | Value                     |
+|--------------|---------------------------|
+| `color`      | `{text.muted.color}`      |
+| `hoverColor` | `{text.hover.muted.color}`|
+| `size`       | `0.875rem`                |
+
+#### `loadingIcon`
+
+| Token  | Value  |
+|--------|--------|
+| `size` | `2rem` |
+
+#### `columnResizer`
+
+| Token   | Value    |
+|---------|----------|
+| `width` | `0.5rem` |
+
+#### `resizeIndicator`
+
+| Token   | Value            |
+|---------|------------------|
+| `width` | `1px`            |
+| `color` | `{primary.color}`|
+
+#### `dropPoint`
+
+| Token   | Value            |
+|---------|------------------|
+| `color` | `{primary.color}`|
+
+#### `rowToggleButton`
+
+| Token                   | Value                           |
+|-------------------------|---------------------------------|
+| `hoverBackground`       | `{content.hover.background}`    |
+| `selectedHoverBackground` | `{content.background}`        |
+| `color`                 | `{text.muted.color}`            |
+| `hoverColor`            | `{text.color}`                  |
+| `selectedHoverColor`    | `{primary.color}`               |
+| `size`                  | `1.75rem`                       |
+| `borderRadius`          | `50%`                           |
+
+#### `paginatorTop` / `paginatorBottom`
+
+| Token         | Value                      |
+|---------------|----------------------------|
+| `borderColor` | `{datatable.border.color}` |
+| `borderWidth` | `0 0 1px 0`                |
+
+---
+
+## Theme Notes
+
+### Global `transition: none` Override
+
+The Nettalco CSS layer (defined in `css/index.ts`) applies the following rule globally:
+
+```css
+.p-datatable .p-datatable-tbody > tr,
+thead.p-datatable-thead > tr > th,
+th.p-datatable-header-cell {
+    transition: none;
+}
+```
+
+This override **removes the default PrimeNG transition on table rows and header cells** to prevent the visible hover-flicker that occurs when the browser repaints many table rows simultaneously during rapid mouse movement. Interactive states (hover, selected) still update immediately because color changes do not require a CSS transition to render correctly.
+
+### Overlay Loading Mask
+
+The built-in `css` block in the DataTable token file sets a semi-transparent loading mask that respects the active color scheme:
+
+```css
+.p-datatable-mask.p-overlay-mask {
+    --px-mask-background: light-dark(rgba(255,255,255,0.5), rgba(0,0,0,0.3));
+}
+```

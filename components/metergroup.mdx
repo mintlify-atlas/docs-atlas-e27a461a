@@ -1,0 +1,144 @@
+---
+title: "Meter Group for Multi-Segment Progress Visualization"
+sidebarTitle: "Meter Group"
+description: "Segmented horizontal progress bar for visualising proportional data across multiple categories, with configurable meter size, label markers, and icon tokens."
+---
+
+## Overview
+
+`p-metergroup` renders a single horizontal track subdivided into coloured segments, each representing a proportion of the total. It is ideal for visualising resource allocation, budget breakdowns, storage usage by category, or any multi-part percentage data. The Nettalco preset configures the track height, label spacing, and marker/icon dimensions via dedicated tokens while leaving segment fill colors to be specified per-value in the component's `value` input.
+
+## Usage
+
+### Basic Meter Group
+
+```html
+<p-metergroup [value]="storageBreakdown" />
+```
+
+```ts
+export class StorageComponent {
+  storageBreakdown = [
+    { label: 'Documents', value: 35, color: 'var(--p-primary-color)' },
+    { label: 'Media',     value: 28, color: 'var(--p-success-color)' },
+    { label: 'Other',     value: 15, color: 'var(--p-info-color)' },
+    { label: 'Free',      value: 22, color: 'var(--p-surface-200)' },
+  ];
+}
+```
+
+### With Icons
+
+```html
+<p-metergroup [value]="budget" />
+```
+
+```ts
+budget = [
+  { label: 'Infrastructure', value: 40, icon: 'pi pi-server',     color: 'var(--p-primary-color)' },
+  { label: 'Personnel',      value: 35, icon: 'pi pi-users',      color: 'var(--p-success-color)' },
+  { label: 'Marketing',      value: 15, icon: 'pi pi-megaphone',  color: 'var(--p-warn-color)' },
+  { label: 'R&D',            value: 10, icon: 'pi pi-lightbulb',  color: 'var(--p-info-color)' },
+];
+```
+
+### Vertical Orientation
+
+```html
+<p-metergroup [value]="data" orientation="vertical" [style]="{ height: '20rem' }" />
+```
+
+### Label Position
+
+```html
+<!-- Labels above the meter (default) -->
+<p-metergroup [value]="data" labelPosition="start" />
+
+<!-- Labels below the meter -->
+<p-metergroup [value]="data" labelPosition="end" />
+```
+
+### Custom Label Template
+
+```html
+<p-metergroup [value]="storageBreakdown">
+  <ng-template pTemplate="label" let-value>
+    <div class="flex justify-between text-sm mt-2">
+      <span *ngFor="let item of value" [style.color]="item.color">
+        {{ item.label }}: {{ item.value }}%
+      </span>
+    </div>
+  </ng-template>
+</p-metergroup>
+```
+
+### Using Nettalco Semantic Colors
+
+```ts
+// Reference Nettalco semantic tokens via CSS variables
+allocation = [
+  { label: 'Complete', value: 60, color: 'var(--p-success-color)' },  // #2BA5CD Cyan
+  { label: 'In Progress', value: 25, color: 'var(--p-info-color)' },   // #66A6FB Blue
+  { label: 'Blocked', value: 15, color: 'var(--p-warn-color)' },       // #D57952 Orange
+];
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/metergroup/index.ts`:
+
+### Root
+
+| Token | Value | Notes |
+|---|---|---|
+| `root.borderRadius` | `{content.border.radius}` | Applied to the full track container |
+| `root.gap` | `1rem` | Vertical gap between track and label list |
+
+### Meters (Track)
+
+| Token | Value | Notes |
+|---|---|---|
+| `meters.background` | `{content.border.color}` | Unfilled track background |
+| `meters.size` | `0.5rem` | Track height (horizontal) / width (vertical) |
+
+### Label
+
+| Token | Value | Notes |
+|---|---|---|
+| `label.gap` | `0.5rem` | Gap between marker/icon and label text |
+
+### Label Marker
+
+| Token | Value | Notes |
+|---|---|---|
+| `labelMarker.size` | `0.5rem` | Colour swatch dot size in the legend |
+
+### Label Icon
+
+| Token | Value | Notes |
+|---|---|---|
+| `labelIcon.size` | `1rem` | Icon size in the legend when using `icon` in value items |
+
+### Label List
+
+| Token | Value | Notes |
+|---|---|---|
+| `labelList.verticalGap` | `0.5rem` | Vertical gap between label rows |
+| `labelList.horizontalGap` | `1rem` | Horizontal gap between label columns |
+
+## Nettalco Theme Notes
+
+The meter track uses `{content.border.color}` as its unfilled background — matching the skeleton and progress bar rail — keeping the inactive portion visually consistent with other progress surfaces in Nettalco applications.
+
+Individual segment fill colors are **not** derived from design tokens in the preset; they are passed directly via the `color` property on each value item. This gives full flexibility to map Nettalco brand colors to business domains:
+
+```
+Nettalco Success (Cyan)  → var(--p-success-color) → #2BA5CD
+Nettalco Info (Blue)     → var(--p-info-color)    → #66A6FB
+Nettalco Warn (Orange)   → var(--p-warn-color)    → #D57952
+Nettalco Primary (Navy)  → var(--p-primary-color) → #112A46
+```
+
+The `meters.size` token (`0.5rem` = 8px) creates a deliberately slim track compared to the taller `p-progressbar` default (`1.25rem`). This keeps meter groups visually lightweight when displayed in dashboard cards or summary panels alongside dense data.
+
+> **Total must equal 100:** The component does not normalise values automatically. Ensure the sum of all `value` entries equals 100, or pass a `max` prop to set a custom ceiling.

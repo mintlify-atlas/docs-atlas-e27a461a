@@ -1,0 +1,143 @@
+---
+title: "Message Component Severity Styles and Variants"
+sidebarTitle: "Message"
+description: "Inline alert banners with filled, outlined, and simple variants, driven by Nettalco semantic color tokens across all severity levels."
+---
+
+## Overview
+
+`p-message` displays a persistent or dismissible inline alert inside page content, unlike the toast which appears as a floating overlay. The Nettalco preset supports three visual variants — **filled** (default), **outlined**, and **simple** — across six severities. Three size tokens (`sm`, default, `lg`) control padding and icon scaling.
+
+## Usage
+
+```html
+<!-- Basic severities -->
+<p-message severity="success" text="Your changes have been saved." />
+<p-message severity="info"    text="Scheduled maintenance on Friday." />
+<p-message severity="warn"    text="API rate limit is at 90%." />
+<p-message severity="error"   text="Failed to connect to database." />
+
+<!-- Outlined variant -->
+<p-message severity="success" variant="outlined" text="Outlined success." />
+
+<!-- Simple variant (no background, icon + text only) -->
+<p-message severity="warn" variant="simple" text="Check your network settings." />
+
+<!-- Small size -->
+<p-message severity="info" size="small" text="Compact info message." />
+
+<!-- Closable message -->
+<p-message severity="error" [closable]="true" text="Dismiss this error." />
+```
+
+### With Custom Content
+
+```html
+<p-message severity="info">
+  <ng-template pTemplate="content">
+    <span class="font-semibold">Custom content:</span>
+    Use any template inside the message body.
+  </ng-template>
+</p-message>
+```
+
+## Design Tokens
+
+Defined in `src/lib/theme/message/index.ts`:
+
+### Root & Layout
+
+| Token | Value |
+|---|---|
+| `root.borderRadius` | `{content.border.radius}` |
+| `root.borderWidth` | `1px` |
+| `root.transitionDuration` | `{transition.duration}` |
+
+### Content Padding
+
+| Size | Padding |
+|---|---|
+| Small (`sm`) | `0.375rem 0.625rem` |
+| Default | `0.5rem 0.75rem` |
+| Large (`lg`) | `0.625rem 0.875rem` |
+
+Content gap is `0.5rem` for all sizes.
+
+### Text
+
+| Size | Font Size | Font Weight |
+|---|---|---|
+| Small (`sm`) | `0.875rem` | `500` |
+| Default | `1rem` | `500` |
+| Large (`lg`) | `1.125rem` | `500` |
+
+### Icon
+
+| Size | Icon Size |
+|---|---|
+| Small (`sm`) | `1rem` |
+| Default | `1.125rem` |
+| Large (`lg`) | `1.25rem` |
+
+### Close Button & Icon
+
+| Token | Value |
+|---|---|
+| `closeButton.width` | `1.75rem` |
+| `closeButton.height` | `1.75rem` |
+| `closeButton.borderRadius` | `50%` |
+| `closeIcon.size` (default) | `1rem` |
+| `closeIcon.size` (sm) | `0.875rem` |
+| `closeIcon.size` (lg) | `1.125rem` |
+
+### Outlined Variant
+
+`outlined.root.borderWidth` is `1px` (same as default; border color overrides via severity).
+
+### Simple Variant
+
+`simple.content.padding` is `0` — background and border are removed; only text and icon are rendered.
+
+### Color Scheme — Light Mode (Filled Default)
+
+| Severity | Background | Border | Color | Shadow |
+|---|---|---|---|---|
+| `info` | `color-mix(in srgb, {info.50}, transparent 5%)` | `{info.200}` | `{info.600}` | `0px 4px 8px …` |
+| `success` | `color-mix(in srgb, {success.50}, transparent 5%)` | `{success.200}` | `{success.600}` | `0px 4px 8px …` |
+| `warn` | `color-mix(in srgb, {warn.50}, transparent 5%)` | `{warn.200}` | `{warn.600}` | `0px 4px 8px …` |
+| `error` | `color-mix(in srgb, {error.50}, transparent 5%)` | `{error.200}` | `{error.600}` | `0px 4px 8px …` |
+| `secondary` | `{surface.100}` | `{surface.200}` | `{surface.600}` | — |
+| `contrast` | `{surface.900}` | `{surface.950}` | `{surface.50}` | — |
+
+### Outlined / Simple Overrides (Light)
+
+| Severity | Outlined color | Outlined borderColor | Simple color |
+|---|---|---|---|
+| `info` | `{info.600}` | `{info.600}` | `{info.600}` |
+| `success` | `{success.600}` | `{success.600}` | `{success.600}` |
+| `warn` | `{warn.600}` | `{warn.600}` | `{warn.600}` |
+| `error` | `{error.600}` | `{error.600}` | `{error.600}` |
+| `secondary` | `{surface.500}` | `{surface.500}` | `{surface.500}` |
+| `contrast` | `{surface.950}` | `{surface.950}` | `{surface.950}` |
+
+### Color Scheme — Dark Mode (Filled Default)
+
+| Severity | Background | Border | Color |
+|---|---|---|---|
+| `info` | `color-mix(in srgb, {info.500}, transparent 84%)` | `color-mix(in srgb, {info.700}, transparent 64%)` | `{info.500}` |
+| `success` | `color-mix(in srgb, {success.500}, transparent 84%)` | `color-mix(in srgb, {success.700}, transparent 64%)` | `{success.500}` |
+| `warn` | `color-mix(in srgb, {warn.500}, transparent 84%)` | `color-mix(in srgb, {warn.700}, transparent 64%)` | `{warn.500}` |
+| `error` | `color-mix(in srgb, {error.500}, transparent 84%)` | `color-mix(in srgb, {error.700}, transparent 64%)` | `{error.500}` |
+| `secondary` | `{surface.800}` | `{surface.700}` | `{surface.300}` |
+| `contrast` | `{surface.0}` | `{surface.100}` | `{surface.950}` |
+
+## Nettalco Semantic Color Mappings
+
+| Severity | Semantic Token | Primitive Palette | Brand Hex (500) |
+|---|---|---|---|
+| `success` | `{success.*}` | `nettalcoSuccess` | `#2BA5CD` (Cyan) |
+| `info` | `{info.*}` | `nettalcoInfo` | `#66A6FB` (Sky Blue) |
+| `warn` | `{warn.*}` | `nettalcoWarn` | `#D57952` (Orange) |
+| `error` | `{error.*}` | `red` (standard) | `#ef4444` (Red) |
+
+In light mode the background is computed via `color-mix` from the `.50` palette step, giving a very pale tint while the border uses `.200` and the foreground text uses `.600`. In dark mode the `.500` base color is mixed to 16% opacity for the background, ensuring legibility on Nettalco's custom dark surface palette.

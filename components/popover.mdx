@@ -1,0 +1,74 @@
+---
+title: "Popover Component — Nettalco PrimeNG Theme Preset"
+sidebarTitle: "Popover"
+description: "Anchored floating overlay using the popover token namespace, with configurable gutter, arrow offset, and semantic tokens for border, shadow, and padding."
+---
+
+The **Popover** component (previously known as OverlayPanel in PrimeNG v16 and earlier) displays an anchored floating panel that appears relative to a trigger element. It includes an arrow pointer and automatically repositions to stay within the viewport. The Nettalco preset routes all visual tokens through the `{overlay.popover.*}` semantic namespace, which is also shared by the Tooltip and ConfirmPopup components.
+
+## Usage
+
+```html
+<!-- app.component.html -->
+<p-button
+  label="Show Info"
+  icon="pi pi-info-circle"
+  (onClick)="op.toggle($event)"
+/>
+
+<p-popover #op>
+  <div class="flex flex-col gap-3 p-1">
+    <p class="font-semibold">Quick Details</p>
+    <ul class="list-disc pl-4 text-sm">
+      <li>Created: Jan 12, 2025</li>
+      <li>Owner: Alice Martin</li>
+      <li>Status: Active</li>
+    </ul>
+    <p-button label="View Full Profile" size="small" text />
+  </div>
+</p-popover>
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { PopoverModule } from 'primeng/popover';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [PopoverModule, ButtonModule],
+})
+export class AppComponent {}
+```
+
+## Design Tokens
+
+All tokens are defined in `src/lib/theme/popover/index.ts`.
+
+### Root
+
+| Token | Value | Description |
+|---|---|---|
+| `root.background` | `{overlay.popover.background}` | Popover panel background |
+| `root.borderColor` | `{overlay.popover.border.color}` | Panel border color |
+| `root.color` | `{overlay.popover.color}` | Default text color inside the panel |
+| `root.borderRadius` | `{overlay.popover.border.radius}` | Corner radius of the popover panel |
+| `root.shadow` | `{overlay.popover.shadow}` | Drop shadow for elevation |
+| `root.gutter` | `10px` | Gap between the trigger element and the popover panel |
+| `root.arrowOffset` | `1.25rem` | Horizontal distance from the panel edge to the arrow tip |
+
+### Content
+
+| Token | Value | Description |
+|---|---|---|
+| `content.padding` | `{overlay.popover.padding}` | Uniform inner padding of the content area |
+
+## Theme Notes
+
+- **`{overlay.popover.*}` namespace** — Popover, Tooltip, and ConfirmPopup all reference the same `overlay.popover` token group. Changes to this namespace cascade to all three components.
+- **Gutter** — `root.gutter: '10px'` is the space between the anchor element and the popover panel edge (not including the arrow). This is hardcoded in the preset; to change it, override the token in your custom theme extension.
+- **Arrow offset** — `root.arrowOffset: '1.25rem'` positions the arrow 20 px from the panel corner. It is designed to align naturally with standard button sizes and icon-only triggers.
+- **No `borderRadius` fallback** — Unlike Dialog (which uses `{border.radius.xl}`), the popover's border radius comes directly from `{overlay.popover.border.radius}`. Check your global token configuration for the actual resolved value.
+- If you need a popover without an arrow, use the `[showCloseIcon]` option or replace it with a custom positioned `<div>` styled to match the popover appearance.

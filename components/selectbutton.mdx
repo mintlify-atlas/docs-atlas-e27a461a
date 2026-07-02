@@ -1,0 +1,159 @@
+---
+title: "Nettalco Theme SelectButton: Toggle Group Component"
+sidebarTitle: "Select Button"
+description: "Nettalco-themed PrimeNG SelectButton for single or multi-select toggle groups, with form-field border-radius and invalid state tokens."
+---
+
+The PrimeNG `p-selectbutton` component renders a group of toggle buttons that function as a single-select or multi-select control — useful for filter bars, view-mode switchers, and segmented option groups. Nettalco Theme applies the shared form-field `border-radius` to the component wrapper and aligns the `invalidBorderColor` with the rest of the form field suite, so validation states look consistent across inputs, selects, and button groups.
+
+## Basic Usage
+
+```html
+<!-- Single select (default) -->
+<p-selectbutton
+  [(ngModel)]="selectedView"
+  [options]="viewOptions"
+  optionLabel="label"
+  optionValue="value"
+/>
+
+<!-- Multiple select -->
+<p-selectbutton
+  [(ngModel)]="selectedFilters"
+  [options]="filterOptions"
+  [multiple]="true"
+  optionLabel="label"
+  optionValue="value"
+/>
+
+<!-- With icons only -->
+<p-selectbutton
+  [(ngModel)]="alignment"
+  [options]="alignOptions"
+  optionLabel="label"
+  optionValue="value"
+/>
+```
+
+## Component Setup (TypeScript)
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { SelectButtonModule } from 'primeng/selectbutton';
+
+interface ViewOption {
+  label: string;
+  value: string;
+  icon?: string;
+}
+
+@Component({
+  selector: 'app-view-switcher',
+  standalone: true,
+  imports: [FormsModule, SelectButtonModule],
+  templateUrl: './view-switcher.component.html',
+})
+export class ViewSwitcherComponent {
+  selectedView = 'list';
+
+  viewOptions: ViewOption[] = [
+    { label: 'List',  value: 'list',  icon: 'pi pi-list'       },
+    { label: 'Grid',  value: 'grid',  icon: 'pi pi-th-large'   },
+    { label: 'Chart', value: 'chart', icon: 'pi pi-chart-bar'  },
+  ];
+
+  // Multi-select filter example
+  selectedFilters: string[] = [];
+
+  filterOptions = [
+    { label: 'Active',   value: 'active'   },
+    { label: 'Inactive', value: 'inactive' },
+    { label: 'Pending',  value: 'pending'  },
+  ];
+
+  // Alignment icon-only example
+  alignment = 'left';
+
+  alignOptions = [
+    { label: 'Left',   value: 'left',   icon: 'pi pi-align-left'   },
+    { label: 'Center', value: 'center', icon: 'pi pi-align-center' },
+    { label: 'Right',  value: 'right',  icon: 'pi pi-align-right'  },
+  ];
+}
+```
+
+## With Custom Templates
+
+```html
+<!-- Icon + label template -->
+<p-selectbutton
+  [(ngModel)]="selectedView"
+  [options]="viewOptions"
+  optionLabel="label"
+  optionValue="value"
+>
+  <ng-template #item let-item>
+    <i [class]="item.icon" class="mr-2"></i>
+    <span>{{ item.label }}</span>
+  </ng-template>
+</p-selectbutton>
+```
+
+## Reactive Forms Integration
+
+```html
+<form [formGroup]="settingsForm">
+  <p-selectbutton
+    formControlName="theme"
+    [options]="themeOptions"
+    optionLabel="label"
+    optionValue="value"
+    [invalid]="settingsForm.get('theme')?.invalid && settingsForm.get('theme')?.touched"
+  />
+</form>
+```
+
+```typescript
+import { FormBuilder, Validators } from '@angular/forms';
+
+// In your component:
+settingsForm = this.fb.group({
+  theme: ['light', Validators.required],
+});
+
+themeOptions = [
+  { label: 'Light', value: 'light' },
+  { label: 'Dark',  value: 'dark'  },
+  { label: 'Auto',  value: 'auto'  },
+];
+```
+
+## Design Tokens
+
+### Root Tokens
+
+| Token | Value | Description |
+|---|---|---|
+| `selectbutton.root.borderRadius` | `{form.field.border.radius}` → **6px** | Outer wrapper border radius; aligns with all form field components |
+
+### Color Scheme Tokens
+
+| Token | Light Value | Dark Value |
+|---|---|---|
+| `selectbutton.colorScheme.light.root.invalidBorderColor` | `{form.field.invalid.border.color}` | — |
+| `selectbutton.colorScheme.dark.root.invalidBorderColor` | `{form.field.invalid.border.color}` | — |
+
+Both light and dark modes resolve `invalidBorderColor` through `{form.field.invalid.border.color}`, which maps to the `error` semantic palette. This keeps validation error styling uniform with other form field components like `InputText` and `Select`.
+
+<Note>
+  SelectButton's selected-item fill, text color, and hover states are controlled by the underlying Button component tokens and PrimeNG's internal theming layer. The Nettalco preset focuses on wrapper-level radius and invalid border color, relying on the Aura base for the active/inactive toggle state colors.
+</Note>
+
+## Nettalco-Specific Customizations
+
+**Unified form-field border radius.** The `selectbutton.root.borderRadius` token is bound to `{form.field.border.radius}` (6px), so the SelectButton group clips to the same corner radius as adjacent text inputs, dropdowns, and date pickers. In a filter bar mixing `InputText` and `SelectButton`, both components share identical rounded corners.
+
+**Consistent invalid state appearance.** Setting `[invalid]="true"` triggers the `invalidBorderColor` token, which maps to the same `{form.field.invalid.border.color}` used by every other Nettalco-themed form control. Users see a uniform red border outline across the entire form whether the invalid field is a text box, a select, or a select-button group.
+
+**Light/dark parity.** Both color scheme entries point to the same `{form.field.invalid.border.color}` reference, so there is no separate dark-mode error color to maintain — the resolved value adapts automatically when the dark mode selector is active.
